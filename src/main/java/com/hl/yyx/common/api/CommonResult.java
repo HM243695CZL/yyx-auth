@@ -5,15 +5,15 @@ package com.hl.yyx.common.api;
  * Created by macro on 2019/4/19.
  */
 public class CommonResult<T> {
-    private long code;
+    private long status;
     private String message;
     private T data;
 
     protected CommonResult() {
     }
 
-    protected CommonResult(long code, String message, T data) {
-        this.code = code;
+    protected CommonResult(long status, String message, T data) {
+        this.status = status;
         this.message = message;
         this.data = data;
     }
@@ -98,12 +98,12 @@ public class CommonResult<T> {
         return new CommonResult<T>(ResultCode.FORBIDDEN.getCode(), ResultCode.FORBIDDEN.getMessage(), data);
     }
 
-    public long getCode() {
-        return code;
+    public long getStatus() {
+        return status;
     }
 
-    public void setCode(long code) {
-        this.code = code;
+    public void setCode(long status) {
+        this.status = status;
     }
 
     public String getMessage() {

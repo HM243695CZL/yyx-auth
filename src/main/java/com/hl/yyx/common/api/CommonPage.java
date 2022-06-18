@@ -10,7 +10,7 @@ import java.util.List;
  * Created by macro on 2019/4/19.
  */
 public class CommonPage<T> {
-    private Integer pageNum;
+    private Integer pageIndex;
     private Integer pageSize;
     private Integer totalPage;
     private Long total;
@@ -29,12 +29,12 @@ public class CommonPage<T> {
         return result;
     }
 
-    public Integer getPageNum() {
-        return pageNum;
+    public Integer getPageIndex() {
+        return pageIndex;
     }
 
-    public void setPageNum(Integer pageNum) {
-        this.pageNum = pageNum;
+    public void setPageNum(Integer pageIndex) {
+        this.pageIndex = pageIndex;
     }
 
     public Integer getPageSize() {
