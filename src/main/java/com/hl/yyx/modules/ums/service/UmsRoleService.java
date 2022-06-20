@@ -1,10 +1,9 @@
 package com.hl.yyx.modules.ums.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.ums.model.UmsRole;
-import com.baomidou.mybatisplus.extension.service.IService;
-
-import java.util.List;
 
 /**
  * <p>
@@ -16,7 +15,7 @@ import java.util.List;
  */
 public interface UmsRoleService extends IService<UmsRole> {
 
-    List<UmsRole> pageList(PageParamsDTO paramsDTO);
+    Page<UmsRole> pageList(PageParamsDTO paramsDTO);
 
     boolean create(UmsRole umsRole);
 }

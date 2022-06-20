@@ -18,7 +18,4 @@ import java.util.List;
  */
 public interface UmsRoleMapper extends BaseMapper<UmsRole> {
 
-    boolean create(UmsRole umsRole);
-
-    List<UmsRole> page(@Param("pageIndex") Integer pageIndex, @Param("pageSize") Integer pageSize);
 }

@@ -1,23 +1,17 @@
 package com.hl.yyx.modules.ums.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.ums.model.UmsRole;
+import com.hl.yyx.modules.ums.service.UmsRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.*;
 
-import com.hl.yyx.modules.ums.service.UmsRoleService;
-import com.hl.yyx.modules.ums.model.UmsRole;
-
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import javax.validation.Valid;
 
 /**
  * <p>
@@ -37,20 +31,18 @@ public class UmsRoleController {
 
     // 分页
     @ApiOperation("分页查询")
-    @RequestMapping(value = "/page", method = RequestMethod.GET)
-    public CommonResult page(@RequestParam Integer pageIndex,
-                             @RequestParam Integer pageSize
-                             ) {
-        QueryWrapper<UmsRole> queryWrapper = new QueryWrapper<>();
-        return CommonResult.success(CommonPage.restPage(umsRoleService.page(new Page<>(pageIndex, pageSize), queryWrapper)));
+    @RequestMapping(value = "/page", method = RequestMethod.POST)
+    public CommonResult page(@RequestBody PageParamsDTO paramsDTO) {
+        Page<UmsRole> roleList = umsRoleService.pageList(paramsDTO);
+        return CommonResult.success(CommonPage.restPage(roleList));
     }
 
     // 新增
     @ApiOperation("新增角色")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public CommonResult save(@RequestBody UmsRole umsRole) {
+    public CommonResult save(@Valid @RequestBody UmsRole umsRole) {
         boolean result = umsRoleService.create(umsRole);
-        return result ? CommonResult.success(result) : CommonResult.failed("新增角色失败");
+        return CommonResult.success(result);
     }
 
     // 更新

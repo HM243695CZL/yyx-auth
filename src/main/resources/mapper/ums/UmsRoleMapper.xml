@@ -12,54 +12,5 @@
         <result column="update_time" property="updateTime" />
         <result column="deleted" property="deleted" />
     </resultMap>
-    <insert id="create">
-        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
-        insert into ums_role
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="name != null">
-                `name`,
-            </if>
-            <if test="desc != null">
-                `desc`,
-            </if>
-            <if test="enabled != null">
-                enabled,
-            </if>
-            <if test="addTime != null">
-                add_time,
-            </if>
-            <if test="updateTime != null">
-                update_time,
-            </if>
-            <if test="deleted != null">
-                deleted,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="name != null">
-                #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="desc != null">
-                #{desc,jdbcType=VARCHAR},
-            </if>
-            <if test="enabled != null">
-                #{enabled,jdbcType=BIT},
-            </if>
-            <if test="addTime != null">
-                #{addTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updateTime != null">
-                #{updateTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="deleted != null">
-                #{deleted,jdbcType=BIT},
-            </if>
-        </trim>
-    </insert>
-    <select id="page" resultType="com.hl.yyx.modules.ums.model.UmsRole">
-        select * from ums_role limit #{pageIndex}, #{pageSize}
-    </select>
 
 </mapper>

@@ -1,15 +1,15 @@
 package com.hl.yyx.modules.ums.service.impl;
 
-import com.hl.yyx.common.vo.PageParamsDTO;
-import com.hl.yyx.modules.ums.model.UmsRole;
-import com.hl.yyx.modules.ums.mapper.UmsRoleMapper;
-import com.hl.yyx.modules.ums.service.UmsRoleService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.ums.mapper.UmsRoleMapper;
+import com.hl.yyx.modules.ums.model.UmsRole;
+import com.hl.yyx.modules.ums.service.UmsRoleService;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Date;
-import java.util.List;
 
 /**
  * <p>
@@ -22,21 +22,17 @@ import java.util.List;
 @Service
 public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole> implements UmsRoleService {
 
-    @Resource
-    private UmsRoleMapper roleMapper;
-
     @Override
-    public List<UmsRole> pageList(PageParamsDTO paramsDTO) {
-        List<UmsRole> page = roleMapper.page(paramsDTO.getPageIndex() - 1, paramsDTO.getPageSize());
-        return page;
+    public Page<UmsRole> pageList(PageParamsDTO paramsDTO) {
+        Page<UmsRole> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
+        QueryWrapper<UmsRole> wrapper = new QueryWrapper<>();
+        return page(page, wrapper);
     }
 
     @Override
     public boolean create(UmsRole umsRole) {
-        umsRole.setEnabled(true);
         umsRole.setAddTime(new Date());
         umsRole.setUpdateTime(new Date());
-        umsRole.setDeleted(false);
-        return roleMapper.create(umsRole);
+        return save(umsRole);
     }
 }
