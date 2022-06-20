@@ -1,5 +1,6 @@
 package com.hl.yyx.modules.ums.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
@@ -41,7 +42,7 @@ public class UmsRoleController {
     @ApiOperation("新增角色")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public CommonResult save(@Valid @RequestBody UmsRole umsRole) {
-        boolean result = umsRoleService.create(umsRole);
+        boolean result = umsRoleService.save(umsRole);
         return CommonResult.success(result);
     }
 
@@ -63,7 +64,10 @@ public class UmsRoleController {
     @ApiOperation("获取全部角色")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public CommonResult list() {
-        return CommonResult.success(umsRoleService.list());
+        QueryWrapper<UmsRole> queryWrapper = new QueryWrapper<>();
+        // 获取启用状态的角色
+        queryWrapper.lambda().eq(UmsRole::getEnabled, true);
+        return CommonResult.success(umsRoleService.list(queryWrapper));
     }
 
     // 查看

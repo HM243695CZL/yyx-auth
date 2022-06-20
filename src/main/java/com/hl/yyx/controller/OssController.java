@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @Api(tags = "OssController", description = "Oss管理")
-@RequestMapping("/aliyun/oss")
+@RequestMapping("/admin/aliyun/oss")
 public class OssController {
     @Autowired
     private OssServiceImpl ossService;

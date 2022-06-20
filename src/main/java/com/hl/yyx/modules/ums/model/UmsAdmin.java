@@ -1,6 +1,11 @@
 package com.hl.yyx.modules.ums.model;
 
 import com.baomidou.mybatisplus.annotation.*;
+
+import java.util.Date;
+import java.io.Serializable;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
@@ -9,39 +14,43 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * <p>
- * 角色表
+ * 管理员表
  * </p>
  *
  * @author hl243695czyn
- * @since 2022-06-19
+ * @since 2022-06-20
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("ums_role")
-@ApiModel(value="UmsRole对象", description="角色表")
-public class UmsRole implements Serializable {
+@TableName("ums_admin")
+@ApiModel(value="UmsAdmin对象", description="管理员表")
+public class UmsAdmin implements Serializable {
 
     private static final long serialVersionUID=1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @ApiModelProperty(value = "角色名称")
-    @TableField("`name`")
-    @NotBlank(message = "角色名称不能为空")
-    private String name;
+    @ApiModelProperty(value = "管理员名称")
+    @NotBlank(message = "用户名不能为空")
+    private String username;
 
-    @ApiModelProperty(value = "角色描述")
-    @TableField("`desc`")
-    private String desc;
+    @ApiModelProperty(value = "管理员密码")
+    @NotBlank(message = "密码不能为空")
+    @JsonIgnore
+    private String password;
 
-    @ApiModelProperty(value = "是否启用")
-    private Boolean enabled;
+    @ApiModelProperty(value = "最近一次登录IP地址")
+    private String lastLoginIp;
+
+    @ApiModelProperty(value = "最近一次登录时间")
+    private Date lastLoginTime;
+
+    @ApiModelProperty(value = "头像图片")
+    private String avatar;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "创建时间")
@@ -54,9 +63,17 @@ public class UmsRole implements Serializable {
     private Date updateTime;
 
     @ApiModelProperty(value = "逻辑删除")
-    @TableLogic(value = "1", delval = "0")
+//    @TableLogic(value = "1", delval = "0")
     @JsonIgnore
     private Boolean deleted;
+
+    @ApiModelProperty(value = "角色id列表")
+    @TableField(exist = false)
+    private List<Integer> roleIds;
+
+    @ApiModelProperty(value = "角色名称")
+    @TableField(exist = false)
+    private List<String> roles;
 
 
 }

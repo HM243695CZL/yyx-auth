@@ -9,8 +9,6 @@ import com.hl.yyx.modules.ums.model.UmsRole;
 import com.hl.yyx.modules.ums.service.UmsRoleService;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
 /**
  * <p>
  * 角色表 服务实现类
@@ -27,12 +25,5 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole> impl
         Page<UmsRole> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
         QueryWrapper<UmsRole> wrapper = new QueryWrapper<>();
         return page(page, wrapper);
-    }
-
-    @Override
-    public boolean create(UmsRole umsRole) {
-        umsRole.setAddTime(new Date());
-        umsRole.setUpdateTime(new Date());
-        return save(umsRole);
     }
 }

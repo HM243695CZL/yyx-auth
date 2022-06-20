@@ -16,6 +16,4 @@ import com.hl.yyx.modules.ums.model.UmsRole;
 public interface UmsRoleService extends IService<UmsRole> {
 
     Page<UmsRole> pageList(PageParamsDTO paramsDTO);
-
-    boolean create(UmsRole umsRole);
 }
