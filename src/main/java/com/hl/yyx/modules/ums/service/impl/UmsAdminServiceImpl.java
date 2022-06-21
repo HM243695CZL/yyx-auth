@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hl.yyx.common.exception.Asserts;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.ums.mapper.UmsAdminMapper;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
@@ -37,6 +38,11 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
     @Autowired
     UmsRoleService roleService;
 
+    /**
+     * 分页查询
+     * @param paramsDTO
+     * @return
+     */
     @Override
     public Page<UmsAdmin> pageList(PageParamsDTO paramsDTO) {
         Page<UmsAdmin> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
@@ -57,6 +63,11 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
         return pageList;
     }
 
+    /**
+     * 添加用户
+     * @param umsAdmin
+     * @return
+     */
     @Transactional
     @Override
     public boolean create(UmsAdmin umsAdmin) {
@@ -66,6 +77,11 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
         return result;
     }
 
+    /**
+     * 更新用户
+     * @param umsAdmin
+     * @return
+     */
     @Transactional
     @Override
     public boolean updateAdmin(UmsAdmin umsAdmin) {
@@ -81,6 +97,11 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
         return result;
     }
 
+    /**
+     * 查看用户
+     * @param id
+     * @return
+     */
     @Override
     public UmsAdmin view(String id) {
         UmsAdmin admin = getById(id);
@@ -91,6 +112,11 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
         return admin;
     }
 
+    /**
+     * 删除用户
+     * @param id
+     * @return
+     */
     @Transactional
     @Override
     public boolean delete(String id) {

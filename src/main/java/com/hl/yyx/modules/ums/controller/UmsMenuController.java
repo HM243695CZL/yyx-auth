@@ -1,23 +1,14 @@
 package com.hl.yyx.modules.ums.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
-import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.ums.model.UmsMenu;
+import com.hl.yyx.modules.ums.service.UmsMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.*;
 
-import com.hl.yyx.modules.ums.service.UmsMenuService;
-import com.hl.yyx.modules.ums.model.UmsMenu;
-
-import org.springframework.web.bind.annotation.RestController;
-
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * <p>
