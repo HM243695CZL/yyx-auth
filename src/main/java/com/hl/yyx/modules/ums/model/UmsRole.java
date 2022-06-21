@@ -36,6 +36,11 @@ public class UmsRole implements Serializable {
     @NotBlank(message = "角色名称不能为空")
     private String name;
 
+    @ApiModelProperty(value = "角色key")
+    @TableField("`key`")
+    @NotBlank(message = "角色的key不能为空")
+    private String key;
+
     @ApiModelProperty(value = "角色描述")
     @TableField("`desc`")
     private String desc;
@@ -54,7 +59,7 @@ public class UmsRole implements Serializable {
     private Date updateTime;
 
     @ApiModelProperty(value = "逻辑删除")
-    @TableLogic(value = "1", delval = "0")
+//    @TableLogic(value = "1", delval = "0")
     @JsonIgnore
     private Boolean deleted;
 

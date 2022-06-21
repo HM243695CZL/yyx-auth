@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="com.hl.yyx.modules.ums.model.UmsRole">
         <id column="id" property="id" />
         <result column="name" property="name" />
+        <result column="key" property="key" />
         <result column="desc" property="desc" />
         <result column="enabled" property="enabled" />
         <result column="add_time" property="addTime" />

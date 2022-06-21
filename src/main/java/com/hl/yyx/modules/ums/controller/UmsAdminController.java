@@ -17,6 +17,7 @@ import com.hl.yyx.modules.ums.model.UmsAdmin;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
  * <p>
@@ -45,14 +46,14 @@ public class UmsAdminController {
     // 新增
     @ApiOperation("新增管理员")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public CommonResult save(@RequestBody UmsAdmin umsAdmin) {
+    public CommonResult save(@Valid @RequestBody UmsAdmin umsAdmin) {
         return CommonResult.success(umsAdminService.create(umsAdmin));
     }
 
     // 更新
     @ApiOperation("更新管理员")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public CommonResult update(@RequestBody UmsAdmin umsAdmin) {
+    public CommonResult update(@Valid @RequestBody UmsAdmin umsAdmin) {
         return CommonResult.success(umsAdminService.updateAdmin(umsAdmin));
     }
 
