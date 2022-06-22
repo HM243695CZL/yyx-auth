@@ -61,18 +61,8 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
         Page<UmsAdmin> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
         // 根据分页查询用户
         Page<UmsAdmin> pageList = page(page);
-        page.getRecords().stream().forEach(
-                admin -> {
-                    // 根据用户id获取角色id
-                    List<Integer> roleIds = adminRoleService.list(new QueryWrapper<UmsAdminRole>().eq("admin_id", admin.getId())
-                            .select("role_id")).stream().map(UmsAdminRole::getRoleId).collect(Collectors.toList());
-                    if(!ObjectUtil.isEmpty(roleIds)) {
-                        // 根据角色表查询对应的角色名称
-                        List<String> roleName = roleService.listByIds(roleIds).stream().map(UmsRole::getName).collect(Collectors.toList());
-                        admin.setRoles(roleName);
-                    }
-                }
-        );
+        // 根据用户id获取角色id
+        page.getRecords().stream().forEach(this::setUserRoles);
         return pageList;
     }
 
@@ -216,7 +206,22 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
     public UmsAdmin getCurrentAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AdminUserDetails admin = (AdminUserDetails) authentication.getPrincipal();
+        UmsAdmin userInfo = admin.getUmsAdmin();
+        setUserRoles(userInfo);
         return admin.getUmsAdmin();
     }
 
+    /**
+     * 设置用户的roles字段
+     * @param userInfo
+     */
+    private void setUserRoles(UmsAdmin userInfo) {
+        List<Integer> roleIds = adminRoleService.list(new QueryWrapper<UmsAdminRole>().eq("admin_id", userInfo.getId())
+                .select("role_id")).stream().map(UmsAdminRole::getRoleId).collect(Collectors.toList());
+        if(!ObjectUtil.isEmpty(roleIds)) {
+            // 根据角色表查询对应的角色名称
+            List<String> roleName = roleService.listByIds(roleIds).stream().map(UmsRole::getKey).collect(Collectors.toList());
+            userInfo.setRoles(roleName);
+        }
+    }
 }

@@ -7,7 +7,6 @@ import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.ums.dto.InitMenuDTO;
 import com.hl.yyx.modules.ums.dto.UmsAdminLoginParam;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
-import com.hl.yyx.modules.ums.model.UmsMenu;
 import com.hl.yyx.modules.ums.service.UmsAdminService;
 import com.hl.yyx.modules.ums.service.UmsMenuService;
 import io.swagger.annotations.Api;
@@ -49,9 +48,11 @@ public class UmsAdminController {
         String token = umsAdminService.login(loginParam.getUsername(), loginParam.getPassword());
         // 根据当前用户获取对应的菜单
         Integer userId = umsAdminService.getCurrentAdmin().getId();
+        UmsAdmin userInfo = umsAdminService.getCurrentAdmin();
         List<InitMenuDTO> menuList = menuService.getMenuListByUserId(userId);
         HashMap<String, Object> tokenMap = new HashMap<>();
         tokenMap.put("token", token);
+        tokenMap.put("userInfo", userInfo);
         tokenMap.put("menuList", menuList);
         tokenMap.put("tokenHead", tokenHead);
         return CommonResult.success(tokenMap);

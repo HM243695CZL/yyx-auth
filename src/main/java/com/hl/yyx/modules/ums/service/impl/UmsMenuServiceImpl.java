@@ -1,30 +1,24 @@
 package com.hl.yyx.modules.ums.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.common.exception.ApiException;
-import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.ums.dto.InitMenuDTO;
 import com.hl.yyx.modules.ums.dto.MenuMataDTO;
+import com.hl.yyx.modules.ums.mapper.UmsMenuMapper;
 import com.hl.yyx.modules.ums.model.UmsAdminRole;
 import com.hl.yyx.modules.ums.model.UmsMenu;
-import com.hl.yyx.modules.ums.mapper.UmsMenuMapper;
 import com.hl.yyx.modules.ums.model.UmsRole;
 import com.hl.yyx.modules.ums.model.UmsRoleMenu;
 import com.hl.yyx.modules.ums.service.UmsAdminRoleService;
 import com.hl.yyx.modules.ums.service.UmsMenuService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.modules.ums.service.UmsRoleMenuService;
 import com.hl.yyx.modules.ums.service.UmsRoleService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
