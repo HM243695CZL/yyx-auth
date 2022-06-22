@@ -53,4 +53,8 @@ public class AdminUserDetails implements UserDetails {
     public boolean isEnabled() {
         return false;
     }
+
+    public UmsAdmin getUmsAdmin() {
+        return umsAdmin;
+    }
 }

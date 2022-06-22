@@ -28,5 +28,8 @@ public interface UmsAdminService extends IService<UmsAdmin> {
 
     AdminUserDetails loadUserByUsername(String username);
 
+    // 获取当前登录用户
+    UmsAdmin getCurrentAdmin();
+
     String login(String username, String password);
 }

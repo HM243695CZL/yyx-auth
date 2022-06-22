@@ -215,7 +215,8 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
      */
     public UmsAdmin getCurrentAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (UmsAdmin) authentication.getPrincipal();
+        AdminUserDetails admin = (AdminUserDetails) authentication.getPrincipal();
+        return admin.getUmsAdmin();
     }
 
 }

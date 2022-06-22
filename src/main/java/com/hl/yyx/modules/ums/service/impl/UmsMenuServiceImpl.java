@@ -7,14 +7,19 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.exception.ApiException;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.ums.dto.InitMenuDTO;
+import com.hl.yyx.modules.ums.dto.MenuMataDTO;
+import com.hl.yyx.modules.ums.model.UmsAdminRole;
 import com.hl.yyx.modules.ums.model.UmsMenu;
 import com.hl.yyx.modules.ums.mapper.UmsMenuMapper;
 import com.hl.yyx.modules.ums.model.UmsRole;
 import com.hl.yyx.modules.ums.model.UmsRoleMenu;
+import com.hl.yyx.modules.ums.service.UmsAdminRoleService;
 import com.hl.yyx.modules.ums.service.UmsMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.modules.ums.service.UmsRoleMenuService;
 import com.hl.yyx.modules.ums.service.UmsRoleService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +46,9 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
     @Autowired
     private UmsRoleService roleService;
 
+    @Autowired
+    private UmsAdminRoleService adminRoleService;
+
     /**
      * 新增菜单
      * @param umsMenu
@@ -61,7 +69,6 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
      */
     @Override
     public List<UmsMenu> getMenuList() {
-        ArrayList<UmsMenu> dataList = new ArrayList<>();
         // 获取所有菜单
         List<UmsMenu> menuLst = list();
         // 给菜单设置关联的角色
@@ -76,18 +83,7 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
                 menu.setRoleIds(roleIds);
             }
         });
-        // 找到父节点
-        for (UmsMenu menu : menuLst) {
-            if (ObjectUtil.isEmpty(menu.getPid())) {
-                menu.setChildren(new ArrayList<UmsMenu>());
-                dataList.add(menu);
-            }
-        }
-        // 根据父节点找到子节点
-        for (UmsMenu menu : dataList) {
-            menu.getChildren().add(findMenuChildren(menu, menuLst));
-        }
-        return dataList;
+       return buildMenuTree(menuLst);
     }
 
     /**
@@ -147,7 +143,91 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
     }
 
     /**
-     * 循环构建树形菜单
+     * 根据用户id获取用户菜单
+     * @param userId 用户id
+     * @return
+     */
+    @Override
+    public List<InitMenuDTO> getMenuListByUserId(Integer userId) {
+        ArrayList<InitMenuDTO> dataList = new ArrayList<>();
+        List<InitMenuDTO> menus = new ArrayList<>();
+        // 获取用户对应的角色id
+        List<Integer> roleIds = adminRoleService.list(new QueryWrapper<UmsAdminRole>().eq("admin_id", userId).select("role_id"))
+                .stream().map(UmsAdminRole::getRoleId).collect(Collectors.toList());
+        // 根据角色id查询对应的菜单id
+        List<Integer> menuIds = roleMenuService.list(new QueryWrapper<UmsRoleMenu>().in("role_id", roleIds).select("menu_id"))
+                .stream().map(UmsRoleMenu::getMenuId).collect(Collectors.toList());
+        // 根据菜单id查询出菜单
+        list(new QueryWrapper<UmsMenu>().in("id", menuIds))
+                .stream().forEach(menuItem -> {
+                    // 根据角色表查询对应的角色key
+            List<String> roleKey = roleService.listByIds(roleIds).stream().map(UmsRole::getKey).collect(Collectors.toList());
+            InitMenuDTO initMenuDTO = new InitMenuDTO();
+            MenuMataDTO menuMataDTO = new MenuMataDTO();
+            // 设置meta
+            menuMataDTO.setTitle(menuItem.getTitle());
+            menuMataDTO.setIsLink(menuItem.getIsLink());
+            menuMataDTO.setIsHide(menuItem.getIsHide());
+            menuMataDTO.setIsKeepAlive(menuItem.getIsKeepAlive());
+            menuMataDTO.setIsAffix(menuItem.getIsAffix());
+            menuMataDTO.setIsIframe(menuItem.getIsIframe());
+            menuMataDTO.setRoles(roleKey);
+            menuMataDTO.setIcon(menuItem.getIcon());
+
+            initMenuDTO.setId(menuItem.getId());
+            initMenuDTO.setPid(menuItem.getPid());
+            initMenuDTO.setPath(menuItem.getPath());
+            initMenuDTO.setName(menuItem.getName());
+            initMenuDTO.setComponent(menuItem.getComponent());
+            initMenuDTO.setMeta(menuMataDTO);
+            menus.add(initMenuDTO);
+        });
+        // 找到父节点
+        for (InitMenuDTO menu : menus) {
+            if (ObjectUtil.isEmpty(menu.getPid())) {
+                menu.setChildren(new ArrayList<InitMenuDTO>());
+                dataList.add(menu);
+            }
+        }
+        // 根据父节点找到子节点
+        for (InitMenuDTO menu : dataList) {
+            menu.getChildren().add(findInitMenuChildren(menu, menus));
+        }
+        return dataList;
+    }
+
+    private InitMenuDTO findInitMenuChildren(InitMenuDTO menu, List<InitMenuDTO> menus) {
+        menu.setChildren(new ArrayList<>());
+        for (InitMenuDTO item : menus) {
+            if (menu.getId().equals(item.getPid())) {
+                menu.getChildren().add(findInitMenuChildren(item, menus));
+            }
+        }
+        return menu;
+    }
+
+    /**
+     * 构建菜单树结构
+     * @return
+     */
+    public List<UmsMenu> buildMenuTree(List<UmsMenu> menus) {
+        ArrayList<UmsMenu> dataList = new ArrayList<>();
+        // 找到父节点
+        for (UmsMenu menu : menus) {
+            if(ObjectUtil.isEmpty(menu.getPid())) {
+                menu.setChildren(new ArrayList<UmsMenu>());
+                dataList.add(menu);
+            }
+        }
+        // 根据父节点找到子节点
+        for (UmsMenu menu : dataList) {
+            menu.getChildren().add(findMenuChildren(menu, menus));
+        }
+        return dataList;
+    }
+
+    /**
+     * 递归菜单
      * @param menu 父级菜单
      * @param menuLst 菜单列表
      * @return

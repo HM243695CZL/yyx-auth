@@ -4,9 +4,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.ums.dto.InitMenuDTO;
 import com.hl.yyx.modules.ums.dto.UmsAdminLoginParam;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
+import com.hl.yyx.modules.ums.model.UmsMenu;
 import com.hl.yyx.modules.ums.service.UmsAdminService;
+import com.hl.yyx.modules.ums.service.UmsMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -32,6 +36,9 @@ public class UmsAdminController {
     @Autowired
     private UmsAdminService umsAdminService;
 
+    @Autowired
+    private UmsMenuService menuService;
+
     @Value("${jwt.tokenHead}")
     private String tokenHead;
 
@@ -40,8 +47,12 @@ public class UmsAdminController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public CommonResult login(@RequestBody UmsAdminLoginParam loginParam) {
         String token = umsAdminService.login(loginParam.getUsername(), loginParam.getPassword());
-        HashMap<String, String> tokenMap = new HashMap<>();
+        // 根据当前用户获取对应的菜单
+        Integer userId = umsAdminService.getCurrentAdmin().getId();
+        List<InitMenuDTO> menuList = menuService.getMenuListByUserId(userId);
+        HashMap<String, Object> tokenMap = new HashMap<>();
         tokenMap.put("token", token);
+        tokenMap.put("menuList", menuList);
         tokenMap.put("tokenHead", tokenHead);
         return CommonResult.success(tokenMap);
     }
@@ -88,6 +99,5 @@ public class UmsAdminController {
     public CommonResult findOne(@PathVariable String id) {
         return CommonResult.success(umsAdminService.view(id));
     }
-
 }
 

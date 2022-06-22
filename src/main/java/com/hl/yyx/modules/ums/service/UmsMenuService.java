@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.ums.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hl.yyx.modules.ums.dto.InitMenuDTO;
 import com.hl.yyx.modules.ums.model.UmsMenu;
 
 import java.util.List;
@@ -24,4 +25,7 @@ public interface UmsMenuService extends IService<UmsMenu> {
     boolean updateMenu(UmsMenu umsMenu);
 
     boolean delete(String id);
+
+    // 根据用户id获取用户菜单
+    List<InitMenuDTO> getMenuListByUserId(Integer userId);
 }
