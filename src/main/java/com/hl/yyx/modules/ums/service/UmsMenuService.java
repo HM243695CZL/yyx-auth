@@ -16,13 +16,9 @@ import java.util.List;
  */
 public interface UmsMenuService extends IService<UmsMenu> {
 
-    boolean create(UmsMenu umsMenu);
-
     List<UmsMenu> getMenuList();
 
     UmsMenu view(String id);
-
-    boolean updateMenu(UmsMenu umsMenu);
 
     boolean delete(String id);
 

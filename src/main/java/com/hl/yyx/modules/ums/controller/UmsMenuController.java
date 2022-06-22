@@ -30,14 +30,14 @@ public class UmsMenuController {
     @ApiOperation("新增菜单")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public CommonResult save(@Valid @RequestBody UmsMenu umsMenu) {
-        return CommonResult.success(umsMenuService.create(umsMenu));
+        return CommonResult.success(umsMenuService.save(umsMenu));
     }
 
     // 更新
     @ApiOperation("更新菜单")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public CommonResult update(@Valid @RequestBody UmsMenu umsMenu) {
-        return CommonResult.success(umsMenuService.updateMenu(umsMenu));
+        return CommonResult.success(umsMenuService.updateById(umsMenu));
     }
 
     // 删除

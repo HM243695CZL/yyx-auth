@@ -44,20 +44,6 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
     private UmsAdminRoleService adminRoleService;
 
     /**
-     * 新增菜单
-     * @param umsMenu
-     * @return
-     */
-    @Transactional
-    @Override
-    public boolean create(UmsMenu umsMenu) {
-        boolean result = save(umsMenu);
-        List<UmsRoleMenu> roleMenuList = setRoleAndMenuRelation(umsMenu.getRoleIds(), umsMenu.getId());
-        roleMenuService.saveBatch(roleMenuList);
-        return result;
-    }
-
-    /**
      * 获取树形菜单
      * @return
      */
@@ -93,25 +79,6 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
                 .stream().map(UmsRoleMenu::getRoleId).collect(Collectors.toList());
         menu.setRoleIds(roleIds);
         return menu;
-    }
-
-    /**
-     * 更新菜单
-     * @param umsMenu
-     * @return
-     */
-    @Transactional
-    @Override
-    public boolean updateMenu(UmsMenu umsMenu) {
-        boolean result = updateById(umsMenu);
-        // 清空菜单对应的所有角色
-        QueryWrapper<UmsRoleMenu> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(UmsRoleMenu::getMenuId, umsMenu.getId());
-        roleMenuService.remove(queryWrapper);
-
-        List<UmsRoleMenu> roleMenuList = setRoleAndMenuRelation(umsMenu.getRoleIds(), umsMenu.getId());
-        roleMenuService.saveBatch(roleMenuList);
-        return result;
     }
 
     /**
@@ -234,22 +201,5 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
             }
         }
         return menu;
-    }
-
-    /**
-     * 设置角色和菜单的关联关系
-     * @param roleIds 角色id数组
-     * @param menuId 菜单id
-     * @return
-     */
-    public List<UmsRoleMenu> setRoleAndMenuRelation(List<Integer> roleIds, Integer menuId) {
-        List<UmsRoleMenu> roleMenuList = new ArrayList<>();
-        for (Integer roleId : roleIds) {
-            UmsRoleMenu roleMenu = new UmsRoleMenu();
-            roleMenu.setRoleId(roleId);
-            roleMenu.setMenuId(menuId);
-            roleMenuList.add(roleMenu);
-        }
-        return roleMenuList;
     }
 }

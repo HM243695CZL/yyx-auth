@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * <p>
@@ -46,6 +47,14 @@ public class UmsRoleController {
         return CommonResult.success(result);
     }
 
+    // 分配权限
+    @ApiOperation("分配权限")
+    @RequestMapping(value = "/auth", method = RequestMethod.POST)
+    public CommonResult auth(@RequestBody List<Integer> menuIds, Integer id) {
+        boolean result = umsRoleService.auth(menuIds, id);
+        return CommonResult.success(result);
+    }
+
     // 更新
     @ApiOperation("更新角色")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -57,7 +66,7 @@ public class UmsRoleController {
     @ApiOperation("删除角色")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id) {
-        return CommonResult.success( umsRoleService.removeById(id));
+        return CommonResult.success( umsRoleService.delete(id));
     }
 
     // 获取全部
