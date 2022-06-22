@@ -3,6 +3,7 @@ package com.hl.yyx.modules.ums.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.ums.dto.AuthMenuDTO;
 import com.hl.yyx.modules.ums.model.UmsRole;
 
 import java.util.List;
@@ -23,9 +24,14 @@ public interface UmsRoleService extends IService<UmsRole> {
 
     /**
      * 授权
-     * @param menuIds 菜单id数组
-     * @param id 角色id
      * @return
      */
-    boolean auth(List<Integer> menuIds, Integer id);
+    boolean authMenu(AuthMenuDTO authMenuDTO);
+
+    /**
+     * 根据角色id查询已分配的权限
+     * @param id
+     * @return
+     */
+    List<Integer> viewAuth(Integer id);
 }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.ums.dto.AuthMenuDTO;
 import com.hl.yyx.modules.ums.model.UmsRole;
 import com.hl.yyx.modules.ums.service.UmsRoleService;
 import io.swagger.annotations.Api;
@@ -47,11 +48,19 @@ public class UmsRoleController {
         return CommonResult.success(result);
     }
 
+    // 获取角色已分配的权限
+    @ApiOperation("获取已分配的权限")
+    @RequestMapping(value = "/viewAuth/{id}", method = RequestMethod.GET)
+    public CommonResult viewAuth(@PathVariable Integer id) {
+        List<Integer> menuIds = umsRoleService.viewAuth(id);
+        return CommonResult.success(menuIds);
+    }
+
     // 分配权限
     @ApiOperation("分配权限")
     @RequestMapping(value = "/auth", method = RequestMethod.POST)
-    public CommonResult auth(@RequestBody List<Integer> menuIds, Integer id) {
-        boolean result = umsRoleService.auth(menuIds, id);
+    public CommonResult authMenu(@RequestBody AuthMenuDTO authMenuDTO) {
+        boolean result = umsRoleService.authMenu(authMenuDTO);
         return CommonResult.success(result);
     }
 

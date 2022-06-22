@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.ums.dto.AuthMenuDTO;
 import com.hl.yyx.modules.ums.mapper.UmsRoleMapper;
 import com.hl.yyx.modules.ums.model.UmsAdminRole;
 import com.hl.yyx.modules.ums.model.UmsRole;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -68,15 +70,32 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole> impl
 
     /**
      * 授权
-     * @param menuIds 菜单id数组
-     * @param id 角色id
+     * @return
+     */
+    @Transactional
+    @Override
+    public boolean authMenu(AuthMenuDTO authMenuDTO) {
+        // 先清空之前的授权
+        QueryWrapper<UmsRoleMenu> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(UmsRoleMenu::getRoleId, authMenuDTO.getId());
+        roleMenuService.remove(queryWrapper);
+
+        List<UmsRoleMenu> roleMenuList = setRoleAndMenuRelation(authMenuDTO.getMenuIds(), authMenuDTO.getId());
+        return roleMenuService.saveBatch(roleMenuList);
+    }
+
+    /**
+     * 根据角色id查询已分配的权限
+     * @param id
      * @return
      */
     @Override
-    public boolean auth(List<Integer> menuIds, Integer id) {
-        List<UmsRoleMenu> roleMenuList = setRoleAndMenuRelation(menuIds, id);
-        roleMenuService.saveBatch(roleMenuList);
-        return false;
+    public List<Integer> viewAuth(Integer id) {
+        QueryWrapper<UmsRoleMenu> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(UmsRoleMenu::getRoleId, id);
+        List<Integer> menuIds = roleMenuService.list(queryWrapper.select("menu_id"))
+                .stream().map(UmsRoleMenu::getMenuId).collect(Collectors.toList());
+        return menuIds;
     }
 
     /**
