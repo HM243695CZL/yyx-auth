@@ -45,7 +45,7 @@ secure:
       - /webjars/springfox-swagger-ui/**
       - /actuator/**
       - /druid/**
-      - /admin/login
-      - /admin/register
-      - /admin/info
-      - /admin/logout
+      - /admin/admin/login
+      - /admin/admin/register
+      - /admin/admin/info
+      - /admin/admin/logout

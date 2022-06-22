@@ -4,14 +4,17 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.ums.dto.UmsAdminLoginParam;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
 import com.hl.yyx.modules.ums.service.UmsAdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 
 /**
  * <p>
@@ -28,6 +31,20 @@ public class UmsAdminController {
 
     @Autowired
     private UmsAdminService umsAdminService;
+
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
+
+    // 登录
+    @ApiOperation("登录")
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public CommonResult login(@RequestBody UmsAdminLoginParam loginParam) {
+        String token = umsAdminService.login(loginParam.getUsername(), loginParam.getPassword());
+        HashMap<String, String> tokenMap = new HashMap<>();
+        tokenMap.put("token", token);
+        tokenMap.put("tokenHead", tokenHead);
+        return CommonResult.success(tokenMap);
+    }
 
     // 分页
     @ApiOperation("分页查询")

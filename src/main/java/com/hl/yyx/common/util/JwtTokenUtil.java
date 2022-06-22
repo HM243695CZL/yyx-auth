@@ -8,6 +8,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -98,6 +99,17 @@ public class JwtTokenUtil {
     private Date getExpiredDateFromToken(String token) {
         Claims claims = getClaimsFromToken(token);
         return claims.getExpiration();
+    }
+
+    /**
+     * 根据用户信息生成token
+     * @return
+     */
+    public String generateToken(UserDetails userDetails) {
+        HashMap<String, Object> claims = new HashMap<>();
+        claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
+        claims.put(CLAIM_KEY_CREATED, new Date());
+        return generateToken(claims);
     }
 
 

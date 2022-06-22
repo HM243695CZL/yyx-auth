@@ -3,6 +3,7 @@ package com.hl.yyx.modules.ums.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.domain.AdminUserDetails;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
 
 /**
@@ -24,4 +25,8 @@ public interface UmsAdminService extends IService<UmsAdmin> {
     UmsAdmin view(String id);
 
     boolean delete(String id);
+
+    AdminUserDetails loadUserByUsername(String username);
+
+    String login(String username, String password);
 }

@@ -4,7 +4,11 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hl.yyx.common.exception.ApiException;
+import com.hl.yyx.common.exception.Asserts;
+import com.hl.yyx.common.util.JwtTokenUtil;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.domain.AdminUserDetails;
 import com.hl.yyx.modules.ums.mapper.UmsAdminMapper;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
 import com.hl.yyx.modules.ums.model.UmsAdminRole;
@@ -12,7 +16,13 @@ import com.hl.yyx.modules.ums.model.UmsRole;
 import com.hl.yyx.modules.ums.service.UmsAdminRoleService;
 import com.hl.yyx.modules.ums.service.UmsAdminService;
 import com.hl.yyx.modules.ums.service.UmsRoleService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +40,10 @@ import java.util.stream.Collectors;
  */
 @Service
 public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> implements UmsAdminService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UmsAdminServiceImpl.class);
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     UmsAdminRoleService adminRoleService;
@@ -127,6 +141,47 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
     }
 
     /**
+     * 根据用户名获取用户
+     * @param username 用户名
+     * @return
+     */
+    @Override
+    public AdminUserDetails loadUserByUsername(String username) {
+        UmsAdmin admin = getAdminByUsername(username);
+        if (admin != null) {
+            return new AdminUserDetails(admin);
+        }
+        throw new ApiException("用户不存在");
+    }
+
+    /**
+     * 登录
+     * @param username 用户名
+     * @param password 密码
+     * @return
+     */
+    @Override
+    public String login(String username, String password) {
+        String token = null;
+        try {
+            AdminUserDetails userDetails = loadUserByUsername(username);
+            if (userDetails == null) {
+                Asserts.fail("用户名不存在");
+            }
+            if (!userDetails.getPassword().equals(password)) {
+                Asserts.fail("密码错误");
+            }
+            // 生成springSecurity的通过认证标识
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            token = jwtTokenUtil.generateToken(userDetails);
+        } catch (AuthenticationException e) {
+            LOGGER.warn("登录异常：{}", e.getMessage());
+        }
+        return token;
+    }
+
+    /**
      * 设置用户和角色的关联关系
      * @param roleList 角色列表
      * @param userId 用户id
@@ -141,6 +196,26 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
             adminRoleList.add(adminRole);
         }
         return adminRoleList;
+    }
+
+    /**
+     * 根据用户名获取用户信息
+     * @param username 用户名
+     * @return
+     */
+    public UmsAdmin getAdminByUsername(String username) {
+        QueryWrapper<UmsAdmin> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(UmsAdmin::getUsername, username);
+        return getOne(wrapper);
+    }
+
+    /**
+     * 获取当前用户
+     * @return
+     */
+    public UmsAdmin getCurrentAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (UmsAdmin) authentication.getPrincipal();
     }
 
 }
