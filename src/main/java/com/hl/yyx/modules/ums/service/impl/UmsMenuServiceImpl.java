@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -118,6 +119,11 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
         // 根据角色id查询对应的菜单id
         List<Integer> menuIds = roleMenuService.list(new QueryWrapper<UmsRoleMenu>().in("role_id", roleIds).select("menu_id"))
                 .stream().map(UmsRoleMenu::getMenuId).collect(Collectors.toList());
+        // 根据菜单id获取对应的菜单父id (需要对数据进行空值判断【Objects::nonNull】)
+        List<Integer> pIds = list(new QueryWrapper<UmsMenu>().in("id", menuIds).select("pid"))
+                .stream().filter(Objects::nonNull).map(UmsMenu::getPid).collect(Collectors.toList());
+        // 将菜单父id添加到menuIds中，以便查出父级菜单信息
+       menuIds.addAll(pIds);
         // 根据菜单id查询出菜单
         list(new QueryWrapper<UmsMenu>().in("id", menuIds))
                 .stream().forEach(menuItem -> {

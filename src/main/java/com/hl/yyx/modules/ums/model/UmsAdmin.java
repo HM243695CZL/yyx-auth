@@ -39,7 +39,6 @@ public class UmsAdmin implements Serializable {
     private String username;
 
     @ApiModelProperty(value = "管理员密码")
-    @NotBlank(message = "密码不能为空")
     @JsonIgnore
     private String password;
 

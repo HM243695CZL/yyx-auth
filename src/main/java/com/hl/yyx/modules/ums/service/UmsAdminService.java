@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.domain.AdminUserDetails;
+import com.hl.yyx.modules.ums.dto.UpdatePassDTO;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -31,5 +34,7 @@ public interface UmsAdminService extends IService<UmsAdmin> {
     // 获取当前登录用户
     UmsAdmin getCurrentAdmin();
 
-    String login(String username, String password);
+    String login(String username, String password, HttpServletRequest request);
+
+    boolean updatePass(UpdatePassDTO passDTO);
 }

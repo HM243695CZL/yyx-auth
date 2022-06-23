@@ -1,14 +1,19 @@
 package com.hl.yyx.modules.ums.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.crypto.digest.BCrypt;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hl.yyx.common.constants.Constants;
 import com.hl.yyx.common.exception.ApiException;
 import com.hl.yyx.common.exception.Asserts;
+import com.hl.yyx.common.util.IpUtil;
 import com.hl.yyx.common.util.JwtTokenUtil;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.domain.AdminUserDetails;
+import com.hl.yyx.modules.ums.dto.UpdatePassDTO;
 import com.hl.yyx.modules.ums.mapper.UmsAdminMapper;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
 import com.hl.yyx.modules.ums.model.UmsAdminRole;
@@ -26,7 +31,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,6 +81,8 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
     @Transactional
     @Override
     public boolean create(UmsAdmin umsAdmin) {
+        // 设置用户初始密码
+        umsAdmin.setPassword(Constants.INIT_PASSWORD);
         boolean result = save(umsAdmin);
         List<UmsAdminRole> adminRoleList = setAdminAndRole(umsAdmin.getRoleIds(), umsAdmin.getId());
         adminRoleService.saveBatch(adminRoleList);
@@ -151,7 +160,7 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
      * @return
      */
     @Override
-    public String login(String username, String password) {
+    public String login(String username, String password, HttpServletRequest request) {
         String token = null;
         try {
             AdminUserDetails userDetails = loadUserByUsername(username);
@@ -165,10 +174,29 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
             token = jwtTokenUtil.generateToken(userDetails);
+            // 更新上次登录时间和登录ip
+            UmsAdmin currentAdmin = getCurrentAdmin();
+            UpdateWrapper<UmsAdmin> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.lambda().eq(UmsAdmin::getId, currentAdmin.getId());
+            updateWrapper.set("last_login_ip", IpUtil.getIpAddr(request));
+            updateWrapper.set("last_login_time", new Date());
+            update(updateWrapper);
         } catch (AuthenticationException e) {
             LOGGER.warn("登录异常：{}", e.getMessage());
         }
         return token;
+    }
+
+    /**
+     * 修改密码
+     * @return
+     */
+    @Override
+    public boolean updatePass(UpdatePassDTO passDTO) {
+        UpdateWrapper<UmsAdmin> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.lambda().eq(UmsAdmin::getId, passDTO.getId());
+        updateWrapper.set("password", passDTO.getPassword());
+        return update(updateWrapper);
     }
 
     /**

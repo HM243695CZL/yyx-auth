@@ -6,6 +6,7 @@ import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.ums.dto.InitMenuDTO;
 import com.hl.yyx.modules.ums.dto.UmsAdminLoginParam;
+import com.hl.yyx.modules.ums.dto.UpdatePassDTO;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
 import com.hl.yyx.modules.ums.service.UmsAdminService;
 import com.hl.yyx.modules.ums.service.UmsMenuService;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -44,8 +46,8 @@ public class UmsAdminController {
     // 登录
     @ApiOperation("登录")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public CommonResult login(@RequestBody UmsAdminLoginParam loginParam) {
-        String token = umsAdminService.login(loginParam.getUsername(), loginParam.getPassword());
+    public CommonResult login(@RequestBody UmsAdminLoginParam loginParam, HttpServletRequest request) {
+        String token = umsAdminService.login(loginParam.getUsername(), loginParam.getPassword(), request);
         // 根据当前用户获取对应的菜单
         Integer userId = umsAdminService.getCurrentAdmin().getId();
         UmsAdmin userInfo = umsAdminService.getCurrentAdmin();
@@ -99,6 +101,13 @@ public class UmsAdminController {
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable String id) {
         return CommonResult.success(umsAdminService.view(id));
+    }
+
+    // 修改密码
+    @ApiOperation("修改密码")
+    @RequestMapping(value = "/updatePass", method = RequestMethod.POST)
+    private CommonResult updatePass(@RequestBody UpdatePassDTO updatePassDTO) {
+        return CommonResult.success(umsAdminService.updatePass(updatePassDTO));
     }
 }
 
