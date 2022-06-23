@@ -63,7 +63,7 @@ public class PmsCategoryServiceImpl extends ServiceImpl<PmsCategoryMapper, PmsCa
         }
         // 根据父类目找到子类目
         for (PmsCategory pmsCategory : dataList) {
-            pmsCategory.getChildren().add(findCateChildren(pmsCategory, dataList));
+            pmsCategory.getChildren().add(findCateChildren(pmsCategory, list));
         }
         return dataList;
     }
@@ -74,11 +74,11 @@ public class PmsCategoryServiceImpl extends ServiceImpl<PmsCategoryMapper, PmsCa
      * @param list 所有类目
      * @return
      */
-    private PmsCategory findCateChildren(PmsCategory pmsCategory, ArrayList<PmsCategory> list) {
+    private PmsCategory findCateChildren(PmsCategory pmsCategory, List<PmsCategory> list) {
         pmsCategory.setChildren(new ArrayList<>());
         for (PmsCategory category : list) {
-            if (category.getId().equals(category.getPid())) {
-                category.getChildren().add(findCateChildren(category, list));
+            if (pmsCategory.getId().equals(category.getPid())) {
+                pmsCategory.getChildren().add(findCateChildren(category, list));
             }
         }
         return pmsCategory;
