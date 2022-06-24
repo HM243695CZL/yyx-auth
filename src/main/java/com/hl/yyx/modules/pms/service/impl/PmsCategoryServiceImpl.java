@@ -12,6 +12,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -54,6 +56,13 @@ public class PmsCategoryServiceImpl extends ServiceImpl<PmsCategoryMapper, PmsCa
         ArrayList<PmsCategory> dataList = new ArrayList<>();
         // 查询所有数据
         List<PmsCategory> list = list();
+        // 对所有数据进行降序排列
+        Collections.sort(list, new Comparator<PmsCategory>(){
+            public int compare(PmsCategory c1, PmsCategory c2) {
+                // 升序
+                return c1.getSortOrder().compareTo(c2.getSortOrder());
+            }
+        });
         // 找到一级类目
         for (PmsCategory pmsCategory : list) {
             if (pmsCategory.getLevel().equals("L1")) {
