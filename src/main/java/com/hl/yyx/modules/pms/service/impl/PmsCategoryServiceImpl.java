@@ -2,13 +2,12 @@ package com.hl.yyx.modules.pms.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hl.yyx.common.vo.PageParamsDTO;
-import com.hl.yyx.modules.pms.dto.FirstLvCateDTO;
-import com.hl.yyx.modules.pms.model.PmsCategory;
-import com.hl.yyx.modules.pms.mapper.PmsCategoryMapper;
-import com.hl.yyx.modules.pms.service.PmsCategoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hl.yyx.common.exception.ApiException;
+import com.hl.yyx.modules.pms.dto.FirstLvCateDTO;
+import com.hl.yyx.modules.pms.mapper.PmsCategoryMapper;
+import com.hl.yyx.modules.pms.model.PmsCategory;
+import com.hl.yyx.modules.pms.service.PmsCategoryService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -75,6 +74,22 @@ public class PmsCategoryServiceImpl extends ServiceImpl<PmsCategoryMapper, PmsCa
             pmsCategory.getChildren().add(findCateChildren(pmsCategory, list));
         }
         return dataList;
+    }
+
+    /**
+     * 删除商品类目
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean delete(String id) {
+        QueryWrapper<PmsCategory> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(PmsCategory::getPid, id);
+        List<PmsCategory> list = list(wrapper);
+        if (list.size() > 0) {
+            throw new ApiException("存在子级分类，不能删除");
+        }
+        return removeById(id);
     }
 
     /**

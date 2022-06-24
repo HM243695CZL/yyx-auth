@@ -54,7 +54,7 @@ public class PmsCategoryController {
     @ApiOperation("删除商品类目")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id) {
-        return CommonResult.success( pmsCategoryService.removeById(id));
+        return CommonResult.success( pmsCategoryService.delete(id));
     }
 
     // 获取全部

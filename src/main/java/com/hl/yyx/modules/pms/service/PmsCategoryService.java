@@ -29,4 +29,11 @@ public interface PmsCategoryService extends IService<PmsCategory> {
      * @return
      */
     List<PmsCategory> getList();
+
+    /**
+     * 删除商品类目
+     * @param id
+     * @return
+     */
+    boolean delete(String id);
 }
