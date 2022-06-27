@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 24/06/2022 18:22:31
+ Date: 27/06/2022 17:55:13
 */
 
 SET NAMES utf8mb4;
@@ -105,11 +105,54 @@ CREATE TABLE `pms_goods`  (
   INDEX `cat_id`(`category_id`) USING BTREE,
   INDEX `brand_id`(`brand_id`) USING BTREE,
   INDEX `sort_order`(`sort_order`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1181001 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品基本信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品基本信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_goods
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for pms_goods_attribute
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_goods_attribute`;
+CREATE TABLE `pms_goods_attribute`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `product_attribute_category_id` bigint(20) NULL DEFAULT NULL,
+  `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `select_type` int(1) NULL DEFAULT NULL COMMENT '属性选择类型：0->唯一；1->单选；2->多选',
+  `input_type` int(1) NULL DEFAULT NULL COMMENT '属性录入方式：0->手工录入；1->从列表中选取',
+  `input_list` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '可选值列表，以逗号隔开',
+  `sort` int(11) NULL DEFAULT NULL COMMENT '排序字段：最高的可以单独上传图片',
+  `filter_type` int(1) NULL DEFAULT NULL COMMENT '分类筛选样式：1->普通；1->颜色',
+  `search_type` int(1) NULL DEFAULT NULL COMMENT '检索类型；0->不需要进行检索；1->关键字检索；2->范围检索',
+  `related_status` int(1) NULL DEFAULT NULL COMMENT '相同属性产品是否关联；0->不关联；1->关联',
+  `hand_add_status` int(1) NULL DEFAULT NULL COMMENT '是否支持手动新增；0->不支持；1->支持',
+  `type` int(1) NULL DEFAULT NULL COMMENT '属性的类型；0->规格；1->参数',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 54 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品属性参数表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of pms_goods_attribute
+-- ----------------------------
+INSERT INTO `pms_goods_attribute` VALUES (52, 11, '商品编号', 0, 0, '', 1, 1, 0, 0, 0, 1);
+INSERT INTO `pms_goods_attribute` VALUES (53, 11, '适用季节', 0, 0, '春季,夏季,秋季,冬季', 2, 1, 0, 0, 0, 1);
+
+-- ----------------------------
+-- Table structure for pms_goods_attribute_category
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_goods_attribute_category`;
+CREATE TABLE `pms_goods_attribute_category`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `attribute_count` int(11) NULL DEFAULT 0 COMMENT '属性数量',
+  `param_count` int(11) NULL DEFAULT 0 COMMENT '参数数量',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '产品属性分类表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of pms_goods_attribute_category
+-- ----------------------------
+INSERT INTO `pms_goods_attribute_category` VALUES (11, '服装-T恤', 0, 2);
 
 -- ----------------------------
 -- Table structure for ums_admin
@@ -131,7 +174,7 @@ CREATE TABLE `ums_admin`  (
 -- ----------------------------
 -- Records of ums_admin
 -- ----------------------------
-INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2022-06-24 15:36:32', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-23 10:01:03', 1);
+INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2022-06-27 09:52:06', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-23 10:01:03', 1);
 INSERT INTO `ums_admin` VALUES (4, 'test', '123456', '', NULL, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220623/hw-logo.png', '2022-06-23 10:15:19', '2022-06-23 10:15:19', 1);
 
 -- ----------------------------
@@ -170,7 +213,7 @@ CREATE TABLE `ums_menu`  (
   `icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '菜单图标',
   `sort` int(10) NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ums_menu
@@ -184,6 +227,7 @@ INSERT INTO `ums_menu` VALUES (7, 6, '/product/category', 'productCategory', '/p
 INSERT INTO `ums_menu` VALUES (9, 6, '/product/brand', 'productBrand', '/product/brand', '品牌制造商', '', 0, 1, 0, 0, 'iconfont icon-diannao-shuju', 2);
 INSERT INTO `ums_menu` VALUES (10, 6, '/product/goods', 'productGoods', '/product/goods', '商品管理', '', 0, 1, 0, 0, 'iconfont icon-zhongduancanshu', 3);
 INSERT INTO `ums_menu` VALUES (11, 6, '/product/goodsInfo/:id', 'productGoodsInfo', '/product/goodsInfo', '商品信息', '', 1, 1, 0, 0, 'iconfont icon-juxingkaobei', 4);
+INSERT INTO `ums_menu` VALUES (12, 6, '/product/goodsAttrCate', 'productGoodsAttrCate', '/product/goodsAttrCate', '商品属性分类', '', 0, 1, 0, 0, 'iconfont icon-shuxing', 4);
 
 -- ----------------------------
 -- Table structure for ums_role
@@ -217,21 +261,22 @@ CREATE TABLE `ums_role_menu`  (
   `role_id` int(20) NULL DEFAULT NULL COMMENT '角色id',
   `menu_id` int(20) NULL DEFAULT NULL COMMENT '菜单id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色和菜单关系表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 48 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色和菜单关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ums_role_menu
 -- ----------------------------
 INSERT INTO `ums_role_menu` VALUES (5, 11, 6);
 INSERT INTO `ums_role_menu` VALUES (6, 11, 7);
-INSERT INTO `ums_role_menu` VALUES (29, 10, 1);
-INSERT INTO `ums_role_menu` VALUES (30, 10, 2);
-INSERT INTO `ums_role_menu` VALUES (31, 10, 4);
-INSERT INTO `ums_role_menu` VALUES (32, 10, 5);
-INSERT INTO `ums_role_menu` VALUES (33, 10, 6);
-INSERT INTO `ums_role_menu` VALUES (34, 10, 7);
-INSERT INTO `ums_role_menu` VALUES (35, 10, 9);
-INSERT INTO `ums_role_menu` VALUES (36, 10, 10);
-INSERT INTO `ums_role_menu` VALUES (37, 10, 11);
+INSERT INTO `ums_role_menu` VALUES (38, 10, 1);
+INSERT INTO `ums_role_menu` VALUES (39, 10, 2);
+INSERT INTO `ums_role_menu` VALUES (40, 10, 4);
+INSERT INTO `ums_role_menu` VALUES (41, 10, 5);
+INSERT INTO `ums_role_menu` VALUES (42, 10, 6);
+INSERT INTO `ums_role_menu` VALUES (43, 10, 7);
+INSERT INTO `ums_role_menu` VALUES (44, 10, 9);
+INSERT INTO `ums_role_menu` VALUES (45, 10, 10);
+INSERT INTO `ums_role_menu` VALUES (46, 10, 11);
+INSERT INTO `ums_role_menu` VALUES (47, 10, 12);
 
 SET FOREIGN_KEY_CHECKS = 1;
