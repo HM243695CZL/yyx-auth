@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 商品参数表
+ * 商品规格表
  * </p>
  *
  * @author hl243695czyn
@@ -21,9 +21,9 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("pms_goods_attribute")
-@ApiModel(value="PmsGoodsAttribute对象", description="商品参数表")
-public class PmsGoodsAttribute implements Serializable {
+@TableName("pms_goods_specification")
+@ApiModel(value="PmsGoodsSpecification对象", description="商品规格表")
+public class PmsGoodsSpecification implements Serializable {
 
     private static final long serialVersionUID=1L;
 
@@ -33,11 +33,14 @@ public class PmsGoodsAttribute implements Serializable {
     @ApiModelProperty(value = "商品表的商品ID")
     private Integer goodsId;
 
-    @ApiModelProperty(value = "商品参数名称")
-    private String attribute;
+    @ApiModelProperty(value = "商品规格名称")
+    private String specification;
 
-    @ApiModelProperty(value = "商品参数值")
+    @ApiModelProperty(value = "商品规格值")
     private String value;
+
+    @ApiModelProperty(value = "商品规格图片")
+    private String picUrl;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "创建时间")

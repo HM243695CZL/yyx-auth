@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 27/06/2022 17:55:13
+ Date: 28/06/2022 17:32:21
 */
 
 SET NAMES utf8mb4;
@@ -79,7 +79,7 @@ INSERT INTO `pms_category` VALUES (9, '333', '', '333', 7, '', '', 'L2', 50, '20
 -- ----------------------------
 DROP TABLE IF EXISTS `pms_goods`;
 CREATE TABLE `pms_goods`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
   `goods_sn` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '商品编号',
   `name` varchar(127) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '商品名称',
   `category_id` int(11) NULL DEFAULT 0 COMMENT '商品所属类目ID',
@@ -99,7 +99,7 @@ CREATE TABLE `pms_goods`  (
   `detail` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '商品详细介绍，是富文本格式',
   `add_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
-  `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '逻辑删除',
+  `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `goods_sn`(`goods_sn`) USING BTREE,
   INDEX `cat_id`(`category_id`) USING BTREE,
@@ -116,43 +116,63 @@ CREATE TABLE `pms_goods`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `pms_goods_attribute`;
 CREATE TABLE `pms_goods_attribute`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `product_attribute_category_id` bigint(20) NULL DEFAULT NULL,
-  `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `select_type` int(1) NULL DEFAULT NULL COMMENT '属性选择类型：0->唯一；1->单选；2->多选',
-  `input_type` int(1) NULL DEFAULT NULL COMMENT '属性录入方式：0->手工录入；1->从列表中选取',
-  `input_list` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '可选值列表，以逗号隔开',
-  `sort` int(11) NULL DEFAULT NULL COMMENT '排序字段：最高的可以单独上传图片',
-  `filter_type` int(1) NULL DEFAULT NULL COMMENT '分类筛选样式：1->普通；1->颜色',
-  `search_type` int(1) NULL DEFAULT NULL COMMENT '检索类型；0->不需要进行检索；1->关键字检索；2->范围检索',
-  `related_status` int(1) NULL DEFAULT NULL COMMENT '相同属性产品是否关联；0->不关联；1->关联',
-  `hand_add_status` int(1) NULL DEFAULT NULL COMMENT '是否支持手动新增；0->不支持；1->支持',
-  `type` int(1) NULL DEFAULT NULL COMMENT '属性的类型；0->规格；1->参数',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 54 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品属性参数表' ROW_FORMAT = Dynamic;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `goods_id` int(11) NOT NULL DEFAULT 0 COMMENT '商品表的商品ID',
+  `attribute` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '商品参数名称',
+  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '商品参数值',
+  `add_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `goods_id`(`goods_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 877 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品参数表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_goods_attribute
 -- ----------------------------
-INSERT INTO `pms_goods_attribute` VALUES (52, 11, '商品编号', 0, 0, '', 1, 1, 0, 0, 0, 1);
-INSERT INTO `pms_goods_attribute` VALUES (53, 11, '适用季节', 0, 0, '春季,夏季,秋季,冬季', 2, 1, 0, 0, 0, 1);
 
 -- ----------------------------
--- Table structure for pms_goods_attribute_category
+-- Table structure for pms_goods_product
 -- ----------------------------
-DROP TABLE IF EXISTS `pms_goods_attribute_category`;
-CREATE TABLE `pms_goods_attribute_category`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `attribute_count` int(11) NULL DEFAULT 0 COMMENT '属性数量',
-  `param_count` int(11) NULL DEFAULT 0 COMMENT '参数数量',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '产品属性分类表' ROW_FORMAT = Dynamic;
+DROP TABLE IF EXISTS `pms_goods_product`;
+CREATE TABLE `pms_goods_product`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `goods_id` int(11) NOT NULL DEFAULT 0 COMMENT '商品表的商品ID',
+  `specifications` varchar(1023) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '商品规格值列表，采用JSON数组格式',
+  `price` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '商品货品价格',
+  `number` int(11) NOT NULL DEFAULT 0 COMMENT '商品货品数量',
+  `url` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品货品图片',
+  `add_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `goods_id`(`goods_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 245 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品货品表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of pms_goods_attribute_category
+-- Records of pms_goods_product
 -- ----------------------------
-INSERT INTO `pms_goods_attribute_category` VALUES (11, '服装-T恤', 0, 2);
+
+-- ----------------------------
+-- Table structure for pms_goods_specification
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_goods_specification`;
+CREATE TABLE `pms_goods_specification`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `goods_id` int(11) NOT NULL DEFAULT 0 COMMENT '商品表的商品ID',
+  `specification` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '商品规格名称',
+  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '商品规格值',
+  `pic_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '商品规格图片',
+  `add_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `goods_id`(`goods_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 244 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品规格表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of pms_goods_specification
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for ums_admin
@@ -174,7 +194,7 @@ CREATE TABLE `ums_admin`  (
 -- ----------------------------
 -- Records of ums_admin
 -- ----------------------------
-INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2022-06-27 09:52:06', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-23 10:01:03', 1);
+INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2022-06-28 13:06:22', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-23 10:01:03', 1);
 INSERT INTO `ums_admin` VALUES (4, 'test', '123456', '', NULL, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220623/hw-logo.png', '2022-06-23 10:15:19', '2022-06-23 10:15:19', 1);
 
 -- ----------------------------
@@ -227,7 +247,6 @@ INSERT INTO `ums_menu` VALUES (7, 6, '/product/category', 'productCategory', '/p
 INSERT INTO `ums_menu` VALUES (9, 6, '/product/brand', 'productBrand', '/product/brand', '品牌制造商', '', 0, 1, 0, 0, 'iconfont icon-diannao-shuju', 2);
 INSERT INTO `ums_menu` VALUES (10, 6, '/product/goods', 'productGoods', '/product/goods', '商品管理', '', 0, 1, 0, 0, 'iconfont icon-zhongduancanshu', 3);
 INSERT INTO `ums_menu` VALUES (11, 6, '/product/goodsInfo/:id', 'productGoodsInfo', '/product/goodsInfo', '商品信息', '', 1, 1, 0, 0, 'iconfont icon-juxingkaobei', 4);
-INSERT INTO `ums_menu` VALUES (12, 6, '/product/goodsAttrCate', 'productGoodsAttrCate', '/product/goodsAttrCate', '商品属性分类', '', 0, 1, 0, 0, 'iconfont icon-shuxing', 4);
 
 -- ----------------------------
 -- Table structure for ums_role
@@ -277,6 +296,5 @@ INSERT INTO `ums_role_menu` VALUES (43, 10, 7);
 INSERT INTO `ums_role_menu` VALUES (44, 10, 9);
 INSERT INTO `ums_role_menu` VALUES (45, 10, 10);
 INSERT INTO `ums_role_menu` VALUES (46, 10, 11);
-INSERT INTO `ums_role_menu` VALUES (47, 10, 12);
 
 SET FOREIGN_KEY_CHECKS = 1;

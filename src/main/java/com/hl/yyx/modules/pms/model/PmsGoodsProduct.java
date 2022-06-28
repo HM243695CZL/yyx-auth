@@ -1,5 +1,7 @@
 package com.hl.yyx.modules.pms.model;
 
+import java.math.BigDecimal;
+
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
@@ -13,7 +15,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 商品参数表
+ * 商品货品表
  * </p>
  *
  * @author hl243695czyn
@@ -21,9 +23,9 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("pms_goods_attribute")
-@ApiModel(value="PmsGoodsAttribute对象", description="商品参数表")
-public class PmsGoodsAttribute implements Serializable {
+@TableName("pms_goods_product")
+@ApiModel(value="PmsGoodsProduct对象", description="商品货品表")
+public class PmsGoodsProduct implements Serializable {
 
     private static final long serialVersionUID=1L;
 
@@ -33,11 +35,17 @@ public class PmsGoodsAttribute implements Serializable {
     @ApiModelProperty(value = "商品表的商品ID")
     private Integer goodsId;
 
-    @ApiModelProperty(value = "商品参数名称")
-    private String attribute;
+    @ApiModelProperty(value = "商品规格值列表，采用JSON数组格式")
+    private String specifications;
 
-    @ApiModelProperty(value = "商品参数值")
-    private String value;
+    @ApiModelProperty(value = "商品货品价格")
+    private BigDecimal price;
+
+    @ApiModelProperty(value = "商品货品数量")
+    private Integer number;
+
+    @ApiModelProperty(value = "商品货品图片")
+    private String url;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "创建时间")

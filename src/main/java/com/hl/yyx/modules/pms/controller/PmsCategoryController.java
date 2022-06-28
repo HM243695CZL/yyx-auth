@@ -1,21 +1,13 @@
 package com.hl.yyx.modules.pms.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
-import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.pms.dto.FirstLvCateDTO;
+import com.hl.yyx.modules.pms.model.PmsCategory;
+import com.hl.yyx.modules.pms.service.PmsCategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.*;
-
-import com.hl.yyx.modules.pms.service.PmsCategoryService;
-import com.hl.yyx.modules.pms.model.PmsCategory;
-
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
