@@ -6,9 +6,15 @@ import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.pms.dto.GoodsDTO;
 import com.hl.yyx.modules.pms.model.PmsGoods;
 import com.hl.yyx.modules.pms.mapper.PmsGoodsMapper;
+import com.hl.yyx.modules.pms.model.PmsGoodsAttribute;
+import com.hl.yyx.modules.pms.model.PmsGoodsProduct;
+import com.hl.yyx.modules.pms.model.PmsGoodsSpecification;
 import com.hl.yyx.modules.pms.service.PmsGoodsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -38,8 +44,26 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
      * @param goodsDTO
      * @return
      */
+    @Transactional
     @Override
     public boolean create(GoodsDTO goodsDTO) {
+        PmsGoods goods = goodsDTO.getGoods();
+        PmsGoodsAttribute[] attributes = goodsDTO.getAttributes();
+        PmsGoodsSpecification[] specifications = goodsDTO.getSpecifications();
+        PmsGoodsProduct[] products = goodsDTO.getProducts();
+
+        // 记录商品的最低价
+        BigDecimal retailPrice = new BigDecimal(Integer.MAX_VALUE);
+        for (PmsGoodsProduct product : products) {
+            BigDecimal price = product.getPrice();
+            if (retailPrice.compareTo(price) == 1) {
+                retailPrice = price;
+            }
+        }
+        goods.setRetailPrice(retailPrice);
+
+        // 商品基本信息
+        save(goods);
         return false;
     }
 }

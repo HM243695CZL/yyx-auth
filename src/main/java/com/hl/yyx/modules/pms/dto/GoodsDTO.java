@@ -17,7 +17,7 @@ public class GoodsDTO {
     PmsGoods goods;
 
     @ApiModelProperty(value = "商品规格")
-    PmsGoodsSpecification[] specification;
+    PmsGoodsSpecification[] specifications;
 
     @ApiModelProperty(value = "商品参数")
     PmsGoodsAttribute[] attributes;
