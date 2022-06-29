@@ -9,8 +9,12 @@ import com.hl.yyx.modules.pms.mapper.PmsGoodsMapper;
 import com.hl.yyx.modules.pms.model.PmsGoodsAttribute;
 import com.hl.yyx.modules.pms.model.PmsGoodsProduct;
 import com.hl.yyx.modules.pms.model.PmsGoodsSpecification;
+import com.hl.yyx.modules.pms.service.PmsGoodsAttributeService;
+import com.hl.yyx.modules.pms.service.PmsGoodsProductService;
 import com.hl.yyx.modules.pms.service.PmsGoodsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hl.yyx.modules.pms.service.PmsGoodsSpecificationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +30,15 @@ import java.math.BigDecimal;
  */
 @Service
 public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> implements PmsGoodsService {
+
+    @Autowired
+    PmsGoodsSpecificationService specificationService;
+
+    @Autowired
+    PmsGoodsAttributeService attributeService;
+
+    @Autowired
+    PmsGoodsProductService productService;
 
     /**
      * 分页查询
@@ -63,7 +76,25 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
         goods.setRetailPrice(retailPrice);
 
         // 商品基本信息
-        save(goods);
-        return false;
+        boolean result = save(goods);
+
+        // 商品规格信息
+        for (PmsGoodsSpecification specification : specifications) {
+            specification.setGoodsId(goods.getId());
+            specificationService.save(specification);
+        }
+
+        // 商品参数信息
+        for (PmsGoodsAttribute attribute : attributes) {
+            attribute.setGoodsId(goods.getId());
+            attributeService.save(attribute);
+        }
+
+        // 商品货品信息
+        for (PmsGoodsProduct product : products) {
+            product.setGoodsId(goods.getId());
+            productService.save(product);
+        }
+        return result;
     }
 }
