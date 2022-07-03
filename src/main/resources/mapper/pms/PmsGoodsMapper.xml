@@ -9,7 +9,7 @@
         <result column="name" property="name" />
         <result column="category_id" property="categoryId" />
         <result column="brand_id" property="brandId" />
-        <result column="gallery" property="gallery" jdbcType="VARCHAR" typeHandler="com.hl.yyx.mybatis.JsonStringArrayTypeHandler"/>
+        <result column="gallery" property="gallery" />
         <result column="keywords" property="keywords" />
         <result column="brief" property="brief" />
         <result column="is_on_sale" property="isOnSale" />
@@ -26,5 +26,4 @@
         <result column="update_time" property="updateTime" />
         <result column="deleted" property="deleted" />
     </resultMap>
-
 </mapper>

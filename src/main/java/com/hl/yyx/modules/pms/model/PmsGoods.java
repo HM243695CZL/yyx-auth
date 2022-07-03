@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import java.util.Date;
 import java.io.Serializable;
 
+import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -44,7 +45,7 @@ public class PmsGoods implements Serializable {
     private Integer brandId;
 
     @ApiModelProperty(value = "商品宣传图片列表，采用JSON数组格式")
-    private String[] gallery;
+    private String gallery;
 
     @ApiModelProperty(value = "商品关键字，采用逗号间隔")
     private String keywords;
