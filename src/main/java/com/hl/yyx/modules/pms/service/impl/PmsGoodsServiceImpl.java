@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -96,5 +98,29 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
             productService.save(product);
         }
         return result;
+    }
+
+    @Override
+    public HashMap<String, Object> view(String id) {
+        PmsGoods goods = getById(id);
+        // 商品货品信息
+        QueryWrapper<PmsGoodsProduct> productQuery = new QueryWrapper<>();
+        productQuery.lambda().eq(PmsGoodsProduct::getGoodsId, id);
+        List<PmsGoodsProduct> products = productService.list(productQuery);
+        // 商品规格信息
+        QueryWrapper<PmsGoodsSpecification> specificationQuery = new QueryWrapper<>();
+        specificationQuery.lambda().eq(PmsGoodsSpecification::getGoodsId, id);
+        List<PmsGoodsSpecification> specifications = specificationService.list(specificationQuery);
+        // 商品参数信息
+        QueryWrapper<PmsGoodsAttribute> attributeQuery = new QueryWrapper<>();
+        attributeQuery.lambda().eq(PmsGoodsAttribute::getGoodsId, id);
+        List<PmsGoodsAttribute> attributes = attributeService.list(attributeQuery);
+
+        HashMap<String, Object> goodsObj = new HashMap<>();
+        goodsObj.put("goods", goods);
+        goodsObj.put("specifications", specifications);
+        goodsObj.put("products", products);
+        goodsObj.put("attributes", attributes);
+        return goodsObj;
     }
 }
