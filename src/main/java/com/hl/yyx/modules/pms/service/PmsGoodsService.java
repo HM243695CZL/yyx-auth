@@ -20,7 +20,9 @@ public interface PmsGoodsService extends IService<PmsGoods> {
 
     Page<PmsGoods> pageList(PageParamsDTO paramsDTO);
 
-    boolean create(GoodsDTO goodsDTO);
+    Boolean create(GoodsDTO goodsDTO);
 
     HashMap<String, Object> view(String id);
+
+    Boolean update(GoodsDTO goodsDTO);
 }

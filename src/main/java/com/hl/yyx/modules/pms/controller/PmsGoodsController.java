@@ -49,8 +49,8 @@ public class PmsGoodsController {
 
     // 更新
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public CommonResult update(@RequestBody PmsGoods pmsGoods) {
-        return CommonResult.success(pmsGoodsService.updateById(pmsGoods));
+    public CommonResult update(@RequestBody GoodsDTO goodsDTO) {
+        return CommonResult.success(pmsGoodsService.update(goodsDTO));
     }
 
     // 删除

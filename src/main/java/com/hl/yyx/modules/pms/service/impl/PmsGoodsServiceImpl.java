@@ -61,21 +61,11 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
      */
     @Transactional
     @Override
-    public boolean create(GoodsDTO goodsDTO) {
-        PmsGoods goods = goodsDTO.getGoods();
+    public Boolean create(GoodsDTO goodsDTO) {
+        PmsGoods goods = initGoodsInfo(goodsDTO);
         PmsGoodsAttribute[] attributes = goodsDTO.getAttributes();
         PmsGoodsSpecification[] specifications = goodsDTO.getSpecifications();
         PmsGoodsProduct[] products = goodsDTO.getProducts();
-
-        // 记录商品的最低价
-        BigDecimal retailPrice = new BigDecimal(Integer.MAX_VALUE);
-        for (PmsGoodsProduct product : products) {
-            BigDecimal price = product.getPrice();
-            if (retailPrice.compareTo(price) == 1) {
-                retailPrice = price;
-            }
-        }
-        goods.setRetailPrice(retailPrice);
 
         // 商品基本信息
         boolean result = save(goods);
@@ -122,5 +112,77 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
         goodsObj.put("products", products);
         goodsObj.put("attributes", attributes);
         return goodsObj;
+    }
+
+    /**
+     * 编辑商品
+     *  pms_goods_specification 只能编辑pic_url字段
+     *  pms_goods_product 只能编辑price, number, url字段
+     *  pms_goods_attribute 可以编辑、添加、删除
+     *  如果update_time字段为空，则需要更新数据，操作的记录需要前端将对应的update_time设置为空
+     * @param goodsDTO
+     * @return
+     */
+    @Transactional
+    @Override
+    public Boolean update(GoodsDTO goodsDTO) {
+        PmsGoods goods = initGoodsInfo(goodsDTO);
+        PmsGoodsSpecification[] specifications = goodsDTO.getSpecifications();
+        PmsGoodsAttribute[] attributes = goodsDTO.getAttributes();
+        PmsGoodsProduct[] products = goodsDTO.getProducts();
+
+        // 商品基本信息
+        boolean result = updateById(goods);
+
+        // 商品规格信息
+        for (PmsGoodsSpecification specification : specifications) {
+            if (specification.getUpdateTime() == null) {
+                // 更新商品规格图片
+                specification.setSpecification(null);
+                specification.setValue(null);
+                specificationService.updateById(specification);
+            }
+        }
+
+        // 商品参数信息    先清空商品所有的商品参数
+        QueryWrapper<PmsGoodsAttribute> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(PmsGoodsAttribute::getGoodsId, goods.getId());
+        attributeService.remove(wrapper);
+        for (PmsGoodsAttribute attribute : attributes) {
+            attribute.setGoodsId(goods.getId());
+            attributeService.save(attribute);
+        }
+
+        // 商品货品信息
+        for (PmsGoodsProduct product : products) {
+            if (product.getUpdateTime() == null) {
+                // 更新商品货品信息
+                productService.updateById(product);
+            }
+        }
+
+        // 购物车
+        // todo
+        return result;
+    }
+
+    /**
+     * 初始化商品信息
+     * @param goodsDTO
+     * @return
+     */
+    private PmsGoods initGoodsInfo(GoodsDTO goodsDTO) {
+        PmsGoods goods = goodsDTO.getGoods();
+        PmsGoodsProduct[] products = goodsDTO.getProducts();
+        // 记录商品的最低价
+        BigDecimal retailPrice = new BigDecimal(Integer.MAX_VALUE);
+        for (PmsGoodsProduct product : products) {
+            BigDecimal price = product.getPrice();
+            if (retailPrice.compareTo(price) == 1) {
+                retailPrice = price;
+            }
+        }
+        goods.setRetailPrice(retailPrice);
+        return goods;
     }
 }
