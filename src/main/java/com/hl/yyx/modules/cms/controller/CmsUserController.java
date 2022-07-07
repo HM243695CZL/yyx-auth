@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.cms.controller;
 
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.modules.cms.dto.WXAuthDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,12 @@ public class CmsUserController {
     @RequestMapping(value = "/getSessionId", method = RequestMethod.GET)
     public CommonResult getSessionId(String code) {
         return CommonResult.success(cmsUserService.getSessionId(code));
+    }
+
+
+    @RequestMapping(value = "/authLogin", method = RequestMethod.POST)
+    public CommonResult authLogin(@RequestBody WXAuthDTO wxAuthDTO) {
+        cmsUserService.authLogin(wxAuthDTO);
     }
 
 }

@@ -2,6 +2,7 @@ package com.hl.yyx.modules.cms.service.impl;
 
 import cn.hutool.http.HttpUtil;
 import com.hl.yyx.common.api.RedisKey;
+import com.hl.yyx.modules.cms.dto.WXAuthDTO;
 import com.hl.yyx.modules.cms.model.CmsUser;
 import com.hl.yyx.modules.cms.mapper.CmsUserMapper;
 import com.hl.yyx.modules.cms.service.CmsUserService;
@@ -51,5 +52,16 @@ public class CmsUserServiceImpl extends ServiceImpl<CmsUserMapper, CmsUser> impl
         Map<String, String> map = new HashMap<>();
         map.put("sessionId", uuid);
         return map;
+    }
+
+    @Override
+    public void authLogin(WXAuthDTO wxAuthDTO) {
+        /**
+         * 对wxAuthDTO解密
+         * 解密完成， 得到微信用户信息  包含openId， 性别， 昵称 等信息
+         * openId是唯一的，去会员表中查询openId是否存在  存在则登录
+         * 不存在  则注册
+         * 使用jwt技术，生成token，并返回
+         */
     }
 }

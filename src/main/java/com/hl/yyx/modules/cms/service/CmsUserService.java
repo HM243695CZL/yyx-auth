@@ -1,5 +1,6 @@
 package com.hl.yyx.modules.cms.service;
 
+import com.hl.yyx.modules.cms.dto.WXAuthDTO;
 import com.hl.yyx.modules.cms.model.CmsUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -14,4 +15,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface CmsUserService extends IService<CmsUser> {
 
     Object getSessionId(String code);
+
+    void authLogin(WXAuthDTO wxAuthDTO);
 }
