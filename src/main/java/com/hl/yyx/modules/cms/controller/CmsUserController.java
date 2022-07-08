@@ -36,15 +36,9 @@ public class CmsUserController {
     @Autowired
     private CmsUserService cmsUserService;
 
-    // 新增
-    @ApiOperation("新增会员(微信用户)")
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public CommonResult save(@RequestBody CmsUser cmsUser) {
-        return CommonResult.success(cmsUserService.save(cmsUser));
-    }
-
     // 更新
     @ApiOperation("更新会员(微信用户)")
+    @NoAuth
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public CommonResult update(@RequestBody CmsUser cmsUser) {
         return CommonResult.success(cmsUserService.updateById(cmsUser));
@@ -52,6 +46,7 @@ public class CmsUserController {
 
     // 删除
     @ApiOperation("删除会员(微信用户)")
+    @NoAuth
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id) {
         return CommonResult.success( cmsUserService.removeById(id));
@@ -59,12 +54,14 @@ public class CmsUserController {
 
     // 获取全部
     @ApiOperation("获取全部会员(微信用户)")
+    @NoAuth
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public CommonResult list() {
         return CommonResult.success(cmsUserService.list());
     }
 
     // 查看
+    @NoAuth
     @ApiOperation("查看会员(微信用户)")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable String id) {
