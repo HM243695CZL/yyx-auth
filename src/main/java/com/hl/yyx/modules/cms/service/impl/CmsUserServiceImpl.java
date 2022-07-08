@@ -7,6 +7,7 @@ import com.hl.yyx.common.api.RedisKey;
 import com.hl.yyx.common.exception.ApiException;
 import com.hl.yyx.common.util.IpUtil;
 import com.hl.yyx.common.util.JWTUtils;
+import com.hl.yyx.common.wx.UserThreadLocal;
 import com.hl.yyx.modules.cms.dto.WXAuthDTO;
 import com.hl.yyx.modules.cms.dto.WxUserInfo;
 import com.hl.yyx.modules.cms.model.CmsUser;
@@ -148,25 +149,10 @@ public class CmsUserServiceImpl extends ServiceImpl<CmsUserMapper, CmsUser> impl
      * @param refresh
      * @return
      */
-    public CmsUser getUserInfo(Boolean refresh, HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        /**
-         * 验证token是否有效
-         * refresh为true， 刷新token并保存到redis
-         * refresh为false，从redis中取用户信息返回
-         */
-        token = token.replace("Bearer ", "");
-        boolean verify = JWTUtils.verify(token);
-        if (!verify) {
-            throw new ApiException("token失效或未登录");
-        }
-        String userJson = redisTemplate.opsForValue().get(RedisKey.TOKEN_KEY + token);
-        if (StringUtils.isBlank(userJson)) {
-            throw new ApiException("token失效或未登录");
-        }
-        CmsUser user = JSON.parseObject(userJson, CmsUser.class);
+    public CmsUser getUserInfo(Boolean refresh) {
+        CmsUser user = UserThreadLocal.get();
         if (refresh) {
-            token = JWTUtils.sign(user.getId());
+            String token = JWTUtils.sign(user.getId());
             redisTemplate.opsForValue().set(RedisKey.TOKEN_KEY + token, JSON.toJSONString(user), 7, TimeUnit.DAYS);
         }
         return user;

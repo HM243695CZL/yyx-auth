@@ -20,5 +20,5 @@ public interface CmsUserService extends IService<CmsUser> {
 
     Object wxAuthLogin(WXAuthDTO wxAuthDTO, HttpServletRequest request);
 
-    CmsUser getUserInfo(Boolean refresh, HttpServletRequest request);
+    CmsUser getUserInfo(Boolean refresh);
 }

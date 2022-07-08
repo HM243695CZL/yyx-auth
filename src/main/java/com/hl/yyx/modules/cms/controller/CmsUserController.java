@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.cms.controller;
 
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.wx.NoAuth;
 import com.hl.yyx.modules.cms.dto.WXAuthDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -71,6 +72,7 @@ public class CmsUserController {
     }
 
     // 获取sessionID
+    @NoAuth
     @ApiOperation("微信登录获取sessionId")
     @RequestMapping(value = "/getSessionId", method = RequestMethod.GET)
     public CommonResult getSessionId(String code) {
@@ -79,6 +81,7 @@ public class CmsUserController {
 
 
     // 微信一键登录
+    @NoAuth
     @RequestMapping(value = "/loginByWeixin", method = RequestMethod.POST)
     public CommonResult authLogin(@RequestBody WXAuthDTO wxAuthDTO, HttpServletRequest request) {
         Object result = cmsUserService.wxAuthLogin(wxAuthDTO, request);
@@ -92,8 +95,8 @@ public class CmsUserController {
      * @return
      */
     @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
-    public CommonResult getUserInfo(@Param("refresh") Boolean refresh, HttpServletRequest request) {
-        CmsUser user = cmsUserService.getUserInfo(refresh, request);
+    public CommonResult getUserInfo(@Param("refresh") Boolean refresh) {
+        CmsUser user = cmsUserService.getUserInfo(refresh);
         return CommonResult.success(user);
     }
 }
