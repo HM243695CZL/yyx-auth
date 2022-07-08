@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 07/07/2022 17:52:20
+ Date: 08/07/2022 17:48:16
 */
 
 SET NAMES utf8mb4;
@@ -25,7 +25,7 @@ CREATE TABLE `cms_user`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户名称',
   `password` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '用户密码',
-  `gender` tinyint(3) NOT NULL DEFAULT 0 COMMENT '性别：0 未知， 1男， 1 女',
+  `gender` varbinary(3) NOT NULL DEFAULT 0 COMMENT '性别：0 未知， 1男， 1 女',
   `birthday` date NULL DEFAULT NULL COMMENT '生日',
   `last_login_time` datetime(0) NULL DEFAULT NULL COMMENT '最近一次登录时间',
   `last_login_ip` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '最近一次登录IP地址',
@@ -41,11 +41,12 @@ CREATE TABLE `cms_user`  (
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `user_name`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cms_user
 -- ----------------------------
+INSERT INTO `cms_user` VALUES (5, 'admin', '123456', 0x30, NULL, '2022-07-08 17:27:07', '', 0, 'admin', '', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', 'odsj15LuTKjuxX5aTqFrv3eI_lko', '', 0, '2022-07-08 17:27:07', '2022-07-08 17:27:07', 1);
 
 -- ----------------------------
 -- Table structure for pms_brand

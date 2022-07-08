@@ -3,6 +3,7 @@ package com.hl.yyx.modules.cms.controller;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.wx.NoAuth;
 import com.hl.yyx.modules.cms.dto.WXAuthDTO;
+import com.hl.yyx.modules.cms.dto.WxRegisterDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import com.hl.yyx.modules.cms.model.CmsUser;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 
 /**
  * <p>
@@ -95,6 +97,13 @@ public class CmsUserController {
     public CommonResult getUserInfo(@Param("refresh") Boolean refresh) {
         CmsUser user = cmsUserService.getUserInfo(refresh);
         return CommonResult.success(user);
+    }
+
+    @NoAuth
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public CommonResult accountRegister(@RequestBody WxRegisterDTO registerDTO, HttpServletRequest request) {
+        HashMap<Object, Object> result = cmsUserService.accountRegister(registerDTO, request);
+        return CommonResult.success(result);
     }
 }
 

@@ -31,3 +31,4 @@ aliyun:
 wxmini:
   appid: 'wx8bf84902e3987b1c'
   secret: 'da25fa0e5e0f7c6e98c3852e79097252'
+  msgDataFormat: JSON
