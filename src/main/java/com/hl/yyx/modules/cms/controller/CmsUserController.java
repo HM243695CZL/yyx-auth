@@ -4,6 +4,8 @@ import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.modules.cms.dto.WXAuthDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +15,8 @@ import com.hl.yyx.modules.cms.service.CmsUserService;
 import com.hl.yyx.modules.cms.model.CmsUser;
 
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -25,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/wx/cms/user")
 @Api(tags = "会员管理", description = "会员管理")
+@Slf4j
 public class CmsUserController {
 
     @Autowired
@@ -73,10 +78,23 @@ public class CmsUserController {
     }
 
 
-    @RequestMapping(value = "/authLogin", method = RequestMethod.POST)
-    public CommonResult authLogin(@RequestBody WXAuthDTO wxAuthDTO) {
-        cmsUserService.authLogin(wxAuthDTO);
+    // 微信一键登录
+    @RequestMapping(value = "/loginByWeixin", method = RequestMethod.POST)
+    public CommonResult authLogin(@RequestBody WXAuthDTO wxAuthDTO, HttpServletRequest request) {
+        Object result = cmsUserService.wxAuthLogin(wxAuthDTO, request);
+        log.info("{}", result);
+        return CommonResult.success(result);
     }
 
+    /**
+     * 获取用户信息
+     * @param refresh
+     * @return
+     */
+    @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
+    public CommonResult getUserInfo(@Param("refresh") Boolean refresh, HttpServletRequest request) {
+        CmsUser user = cmsUserService.getUserInfo(refresh, request);
+        return CommonResult.success(user);
+    }
 }
 

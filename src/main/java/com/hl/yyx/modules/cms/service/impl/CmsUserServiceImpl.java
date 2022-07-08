@@ -1,17 +1,27 @@
 package com.hl.yyx.modules.cms.service.impl;
 
 import cn.hutool.http.HttpUtil;
+import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hl.yyx.common.api.RedisKey;
+import com.hl.yyx.common.exception.ApiException;
+import com.hl.yyx.common.util.IpUtil;
+import com.hl.yyx.common.util.JWTUtils;
 import com.hl.yyx.modules.cms.dto.WXAuthDTO;
+import com.hl.yyx.modules.cms.dto.WxUserInfo;
 import com.hl.yyx.modules.cms.model.CmsUser;
 import com.hl.yyx.modules.cms.mapper.CmsUserMapper;
 import com.hl.yyx.modules.cms.service.CmsUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hl.yyx.modules.cms.service.WxService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -36,6 +46,9 @@ public class CmsUserServiceImpl extends ServiceImpl<CmsUserMapper, CmsUser> impl
     @Autowired
     private StringRedisTemplate redisTemplate;
 
+    @Autowired
+    private WxService wxService;
+
     @Override
     public Object getSessionId(String code) {
         /**
@@ -54,8 +67,14 @@ public class CmsUserServiceImpl extends ServiceImpl<CmsUserMapper, CmsUser> impl
         return map;
     }
 
+    /**
+     * 微信登录
+     * @param wxAuthDTO
+     * @param request
+     * @return
+     */
     @Override
-    public void authLogin(WXAuthDTO wxAuthDTO) {
+    public Object wxAuthLogin(WXAuthDTO wxAuthDTO, HttpServletRequest request) {
         /**
          * 对wxAuthDTO解密
          * 解密完成， 得到微信用户信息  包含openId， 性别， 昵称 等信息
@@ -63,5 +82,93 @@ public class CmsUserServiceImpl extends ServiceImpl<CmsUserMapper, CmsUser> impl
          * 不存在  则注册
          * 使用jwt技术，生成token，并返回
          */
+        try {
+            String json = wxService.wxDecrypt(wxAuthDTO.getEncryptedData(), wxAuthDTO.getSessionId(), wxAuthDTO.getIv());
+            WxUserInfo wxUserInfo = JSON.parseObject(json, WxUserInfo.class);
+            String openId = wxUserInfo.getOpenId();
+
+            QueryWrapper<CmsUser> wrapper = new QueryWrapper<>();
+            wrapper.lambda().eq(CmsUser::getWeixinOpenid, openId);
+            CmsUser user = getOne(wrapper);
+            if (user == null) {
+                // 注册
+                CmsUser cmsUser = wxUserInfoToUser(wxUserInfo, request, wxAuthDTO.getSessionId());
+                save(cmsUser);
+                return login(cmsUser);
+            } else {
+                // 登录
+                user.setLastLoginTime(new Date());
+                user.setLastLoginIp(IpUtil.getIpAddr(request));
+                user.setSessionKey(wxAuthDTO.getSessionId());
+                return login(user);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private HashMap<Object, Object> login(CmsUser user) {
+        // token
+        String token = JWTUtils.sign(user.getId());
+        user.setPassword(null);
+        user.setUsername(null);
+        user.setWeixinOpenid(null);
+        HashMap<Object, Object> result = new HashMap<>();
+        result.put("token", token);
+        // 将用户信息保存到redis中
+        redisTemplate.opsForValue().set(RedisKey.TOKEN_KEY + token, JSON.toJSONString(user), 7, TimeUnit.DAYS);
+        return result;
+    }
+
+
+    /**
+     * 将wxUserInfo 转为CmsUser对象
+     * @param wxUserInfo
+     * @return
+     */
+    private CmsUser wxUserInfoToUser (WxUserInfo wxUserInfo, HttpServletRequest request, String sessionKey) {
+        CmsUser cmsUser = new CmsUser();
+        cmsUser.setUsername(wxUserInfo.getOpenId());
+        cmsUser.setPassword(wxUserInfo.getOpenId());
+        cmsUser.setWeixinOpenid(wxUserInfo.getOpenId());
+        cmsUser.setAvatar(wxUserInfo.getAvatarUrl());
+        cmsUser.setNickname(wxUserInfo.getNickName());
+        cmsUser.setGender(wxUserInfo.getGender());
+        cmsUser.setUserLevel(0);
+        cmsUser.setStatus(0);
+        cmsUser.setLastLoginTime(new Date());
+        cmsUser.setLastLoginIp(IpUtil.getIpAddr(request));
+        cmsUser.setSessionKey(sessionKey);
+        return cmsUser;
+    }
+
+    /**
+     * 获取微信用户信息
+     * @param refresh
+     * @return
+     */
+    public CmsUser getUserInfo(Boolean refresh, HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        /**
+         * 验证token是否有效
+         * refresh为true， 刷新token并保存到redis
+         * refresh为false，从redis中取用户信息返回
+         */
+        token = token.replace("Bearer ", "");
+        boolean verify = JWTUtils.verify(token);
+        if (!verify) {
+            throw new ApiException("token失效或未登录");
+        }
+        String userJson = redisTemplate.opsForValue().get(RedisKey.TOKEN_KEY + token);
+        if (StringUtils.isBlank(userJson)) {
+            throw new ApiException("token失效或未登录");
+        }
+        CmsUser user = JSON.parseObject(userJson, CmsUser.class);
+        if (refresh) {
+            token = JWTUtils.sign(user.getId());
+            redisTemplate.opsForValue().set(RedisKey.TOKEN_KEY + token, JSON.toJSONString(user), 7, TimeUnit.DAYS);
+        }
+        return user;
     }
 }
