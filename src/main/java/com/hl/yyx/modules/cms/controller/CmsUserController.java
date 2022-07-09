@@ -1,7 +1,10 @@
 package com.hl.yyx.modules.cms.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
-import com.hl.yyx.common.wx.NoAuth;
+import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.common.wx.NoWeiXinAuth;
 import com.hl.yyx.modules.cms.dto.WXAuthDTO;
 import com.hl.yyx.modules.cms.dto.WxRegisterDTO;
 import io.swagger.annotations.Api;
@@ -38,9 +41,18 @@ public class CmsUserController {
     @Autowired
     private CmsUserService cmsUserService;
 
+    // 分页
+    @ApiOperation("分页查询")
+    @NoWeiXinAuth
+    @RequestMapping(value = "/page", method = RequestMethod.POST)
+    public CommonResult page(@RequestBody PageParamsDTO paramsDTO) {
+        Page<CmsUser> memberList = cmsUserService.pageList(paramsDTO);
+        return CommonResult.success(CommonPage.restPage(memberList));
+    }
+
     // 更新
     @ApiOperation("更新会员(微信用户)")
-    @NoAuth
+    @NoWeiXinAuth
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public CommonResult update(@RequestBody CmsUser cmsUser) {
         return CommonResult.success(cmsUserService.updateById(cmsUser));
@@ -48,7 +60,7 @@ public class CmsUserController {
 
     // 删除
     @ApiOperation("删除会员(微信用户)")
-    @NoAuth
+    @NoWeiXinAuth
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id) {
         return CommonResult.success( cmsUserService.removeById(id));
@@ -56,14 +68,14 @@ public class CmsUserController {
 
     // 获取全部
     @ApiOperation("获取全部会员(微信用户)")
-    @NoAuth
+    @NoWeiXinAuth
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public CommonResult list() {
         return CommonResult.success(cmsUserService.list());
     }
 
     // 查看
-    @NoAuth
+    @NoWeiXinAuth
     @ApiOperation("查看会员(微信用户)")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable String id) {
@@ -71,7 +83,7 @@ public class CmsUserController {
     }
 
     // 获取sessionID
-    @NoAuth
+    @NoWeiXinAuth
     @ApiOperation("微信登录获取sessionId")
     @RequestMapping(value = "/getSessionId", method = RequestMethod.GET)
     public CommonResult getSessionId(String code) {
@@ -80,7 +92,7 @@ public class CmsUserController {
 
 
     // 微信一键登录
-    @NoAuth
+    @NoWeiXinAuth
     @RequestMapping(value = "/loginByWeixin", method = RequestMethod.POST)
     public CommonResult authLogin(@RequestBody WXAuthDTO wxAuthDTO, HttpServletRequest request) {
         Object result = cmsUserService.wxAuthLogin(wxAuthDTO, request);
@@ -99,7 +111,7 @@ public class CmsUserController {
         return CommonResult.success(user);
     }
 
-    @NoAuth
+    @NoWeiXinAuth
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public CommonResult accountRegister(@RequestBody WxRegisterDTO registerDTO, HttpServletRequest request) {
         HashMap<Object, Object> result = cmsUserService.accountRegister(registerDTO, request);

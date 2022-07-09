@@ -41,7 +41,7 @@ public class LoginHandler implements HandlerInterceptor {
             return true;
         }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
-        if (handlerMethod.hasMethodAnnotation(NoAuth.class)) {
+        if (handlerMethod.hasMethodAnnotation(NoWeiXinAuth.class)) {
             return true;
         }
         String token = request.getHeader("Authorization");

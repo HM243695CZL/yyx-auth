@@ -5,10 +5,12 @@ import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.RedisKey;
 import com.hl.yyx.common.exception.ApiException;
 import com.hl.yyx.common.util.IpUtil;
 import com.hl.yyx.common.util.JWTUtils;
+import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.common.wx.UserThreadLocal;
 import com.hl.yyx.modules.cms.dto.WXAuthDTO;
 import com.hl.yyx.modules.cms.dto.WxRegisterDTO;
@@ -203,5 +205,25 @@ public class CmsUserServiceImpl extends ServiceImpl<CmsUserMapper, CmsUser> impl
         cmsUser.setLastLoginIp(IpUtil.getIpAddr(request));
         save(cmsUser);
         return login(cmsUser);
+    }
+
+    /**
+     * 分页查询
+     * @param paramsDTO
+     * @return
+     */
+    @Override
+    public Page<CmsUser> pageList(PageParamsDTO paramsDTO) {
+        Page<CmsUser> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
+        QueryWrapper<CmsUser> wrapper = new QueryWrapper<>();
+        Page<CmsUser> result = page(page, wrapper);
+        for (CmsUser record : result.getRecords()) {
+            /**
+             * 将查询出来openId和密码置空
+             */
+            record.setWeixinOpenid(null);
+            record.setPassword(null);
+        }
+        return result;
     }
 }

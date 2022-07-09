@@ -36,7 +36,7 @@ public class CmsUser implements Serializable {
     @ApiModelProperty(value = "用户密码")
     private String password;
 
-    @ApiModelProperty(value = "性别：0 未知， 1男， 1 女")
+    @ApiModelProperty(value = "性别：0 未知， 1男， 2 女")
     private String gender;
 
     @ApiModelProperty(value = "生日")
