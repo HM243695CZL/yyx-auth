@@ -25,4 +25,13 @@ public interface PmsGoodsService extends IService<PmsGoods> {
     HashMap<String, Object> view(String id);
 
     Boolean update(GoodsDTO goodsDTO);
+
+    /**
+     * 获取微信首页数据
+     * @param type
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    Page<PmsGoods> getHomeGoods(Integer type, Integer pageIndex, Integer pageSize);
 }

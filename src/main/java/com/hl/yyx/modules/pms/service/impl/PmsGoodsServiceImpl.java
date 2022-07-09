@@ -51,7 +51,11 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
     public Page<PmsGoods> pageList(PageParamsDTO paramsDTO) {
         Page<PmsGoods> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
         QueryWrapper<PmsGoods> wrapper = new QueryWrapper<>();
-        return page(page, wrapper);
+        Page<PmsGoods> result = page(page, wrapper);
+        for (PmsGoods record : result.getRecords()) {
+            record.setDetail(null);
+        }
+        return result;
     }
 
     /**
@@ -163,6 +167,29 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
 
         // 购物车
         // todo
+        return result;
+    }
+
+    /**
+     * 获取微信首页数据
+     * @param type 0 不排序 1 add_time降序 2 retail_price升序
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public Page<PmsGoods> getHomeGoods(Integer type, Integer pageIndex, Integer pageSize) {
+        Page<PmsGoods> page = new Page<>(pageIndex, pageSize);
+        QueryWrapper<PmsGoods> queryWrapper = new QueryWrapper<>();
+        if (type == 1) {
+            queryWrapper.lambda().orderByDesc(PmsGoods::getAddTime);
+        } else if (type == 2) {
+            queryWrapper.lambda().orderByAsc(PmsGoods::getRetailPrice);
+        }
+        Page<PmsGoods> result = page(page, queryWrapper);
+        for (PmsGoods record : result.getRecords()) {
+            record.setDetail(null);
+        }
         return result;
     }
 
