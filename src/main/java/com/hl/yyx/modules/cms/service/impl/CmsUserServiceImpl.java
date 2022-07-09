@@ -2,17 +2,20 @@ package com.hl.yyx.modules.cms.service.impl;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
+import cn.hutool.core.lang.Assert;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.RedisKey;
 import com.hl.yyx.common.exception.ApiException;
+import com.hl.yyx.common.exception.Asserts;
 import com.hl.yyx.common.util.IpUtil;
 import com.hl.yyx.common.util.JWTUtils;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.common.wx.UserThreadLocal;
 import com.hl.yyx.modules.cms.dto.WXAuthDTO;
+import com.hl.yyx.modules.cms.dto.WxLoginDTO;
 import com.hl.yyx.modules.cms.dto.WxRegisterDTO;
 import com.hl.yyx.modules.cms.dto.WxUserInfo;
 import com.hl.yyx.modules.cms.model.CmsUser;
@@ -24,6 +27,7 @@ import me.chanjar.weixin.common.error.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -193,8 +197,10 @@ public class CmsUserServiceImpl extends ServiceImpl<CmsUserMapper, CmsUser> impl
             throw new ApiException("openId已绑定账号");
         }
         CmsUser cmsUser = new CmsUser();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(registerDTO.getPassword());
         cmsUser.setUsername(registerDTO.getUsername());
-        cmsUser.setPassword(registerDTO.getPassword());
+        cmsUser.setPassword(encodedPassword);
         cmsUser.setWeixinOpenid(openId);
         cmsUser.setAvatar("https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp");
         cmsUser.setNickname(registerDTO.getUsername());
@@ -225,5 +231,30 @@ public class CmsUserServiceImpl extends ServiceImpl<CmsUserMapper, CmsUser> impl
             record.setPassword(null);
         }
         return result;
+    }
+
+    /**
+     * 账号登录
+     * @param loginDTO
+     * @param request
+     * @return
+     */
+    @Override
+    public HashMap<Object, Object> accountLogin(WxLoginDTO loginDTO, HttpServletRequest request) {
+        QueryWrapper<CmsUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(CmsUser::getUsername, loginDTO.getUsername());
+        CmsUser user = getOne(queryWrapper);
+        if (user == null) {
+            Asserts.fail("账号不存在");
+        }
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (!encoder.matches(loginDTO.getPassword(), user.getPassword())) {
+            Asserts.fail("密码错误");
+        }
+        user.setLastLoginTime(new Date());
+        user.setLastLoginIp(IpUtil.getIpAddr(request));
+        // 更新登录信息
+        updateById(user);
+        return login(user);
     }
 }

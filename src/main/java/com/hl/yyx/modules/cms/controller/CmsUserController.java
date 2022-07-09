@@ -6,6 +6,7 @@ import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.common.wx.NoWeiXinAuth;
 import com.hl.yyx.modules.cms.dto.WXAuthDTO;
+import com.hl.yyx.modules.cms.dto.WxLoginDTO;
 import com.hl.yyx.modules.cms.dto.WxRegisterDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -111,10 +112,29 @@ public class CmsUserController {
         return CommonResult.success(user);
     }
 
+    /**
+     * 账号注册
+     * @param registerDTO
+     * @param request
+     * @return
+     */
     @NoWeiXinAuth
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public CommonResult accountRegister(@RequestBody WxRegisterDTO registerDTO, HttpServletRequest request) {
         HashMap<Object, Object> result = cmsUserService.accountRegister(registerDTO, request);
+        return CommonResult.success(result);
+    }
+
+    /**
+     * 账号登录
+     * @param loginDTO
+     * @param request
+     * @return
+     */
+    @NoWeiXinAuth
+    @RequestMapping(value = "/accountLogin", method = RequestMethod.POST)
+    public CommonResult accountLogin(@RequestBody WxLoginDTO loginDTO, HttpServletRequest request) {
+        HashMap<Object, Object> result =  cmsUserService.accountLogin(loginDTO, request);
         return CommonResult.success(result);
     }
 }
