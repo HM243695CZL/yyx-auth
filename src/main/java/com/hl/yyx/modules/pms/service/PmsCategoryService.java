@@ -36,4 +36,10 @@ public interface PmsCategoryService extends IService<PmsCategory> {
      * @return
      */
     boolean delete(String id);
+
+    /**
+     * 获取所有二级分类
+     * @return
+     */
+    List<PmsCategory> getSecondCategory();
 }

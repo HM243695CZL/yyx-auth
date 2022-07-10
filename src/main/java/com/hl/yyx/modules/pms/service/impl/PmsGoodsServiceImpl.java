@@ -2,6 +2,7 @@ package com.hl.yyx.modules.pms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.common.vo.GoodsPageDTO;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.pms.dto.GoodsDTO;
 import com.hl.yyx.modules.pms.model.PmsGoods;
@@ -48,9 +49,13 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
      * @return
      */
     @Override
-    public Page<PmsGoods> pageList(PageParamsDTO paramsDTO) {
+    public Page<PmsGoods> pageList(GoodsPageDTO paramsDTO) {
         Page<PmsGoods> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
         QueryWrapper<PmsGoods> wrapper = new QueryWrapper<>();
+        // 按照二级分类id查询商品
+        if (paramsDTO.getCategoryId() != null) {
+            wrapper.lambda().eq(PmsGoods::getCategoryId, paramsDTO.getCategoryId());
+        }
         Page<PmsGoods> result = page(page, wrapper);
         for (PmsGoods record : result.getRecords()) {
             record.setDetail(null);
@@ -181,6 +186,8 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
     public Page<PmsGoods> getHomeGoods(Integer type, Integer pageIndex, Integer pageSize) {
         Page<PmsGoods> page = new Page<>(pageIndex, pageSize);
         QueryWrapper<PmsGoods> queryWrapper = new QueryWrapper<>();
+        // 只查询在售商品
+        queryWrapper.lambda().eq(PmsGoods::getIsOnSale, 1);
         if (type == 1) {
             queryWrapper.lambda().orderByDesc(PmsGoods::getAddTime);
         } else if (type == 2) {
@@ -192,6 +199,7 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
         }
         return result;
     }
+
 
     /**
      * 初始化商品信息

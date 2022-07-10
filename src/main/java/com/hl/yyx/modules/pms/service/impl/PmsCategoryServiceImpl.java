@@ -93,6 +93,17 @@ public class PmsCategoryServiceImpl extends ServiceImpl<PmsCategoryMapper, PmsCa
     }
 
     /**
+     * 获取所有二级分类
+     * @return
+     */
+    @Override
+    public List<PmsCategory> getSecondCategory() {
+        QueryWrapper<PmsCategory> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(PmsCategory::getLevel, "L2");
+        return list(queryWrapper);
+    }
+
+    /**
      * 循环获取类目
      * @param pmsCategory 一级类目
      * @param list 所有类目

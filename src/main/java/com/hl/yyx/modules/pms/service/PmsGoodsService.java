@@ -1,12 +1,15 @@
 package com.hl.yyx.modules.pms.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.common.vo.GoodsPageDTO;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.pms.dto.GoodsDTO;
 import com.hl.yyx.modules.pms.model.PmsGoods;
 import com.baomidou.mybatisplus.extension.service.IService;
+import io.swagger.models.auth.In;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -18,7 +21,7 @@ import java.util.HashMap;
  */
 public interface PmsGoodsService extends IService<PmsGoods> {
 
-    Page<PmsGoods> pageList(PageParamsDTO paramsDTO);
+    Page<PmsGoods> pageList(GoodsPageDTO paramsDTO);
 
     Boolean create(GoodsDTO goodsDTO);
 
