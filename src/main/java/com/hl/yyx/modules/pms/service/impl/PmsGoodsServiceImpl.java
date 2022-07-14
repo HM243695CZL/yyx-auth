@@ -3,7 +3,6 @@ package com.hl.yyx.modules.pms.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.vo.GoodsPageDTO;
-import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.pms.dto.GoodsDTO;
 import com.hl.yyx.modules.pms.model.PmsGoods;
 import com.hl.yyx.modules.pms.mapper.PmsGoodsMapper;
@@ -20,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -101,25 +101,17 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
 
     @Override
     public HashMap<String, Object> view(String id) {
-        PmsGoods goods = getById(id);
-        // 商品货品信息
-        QueryWrapper<PmsGoodsProduct> productQuery = new QueryWrapper<>();
-        productQuery.lambda().eq(PmsGoodsProduct::getGoodsId, id);
-        List<PmsGoodsProduct> products = productService.list(productQuery);
+        HashMap<String, Object> goodsAndAttribute = getGoodsAndAttribute(id);
         // 商品规格信息
         QueryWrapper<PmsGoodsSpecification> specificationQuery = new QueryWrapper<>();
         specificationQuery.lambda().eq(PmsGoodsSpecification::getGoodsId, id);
         List<PmsGoodsSpecification> specifications = specificationService.list(specificationQuery);
-        // 商品参数信息
-        QueryWrapper<PmsGoodsAttribute> attributeQuery = new QueryWrapper<>();
-        attributeQuery.lambda().eq(PmsGoodsAttribute::getGoodsId, id);
-        List<PmsGoodsAttribute> attributes = attributeService.list(attributeQuery);
 
         HashMap<String, Object> goodsObj = new HashMap<>();
-        goodsObj.put("goods", goods);
+        goodsObj.put("goods", goodsAndAttribute.get("goods"));
         goodsObj.put("specifications", specifications);
-        goodsObj.put("products", products);
-        goodsObj.put("attributes", attributes);
+        goodsObj.put("products", goodsAndAttribute.get("products"));
+        goodsObj.put("attributes", goodsAndAttribute.get("attributes"));
         return goodsObj;
     }
 
@@ -198,6 +190,103 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
             record.setDetail(null);
         }
         return result;
+    }
+
+    /**
+     * 获取商品详情
+     * @param goodsId
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> wxDetail(String goodsId) {
+        HashMap<String, Object> goodsAndAttribute = getGoodsAndAttribute(goodsId);
+        // 商品规格信息
+        List<VO> specificationList = getSpecificationList(goodsId);
+        HashMap<String, Object> goodsWxObj = new HashMap<>();
+        goodsWxObj.put("goods", goodsAndAttribute.get("goods"));
+        goodsWxObj.put("specificationList", specificationList);
+        goodsWxObj.put("products", goodsAndAttribute.get("products"));
+        goodsWxObj.put("attributes", goodsAndAttribute.get("attributes"));
+        return goodsWxObj;
+    }
+
+    /**
+     * 获取商品信息   货品信息   参数信息
+     * @param goodsId
+     * @return
+     */
+    public HashMap<String, Object> getGoodsAndAttribute(String goodsId) {
+        PmsGoods goods = getById(goodsId);
+        // 商品货品信息
+        QueryWrapper<PmsGoodsProduct> productQuery = new QueryWrapper<>();
+        productQuery.lambda().eq(PmsGoodsProduct::getGoodsId, goodsId);
+        List<PmsGoodsProduct> products = productService.list(productQuery);
+        // 商品参数信息
+        QueryWrapper<PmsGoodsAttribute> attributeQuery = new QueryWrapper<>();
+        attributeQuery.lambda().eq(PmsGoodsAttribute::getGoodsId, goodsId);
+        List<PmsGoodsAttribute> attributes = attributeService.list(attributeQuery);
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("goods", goods);
+        map.put("products", products);
+        map.put("attributes", attributes);
+        return map;
+    }
+
+    /**
+     * 获取规格信息
+     * @param goodsId
+     * @return
+     */
+    public List<VO> getSpecificationList(String goodsId) {
+        QueryWrapper<PmsGoodsSpecification> specificationQuery = new QueryWrapper<>();
+        specificationQuery.lambda().eq(PmsGoodsSpecification::getGoodsId, goodsId);
+        List<PmsGoodsSpecification> specificationList = specificationService.list(specificationQuery);
+
+        HashMap<String, VO> map = new HashMap<>();
+
+        List<VO> specificationVoList = new ArrayList<>();
+        for (PmsGoodsSpecification goodsSpecification : specificationList) {
+            String specification = goodsSpecification.getSpecification();
+            VO goodsSpecificationVo = map.get(specification);
+            if (goodsSpecificationVo == null) {
+                goodsSpecificationVo = new VO();
+                goodsSpecificationVo.setName(specification);
+                List<PmsGoodsSpecification> valueList = new ArrayList<>();
+                valueList.add(goodsSpecification);
+                goodsSpecificationVo.setValueList(valueList);
+                map.put(specification, goodsSpecificationVo);
+                specificationVoList.add(goodsSpecificationVo);
+            } else {
+                List<PmsGoodsSpecification> valueList = goodsSpecificationVo.getValueList();
+                valueList.add(goodsSpecification);
+            }
+        }
+        return specificationVoList;
+    }
+
+    /**
+     * 微信端：构建规格返回数据格式
+     */
+    private class VO {
+        private String name;
+        private List<PmsGoodsSpecification> valueList;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public List<PmsGoodsSpecification> getValueList() {
+            return valueList;
+        }
+
+        public void setValueList(List<PmsGoodsSpecification> valueList) {
+            this.valueList = valueList;
+        }
     }
 
 

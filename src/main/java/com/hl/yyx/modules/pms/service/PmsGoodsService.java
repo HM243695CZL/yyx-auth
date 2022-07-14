@@ -37,4 +37,11 @@ public interface PmsGoodsService extends IService<PmsGoods> {
      * @return
      */
     Page<PmsGoods> getHomeGoods(Integer type, Integer pageIndex, Integer pageSize);
+
+    /**
+     * 微信端：获取商品详情
+     * @param goodsId
+     * @return
+     */
+    HashMap<String, Object> wxDetail(String goodsId);
 }

@@ -34,7 +34,7 @@ public class WxGoodsController {
     @ApiOperation("获取商品详情")
     @RequestMapping(value = "/getGoodsInfo", method = RequestMethod.GET)
     public CommonResult getGoodsInfo(@RequestParam String goodsId) {
-        HashMap<String, Object> goods = goodsService.view(goodsId);
+        HashMap<String, Object> goods = goodsService.wxDetail(goodsId);
         return CommonResult.success(goods);
     }
 }
