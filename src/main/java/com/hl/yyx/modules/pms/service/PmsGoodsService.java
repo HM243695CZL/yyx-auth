@@ -8,6 +8,7 @@ import com.hl.yyx.modules.pms.model.PmsGoods;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.models.auth.In;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,5 +44,5 @@ public interface PmsGoodsService extends IService<PmsGoods> {
      * @param goodsId
      * @return
      */
-    HashMap<String, Object> wxDetail(String goodsId);
+    HashMap<String, Object> wxDetail(String goodsId, HttpServletRequest request);
 }

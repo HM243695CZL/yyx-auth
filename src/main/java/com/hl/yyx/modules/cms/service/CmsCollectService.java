@@ -6,6 +6,8 @@ import com.hl.yyx.modules.cms.dto.CollectionParamsDTO;
 import com.hl.yyx.modules.cms.model.CmsCollect;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  * 收藏表 服务类
@@ -17,4 +19,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface CmsCollectService extends IService<CmsCollect> {
 
     Page<CmsCollect> pageList(CollectionParamsDTO paramsDTO);
+
+    /**
+     * 收藏或更新收藏
+     * @param goodsId
+     * @return
+     */
+    String createOrDeleteCollection(Integer goodsId, HttpServletRequest request);
 }

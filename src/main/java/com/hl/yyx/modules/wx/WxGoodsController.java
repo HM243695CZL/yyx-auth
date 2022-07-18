@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 /**
@@ -33,8 +34,8 @@ public class WxGoodsController {
     @NoWeiXinAuth
     @ApiOperation("获取商品详情")
     @RequestMapping(value = "/getGoodsInfo", method = RequestMethod.GET)
-    public CommonResult getGoodsInfo(@RequestParam String goodsId) {
-        HashMap<String, Object> goods = goodsService.wxDetail(goodsId);
+    public CommonResult getGoodsInfo(@RequestParam String goodsId, HttpServletRequest request) {
+        HashMap<String, Object> goods = goodsService.wxDetail(goodsId, request);
         return CommonResult.success(goods);
     }
 }

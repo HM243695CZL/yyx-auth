@@ -2,7 +2,10 @@ package com.hl.yyx.modules.pms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.common.util.JWTUtils;
 import com.hl.yyx.common.vo.GoodsPageDTO;
+import com.hl.yyx.modules.cms.model.CmsCollect;
+import com.hl.yyx.modules.cms.service.CmsCollectService;
 import com.hl.yyx.modules.pms.dto.GoodsDTO;
 import com.hl.yyx.modules.pms.model.PmsGoods;
 import com.hl.yyx.modules.pms.mapper.PmsGoodsMapper;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +46,9 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
 
     @Autowired
     PmsGoodsProductService productService;
+
+    @Autowired
+    CmsCollectService collectService;
 
     /**
      * 分页查询
@@ -198,11 +205,27 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
      * @return
      */
     @Override
-    public HashMap<String, Object> wxDetail(String goodsId) {
+    public HashMap<String, Object> wxDetail(String goodsId, HttpServletRequest request) {
         HashMap<String, Object> goodsAndAttribute = getGoodsAndAttribute(goodsId);
+        // 获取商品收藏状态
+        QueryWrapper<CmsCollect> wrapper = new QueryWrapper<>();
+        // 解密token获取id
+        String token = request.getHeader("Authorization");
+        Long userId = JWTUtils.getUserId(token.replace("Bearer ", ""));
+        wrapper.lambda().eq(CmsCollect::getUserId, userId);
+        wrapper.lambda().eq(CmsCollect::getValueId, goodsId);
+        wrapper.lambda().eq(CmsCollect::getType, 0);
+        CmsCollect collect = collectService.getOne(wrapper);
+        String collectStatus = null;
+        if (collect != null) {
+            collectStatus = "1";
+        } else {
+            collectStatus = "0";
+        }
         // 商品规格信息
         List<VO> specificationList = getSpecificationList(goodsId);
         HashMap<String, Object> goodsWxObj = new HashMap<>();
+        goodsWxObj.put("collect", collectStatus);
         goodsWxObj.put("goods", goodsAndAttribute.get("goods"));
         goodsWxObj.put("specificationList", specificationList);
         goodsWxObj.put("products", goodsAndAttribute.get("products"));
