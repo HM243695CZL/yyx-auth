@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.util.JWTUtils;
 import com.hl.yyx.common.vo.GoodsPageDTO;
 import com.hl.yyx.modules.cms.model.CmsCollect;
+import com.hl.yyx.modules.cms.model.CmsUser;
 import com.hl.yyx.modules.cms.service.CmsCollectService;
+import com.hl.yyx.modules.cms.service.CmsUserService;
 import com.hl.yyx.modules.pms.dto.GoodsDTO;
 import com.hl.yyx.modules.pms.model.PmsGoods;
 import com.hl.yyx.modules.pms.mapper.PmsGoodsMapper;
@@ -49,6 +51,9 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
 
     @Autowired
     CmsCollectService collectService;
+
+    @Autowired
+    CmsUserService userService;
 
     /**
      * 分页查询
@@ -210,8 +215,8 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
         // 获取商品收藏状态
         QueryWrapper<CmsCollect> wrapper = new QueryWrapper<>();
         // 解密token获取id
-        String token = request.getHeader("Authorization");
-        Long userId = JWTUtils.getUserId(token.replace("Bearer ", ""));
+        CmsUser userInfo = userService.getUserInfo(false);
+        Integer userId = userInfo.getId();
         wrapper.lambda().eq(CmsCollect::getUserId, userId);
         wrapper.lambda().eq(CmsCollect::getValueId, goodsId);
         wrapper.lambda().eq(CmsCollect::getType, 0);

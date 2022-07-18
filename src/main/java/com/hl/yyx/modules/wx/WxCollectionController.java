@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/wx/collection")
 @Api(tags = "微信端-收藏", description = "微信端-收藏")
 public class WxCollectionController {
+
     @Autowired
     private CmsCollectService collectService;
 
@@ -28,5 +29,15 @@ public class WxCollectionController {
     @RequestMapping(value = "/status/{goodsId}", method = RequestMethod.GET)
     public CommonResult createOrDeleteCollection(@PathVariable Integer goodsId, HttpServletRequest request) {
         return CommonResult.success(collectService.createOrDeleteCollection(goodsId, request));
+    }
+
+    /**
+     * 获取微信用户的收藏列表
+     * @return
+     */
+    @ApiOperation("获取微信用户收藏列表")
+    @RequestMapping(value = "/getCollectionList", method = RequestMethod.GET)
+    public CommonResult getCollectionList () {
+        return CommonResult.success(collectService.getCollectionList());
     }
 }

@@ -1,10 +1,9 @@
 package com.hl.yyx.modules.cms.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hl.yyx.common.vo.PageParamsDTO;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.hl.yyx.modules.cms.dto.CollectionParamsDTO;
 import com.hl.yyx.modules.cms.model.CmsCollect;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,4 +25,10 @@ public interface CmsCollectService extends IService<CmsCollect> {
      * @return
      */
     String createOrDeleteCollection(Integer goodsId, HttpServletRequest request);
+
+    /**
+     * 获取微信用户的收藏列表
+     * @return
+     */
+    Object getCollectionList();
 }
