@@ -47,10 +47,10 @@ public class JWTUtils {
      *
      * @return token中包含的id
      */
-    public static Long getUserId(String token) {
+    public static Integer getUserId(String token) {
         try {
             DecodedJWT jwt = JWT.decode(token);
-            return jwt.getClaim("id").asLong();
+            return jwt.getClaim("id").asInt();
         } catch (JWTDecodeException e) {
             return null;
         }

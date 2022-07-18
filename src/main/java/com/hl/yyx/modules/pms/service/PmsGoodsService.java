@@ -26,7 +26,7 @@ public interface PmsGoodsService extends IService<PmsGoods> {
 
     Boolean create(GoodsDTO goodsDTO);
 
-    HashMap<String, Object> view(String id);
+    HashMap<String, Object> view(Integer id);
 
     Boolean update(GoodsDTO goodsDTO);
 
@@ -44,5 +44,5 @@ public interface PmsGoodsService extends IService<PmsGoods> {
      * @param goodsId
      * @return
      */
-    HashMap<String, Object> wxDetail(String goodsId, HttpServletRequest request);
+    HashMap<String, Object> wxDetail(Integer goodsId, HttpServletRequest request);
 }

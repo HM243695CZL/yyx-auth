@@ -34,7 +34,7 @@ public class WxGoodsController {
     @NoWeiXinAuth
     @ApiOperation("获取商品详情")
     @RequestMapping(value = "/getGoodsInfo", method = RequestMethod.GET)
-    public CommonResult getGoodsInfo(@RequestParam String goodsId, HttpServletRequest request) {
+    public CommonResult getGoodsInfo(@RequestParam Integer goodsId, HttpServletRequest request) {
         HashMap<String, Object> goods = goodsService.wxDetail(goodsId, request);
         return CommonResult.success(goods);
     }

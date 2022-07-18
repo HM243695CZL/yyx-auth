@@ -2,22 +2,24 @@ package com.hl.yyx.modules.pms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.common.util.JWTUtils;
 import com.hl.yyx.common.vo.GoodsPageDTO;
 import com.hl.yyx.modules.cms.model.CmsCollect;
+import com.hl.yyx.modules.cms.model.CmsFootprint;
 import com.hl.yyx.modules.cms.model.CmsUser;
 import com.hl.yyx.modules.cms.service.CmsCollectService;
+import com.hl.yyx.modules.cms.service.CmsFootprintService;
 import com.hl.yyx.modules.cms.service.CmsUserService;
 import com.hl.yyx.modules.pms.dto.GoodsDTO;
-import com.hl.yyx.modules.pms.model.PmsGoods;
 import com.hl.yyx.modules.pms.mapper.PmsGoodsMapper;
+import com.hl.yyx.modules.pms.model.PmsGoods;
 import com.hl.yyx.modules.pms.model.PmsGoodsAttribute;
 import com.hl.yyx.modules.pms.model.PmsGoodsProduct;
 import com.hl.yyx.modules.pms.model.PmsGoodsSpecification;
 import com.hl.yyx.modules.pms.service.PmsGoodsAttributeService;
 import com.hl.yyx.modules.pms.service.PmsGoodsProductService;
 import com.hl.yyx.modules.pms.service.PmsGoodsService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.modules.pms.service.PmsGoodsSpecificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -54,6 +60,15 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
 
     @Autowired
     CmsUserService userService;
+
+    @Autowired
+    CmsFootprintService footprintService;
+
+    private final static ArrayBlockingQueue<Runnable> WORK_QUEUE = new ArrayBlockingQueue<>(9);
+
+    private final static RejectedExecutionHandler HANDLER = new ThreadPoolExecutor.CallerRunsPolicy();
+
+    private static ThreadPoolExecutor executorService = new ThreadPoolExecutor(16, 16, 1000, TimeUnit.MILLISECONDS, WORK_QUEUE, HANDLER);
 
     /**
      * 分页查询
@@ -112,7 +127,7 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
     }
 
     @Override
-    public HashMap<String, Object> view(String id) {
+    public HashMap<String, Object> view(Integer id) {
         HashMap<String, Object> goodsAndAttribute = getGoodsAndAttribute(id);
         // 商品规格信息
         QueryWrapper<PmsGoodsSpecification> specificationQuery = new QueryWrapper<>();
@@ -209,23 +224,48 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
      * @param goodsId
      * @return
      */
+    @Transactional
     @Override
-    public HashMap<String, Object> wxDetail(String goodsId, HttpServletRequest request) {
+    public HashMap<String, Object> wxDetail(Integer goodsId, HttpServletRequest request) {
         HashMap<String, Object> goodsAndAttribute = getGoodsAndAttribute(goodsId);
+
+        // 解密token获取id
+        String token = request.getHeader("Authorization").replace("Bearer ", "");
+        Integer userId = JWTUtils.getUserId(token);
+
         // 获取商品收藏状态
         QueryWrapper<CmsCollect> wrapper = new QueryWrapper<>();
-        // 解密token获取id
-        CmsUser userInfo = userService.getUserInfo(false);
-        Integer userId = userInfo.getId();
-        wrapper.lambda().eq(CmsCollect::getUserId, userId);
-        wrapper.lambda().eq(CmsCollect::getValueId, goodsId);
-        wrapper.lambda().eq(CmsCollect::getType, 0);
-        CmsCollect collect = collectService.getOne(wrapper);
         String collectStatus = null;
-        if (collect != null) {
-            collectStatus = "1";
-        } else {
-            collectStatus = "0";
+        if (userId != null) {
+            wrapper.lambda().eq(CmsCollect::getUserId, userId);
+            wrapper.lambda().eq(CmsCollect::getValueId, goodsId);
+            wrapper.lambda().eq(CmsCollect::getType, 0);
+            CmsCollect collect = collectService.getOne(wrapper);
+            if (collect != null) {
+                collectStatus = "1";
+            } else {
+                collectStatus = "0";
+            }
+        }
+
+        // 记录用户浏览足迹
+        if (userId != null) {
+            executorService.execute(() -> {
+                QueryWrapper<CmsFootprint> queryWrapper = new QueryWrapper<>();
+                queryWrapper.lambda().eq(CmsFootprint::getUserId, userId);
+                queryWrapper.lambda().eq(CmsFootprint::getGoodsId, goodsId);
+                CmsFootprint footprint = footprintService.getOne(queryWrapper);
+                if (footprint != null) {
+                    // 更新
+                    footprintService.updateById(footprint);
+                } else {
+                    // 添加足迹
+                    CmsFootprint cmsFootprint = new CmsFootprint();
+                    cmsFootprint.setUserId(userId);
+                    cmsFootprint.setGoodsId(goodsId);
+                    footprintService.saveOrUpdate(cmsFootprint);
+                }
+            });
         }
         // 商品规格信息
         List<VO> specificationList = getSpecificationList(goodsId);
@@ -243,7 +283,7 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
      * @param goodsId
      * @return
      */
-    public HashMap<String, Object> getGoodsAndAttribute(String goodsId) {
+    public HashMap<String, Object> getGoodsAndAttribute(Integer goodsId) {
         PmsGoods goods = getById(goodsId);
         // 商品货品信息
         QueryWrapper<PmsGoodsProduct> productQuery = new QueryWrapper<>();
@@ -266,7 +306,7 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
      * @param goodsId
      * @return
      */
-    public List<VO> getSpecificationList(String goodsId) {
+    public List<VO> getSpecificationList(Integer goodsId) {
         QueryWrapper<PmsGoodsSpecification> specificationQuery = new QueryWrapper<>();
         specificationQuery.lambda().eq(PmsGoodsSpecification::getGoodsId, goodsId);
         List<PmsGoodsSpecification> specificationList = specificationService.list(specificationQuery);

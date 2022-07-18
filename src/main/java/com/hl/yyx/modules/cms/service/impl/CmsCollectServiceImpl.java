@@ -96,7 +96,7 @@ public class CmsCollectServiceImpl extends ServiceImpl<CmsCollectMapper, CmsColl
      * @return
      */
     @Override
-    public Object getCollectionList() {
+    public Object getCollectionList(HttpServletRequest request) {
         CmsUser userInfo = userService.getUserInfo(false);
         QueryWrapper<CmsCollect> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(CmsCollect::getUserId, userInfo.getId());

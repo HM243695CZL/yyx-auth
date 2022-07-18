@@ -37,7 +37,7 @@ public class WxCollectionController {
      */
     @ApiOperation("获取微信用户收藏列表")
     @RequestMapping(value = "/getCollectionList", method = RequestMethod.GET)
-    public CommonResult getCollectionList () {
-        return CommonResult.success(collectService.getCollectionList());
+    public CommonResult getCollectionList (HttpServletRequest request) {
+        return CommonResult.success(collectService.getCollectionList(request));
     }
 }

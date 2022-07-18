@@ -30,5 +30,5 @@ public interface CmsCollectService extends IService<CmsCollect> {
      * 获取微信用户的收藏列表
      * @return
      */
-    Object getCollectionList();
+    Object getCollectionList(HttpServletRequest request);
 }

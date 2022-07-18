@@ -68,7 +68,7 @@ public class PmsGoodsController {
 
     // 查看
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
-    public CommonResult findOne(@PathVariable String id) {
+    public CommonResult findOne(@PathVariable Integer id) {
         return CommonResult.success(pmsGoodsService.view(id));
     }
 
