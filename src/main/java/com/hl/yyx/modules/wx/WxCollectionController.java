@@ -27,8 +27,8 @@ public class WxCollectionController {
      */
     @ApiOperation("收藏或更新收藏")
     @RequestMapping(value = "/status/{goodsId}", method = RequestMethod.GET)
-    public CommonResult createOrDeleteCollection(@PathVariable Integer goodsId, HttpServletRequest request) {
-        return CommonResult.success(collectService.createOrDeleteCollection(goodsId, request));
+    public CommonResult createOrDeleteCollection(@PathVariable Integer goodsId) {
+        return CommonResult.success(collectService.createOrDeleteCollection(goodsId));
     }
 
     /**
@@ -37,7 +37,7 @@ public class WxCollectionController {
      */
     @ApiOperation("获取微信用户收藏列表")
     @RequestMapping(value = "/getCollectionList", method = RequestMethod.GET)
-    public CommonResult getCollectionList (HttpServletRequest request) {
-        return CommonResult.success(collectService.getCollectionList(request));
+    public CommonResult getCollectionList () {
+        return CommonResult.success(collectService.getCollectionList());
     }
 }

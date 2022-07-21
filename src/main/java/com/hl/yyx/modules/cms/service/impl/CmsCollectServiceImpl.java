@@ -63,7 +63,7 @@ public class CmsCollectServiceImpl extends ServiceImpl<CmsCollectMapper, CmsColl
      * @return 0 取消收藏成功  1 添加收藏成功
      */
     @Override
-    public String createOrDeleteCollection(Integer goodsId, HttpServletRequest request) {
+    public String createOrDeleteCollection(Integer goodsId) {
         // 解密token获取id
         CmsUser userInfo = userService.getUserInfo(false);
         Integer userId = userInfo.getId();
@@ -96,7 +96,7 @@ public class CmsCollectServiceImpl extends ServiceImpl<CmsCollectMapper, CmsColl
      * @return
      */
     @Override
-    public Object getCollectionList(HttpServletRequest request) {
+    public Object getCollectionList() {
         CmsUser userInfo = userService.getUserInfo(false);
         QueryWrapper<CmsCollect> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(CmsCollect::getUserId, userInfo.getId());

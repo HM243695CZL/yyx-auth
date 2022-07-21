@@ -17,4 +17,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface CmsFootprintService extends IService<CmsFootprint> {
 
     Page<CmsFootprint> pageList(FootprintParamsDTO paramsDTO);
+
+    Object getFootprintList();
 }

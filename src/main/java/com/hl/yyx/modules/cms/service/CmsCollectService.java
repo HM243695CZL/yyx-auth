@@ -24,11 +24,11 @@ public interface CmsCollectService extends IService<CmsCollect> {
      * @param goodsId
      * @return
      */
-    String createOrDeleteCollection(Integer goodsId, HttpServletRequest request);
+    String createOrDeleteCollection(Integer goodsId);
 
     /**
      * 获取微信用户的收藏列表
      * @return
      */
-    Object getCollectionList(HttpServletRequest request);
+    Object getCollectionList();
 }
