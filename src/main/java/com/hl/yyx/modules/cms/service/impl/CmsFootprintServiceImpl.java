@@ -2,7 +2,6 @@ package com.hl.yyx.modules.cms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.cms.dto.FootprintParamsDTO;
 import com.hl.yyx.modules.cms.model.CmsFootprint;
 import com.hl.yyx.modules.cms.mapper.CmsFootprintMapper;
@@ -28,6 +27,7 @@ import java.util.List;
  * @since 2022-07-18
  */
 @Service
+@SuppressWarnings("all")
 public class CmsFootprintServiceImpl extends ServiceImpl<CmsFootprintMapper, CmsFootprint> implements CmsFootprintService {
 
     @Autowired
@@ -35,6 +35,9 @@ public class CmsFootprintServiceImpl extends ServiceImpl<CmsFootprintMapper, Cms
 
     @Autowired
     PmsGoodsService goodsService;
+
+    @Autowired
+    CmsFootprintMapper footprintMapper;
 
     /**
      * 分页查询
@@ -63,7 +66,7 @@ public class CmsFootprintServiceImpl extends ServiceImpl<CmsFootprintMapper, Cms
         CmsUser userInfo = userService.getUserInfo(false);
         QueryWrapper<CmsFootprint> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(CmsFootprint::getUserId, userInfo.getId());
-        wrapper.lambda().orderByDesc(CmsFootprint::getAddTime);
+        wrapper.lambda().orderByDesc(CmsFootprint::getUpdateTime);
         List<CmsFootprint> footprints = list(wrapper);
         List<Object> list = new ArrayList<>();
         for (CmsFootprint footprint : footprints) {
@@ -83,5 +86,18 @@ public class CmsFootprintServiceImpl extends ServiceImpl<CmsFootprintMapper, Cms
             }
         }
         return list;
+    }
+
+    /**
+     * 删除浏览足迹
+     * @param ids
+     * @return
+     */
+    @Override
+    public int deleteFootprint(List<Integer> ids) {
+        CmsUser userInfo = userService.getUserInfo(false);
+        QueryWrapper<CmsFootprint> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(CmsFootprint::getUserId, userInfo.getId());
+        return footprintMapper.delete(queryWrapper);
     }
 }

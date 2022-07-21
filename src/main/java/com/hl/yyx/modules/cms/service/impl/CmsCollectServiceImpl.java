@@ -2,22 +2,18 @@ package com.hl.yyx.modules.cms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hl.yyx.common.util.JWTUtils;
-import com.hl.yyx.common.vo.PageParamsDTO;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.modules.cms.dto.CollectionParamsDTO;
-import com.hl.yyx.modules.cms.model.CmsCollect;
 import com.hl.yyx.modules.cms.mapper.CmsCollectMapper;
+import com.hl.yyx.modules.cms.model.CmsCollect;
 import com.hl.yyx.modules.cms.model.CmsUser;
 import com.hl.yyx.modules.cms.service.CmsCollectService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.modules.cms.service.CmsUserService;
 import com.hl.yyx.modules.pms.model.PmsGoods;
 import com.hl.yyx.modules.pms.service.PmsGoodsService;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -101,7 +97,7 @@ public class CmsCollectServiceImpl extends ServiceImpl<CmsCollectMapper, CmsColl
         QueryWrapper<CmsCollect> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(CmsCollect::getUserId, userInfo.getId());
         // 按照添加时间排序
-        wrapper.lambda().orderByDesc(CmsCollect::getAddTime);
+        wrapper.lambda().orderByDesc(CmsCollect::getUpdateTime);
         List<CmsCollect> collects = list(wrapper);
         List<Object> list = new ArrayList<>();
         for (CmsCollect collect : collects) {
@@ -121,5 +117,22 @@ public class CmsCollectServiceImpl extends ServiceImpl<CmsCollectMapper, CmsColl
             }
         }
         return list;
+    }
+
+    /**
+     * 删除收藏
+     * @param ids
+     * @return
+     */
+    @Override
+    public Boolean deleteCollection(List<Integer> ids) {
+        CmsUser userInfo = userService.getUserInfo(false);
+        QueryWrapper<CmsCollect> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(CmsCollect::getUserId, userInfo.getId());
+        for (Integer id : ids) {
+            queryWrapper.lambda().eq(CmsCollect::getId, id);
+            remove(queryWrapper);
+        }
+        return true;
     }
 }

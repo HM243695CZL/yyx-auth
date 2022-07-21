@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 微信-收藏
@@ -39,5 +40,11 @@ public class WxCollectionController {
     @RequestMapping(value = "/getCollectionList", method = RequestMethod.GET)
     public CommonResult getCollectionList () {
         return CommonResult.success(collectService.getCollectionList());
+    }
+
+    @ApiOperation("删除收藏")
+    @RequestMapping(value = "/emptyCollection", method = RequestMethod.POST)
+    public CommonResult deleteCollection(@RequestBody List<Integer> ids) {
+        return CommonResult.success(collectService.deleteCollection(ids));
     }
 }

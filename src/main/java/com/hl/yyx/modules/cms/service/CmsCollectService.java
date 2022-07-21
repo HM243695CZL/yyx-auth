@@ -6,6 +6,7 @@ import com.hl.yyx.modules.cms.dto.CollectionParamsDTO;
 import com.hl.yyx.modules.cms.model.CmsCollect;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * <p>
@@ -31,4 +32,6 @@ public interface CmsCollectService extends IService<CmsCollect> {
      * @return
      */
     Object getCollectionList();
+
+    Boolean deleteCollection(List<Integer> ids);
 }
