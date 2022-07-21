@@ -27,6 +27,7 @@ import java.util.List;
  * @since 2022-07-15
  */
 @Service
+@SuppressWarnings("all")
 public class CmsCollectServiceImpl extends ServiceImpl<CmsCollectMapper, CmsCollect> implements CmsCollectService {
 
     @Autowired
@@ -34,6 +35,9 @@ public class CmsCollectServiceImpl extends ServiceImpl<CmsCollectMapper, CmsColl
 
     @Autowired
     PmsGoodsService goodsService;
+
+    @Autowired
+    CmsCollectMapper collectMapper;
 
     /**
      * 分页查询
@@ -129,10 +133,7 @@ public class CmsCollectServiceImpl extends ServiceImpl<CmsCollectMapper, CmsColl
         CmsUser userInfo = userService.getUserInfo(false);
         QueryWrapper<CmsCollect> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(CmsCollect::getUserId, userInfo.getId());
-        for (Integer id : ids) {
-            queryWrapper.lambda().eq(CmsCollect::getId, id);
-            remove(queryWrapper);
-        }
-        return true;
+        int delete = collectMapper.delete(queryWrapper);
+        return ids.size() == delete;
     }
 }

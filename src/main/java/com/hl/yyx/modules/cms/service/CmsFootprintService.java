@@ -21,5 +21,5 @@ public interface CmsFootprintService extends IService<CmsFootprint> {
 
     Object getFootprintList();
 
-    int deleteFootprint(List<Integer> ids);
+    boolean deleteFootprint(List<Integer> ids);
 }

@@ -94,10 +94,11 @@ public class CmsFootprintServiceImpl extends ServiceImpl<CmsFootprintMapper, Cms
      * @return
      */
     @Override
-    public int deleteFootprint(List<Integer> ids) {
+    public boolean deleteFootprint(List<Integer> ids) {
         CmsUser userInfo = userService.getUserInfo(false);
         QueryWrapper<CmsFootprint> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(CmsFootprint::getUserId, userInfo.getId());
-        return footprintMapper.delete(queryWrapper);
+        int delete = footprintMapper.delete(queryWrapper);
+        return ids.size() == delete;
     }
 }
