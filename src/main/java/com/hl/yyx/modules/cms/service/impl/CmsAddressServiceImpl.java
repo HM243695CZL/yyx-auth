@@ -6,9 +6,14 @@ import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.cms.dto.AddressParamsDTO;
 import com.hl.yyx.modules.cms.model.CmsAddress;
 import com.hl.yyx.modules.cms.mapper.CmsAddressMapper;
+import com.hl.yyx.modules.cms.model.CmsUser;
 import com.hl.yyx.modules.cms.service.CmsAddressService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hl.yyx.modules.cms.service.CmsUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -20,6 +25,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CmsAddressServiceImpl extends ServiceImpl<CmsAddressMapper, CmsAddress> implements CmsAddressService {
+
+    @Autowired
+    CmsUserService userService;
 
     /**
      * 分页查询
@@ -37,5 +45,30 @@ public class CmsAddressServiceImpl extends ServiceImpl<CmsAddressMapper, CmsAddr
             queryWrapper.lambda().like(CmsAddress::getName, paramsDTO.getName());
         }
         return page(page, queryWrapper);
+    }
+
+    /**
+     * 新增收货地址
+     * @param address
+     * @return
+     */
+    @Override
+    public Boolean create(CmsAddress address) {
+        CmsUser userInfo = userService.getUserInfo(false);
+        address.setUserId(userInfo.getId());
+        return save(address);
+    }
+
+    /**
+     * 获取收货地址列表
+     * @return
+     */
+    @Override
+    public List<CmsAddress> getAddressList() {
+        CmsUser userInfo = userService.getUserInfo(false);
+        QueryWrapper<CmsAddress> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(CmsAddress::getUserId, userInfo.getId());
+        wrapper.lambda().orderByDesc(CmsAddress::getUpdateTime);
+        return list(wrapper);
     }
 }
