@@ -41,6 +41,11 @@ public class WxCollectionController {
         return CommonResult.success(collectService.getCollectionList());
     }
 
+    /**
+     * 删除收藏
+     * @param ids
+     * @return
+     */
     @ApiOperation("删除收藏")
     @RequestMapping(value = "/emptyCollection", method = RequestMethod.POST)
     public CommonResult deleteCollection(@RequestBody List<Integer> ids) {

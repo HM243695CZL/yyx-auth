@@ -13,6 +13,7 @@ import com.hl.yyx.modules.pms.model.PmsGoods;
 import com.hl.yyx.modules.pms.service.PmsGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,11 +94,16 @@ public class CmsFootprintServiceImpl extends ServiceImpl<CmsFootprintMapper, Cms
      * @param ids
      * @return
      */
+    @Transactional
     @Override
     public boolean deleteFootprint(List<Integer> ids) {
         CmsUser userInfo = userService.getUserInfo(false);
         QueryWrapper<CmsFootprint> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(CmsFootprint::getUserId, userInfo.getId());
+        for (Integer id : ids) {
+            queryWrapper.lambda().eq(CmsFootprint::getId, id);
+            queryWrapper.or();
+        }
         int delete = footprintMapper.delete(queryWrapper);
         return ids.size() == delete;
     }

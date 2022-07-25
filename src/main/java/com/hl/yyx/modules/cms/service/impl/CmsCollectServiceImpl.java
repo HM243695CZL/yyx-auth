@@ -13,6 +13,7 @@ import com.hl.yyx.modules.pms.model.PmsGoods;
 import com.hl.yyx.modules.pms.service.PmsGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -128,11 +129,16 @@ public class CmsCollectServiceImpl extends ServiceImpl<CmsCollectMapper, CmsColl
      * @param ids
      * @return
      */
+    @Transactional
     @Override
     public Boolean deleteCollection(List<Integer> ids) {
         CmsUser userInfo = userService.getUserInfo(false);
         QueryWrapper<CmsCollect> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(CmsCollect::getUserId, userInfo.getId());
+        for (Integer id : ids) {
+            queryWrapper.lambda().eq(CmsCollect::getId, id);
+            queryWrapper.or();
+        }
         int delete = collectMapper.delete(queryWrapper);
         return ids.size() == delete;
     }

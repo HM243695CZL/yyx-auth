@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.modules.cms.service.CmsUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,11 +25,14 @@ import java.util.List;
  * @since 2022-07-21
  */
 @Service
+@SuppressWarnings("all")
 public class CmsAddressServiceImpl extends ServiceImpl<CmsAddressMapper, CmsAddress> implements CmsAddressService {
 
     @Autowired
     CmsUserService userService;
 
+    @Autowired
+    CmsAddressMapper addressMapper;
     /**
      * 分页查询
      * @param paramsDTO
@@ -70,5 +74,24 @@ public class CmsAddressServiceImpl extends ServiceImpl<CmsAddressMapper, CmsAddr
         wrapper.lambda().eq(CmsAddress::getUserId, userInfo.getId());
         wrapper.lambda().orderByDesc(CmsAddress::getUpdateTime);
         return list(wrapper);
+    }
+
+    /**
+     * 删除地址
+     * @param ids
+     * @return
+     */
+    @Transactional
+    @Override
+    public Boolean deleteAddress(List<Integer> ids) {
+        CmsUser userInfo = userService.getUserInfo(false);
+        QueryWrapper<CmsAddress> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(CmsAddress::getUserId, userInfo.getId());
+        for (Integer id : ids) {
+            queryWrapper.lambda().eq(CmsAddress::getId, id);
+            queryWrapper.or();
+        }
+        int delete = addressMapper.delete(queryWrapper);
+        return ids.size() == delete;
     }
 }

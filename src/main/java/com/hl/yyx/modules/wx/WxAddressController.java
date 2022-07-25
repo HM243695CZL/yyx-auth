@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * 微信-会员地址
  */
@@ -38,5 +40,14 @@ public class WxAddressController {
     @RequestMapping(value = "/getAddressList", method = RequestMethod.GET)
     public CommonResult getAddressList() {
         return CommonResult.success(addressService.getAddressList());
+    }
+
+    /**
+     * 删除地址
+     */
+    @ApiOperation("删除地址")
+    @RequestMapping(value = "/emptyAddress", method = RequestMethod.POST)
+    public CommonResult deleteAddress(@RequestBody List<Integer> ids) {
+        return CommonResult.success(addressService.deleteAddress(ids));
     }
 }

@@ -23,4 +23,6 @@ public interface CmsAddressService extends IService<CmsAddress> {
     Boolean create(CmsAddress address);
 
     List<CmsAddress> getAddressList();
+
+    Boolean deleteAddress(List<Integer> ids);
 }
