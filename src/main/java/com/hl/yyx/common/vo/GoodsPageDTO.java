@@ -6,4 +6,6 @@ import lombok.Data;
 public class GoodsPageDTO extends PageParamsDTO {
 
     private Integer categoryId;
+
+    private String keyword;
 }

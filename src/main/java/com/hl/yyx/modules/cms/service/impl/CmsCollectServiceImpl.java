@@ -65,7 +65,6 @@ public class CmsCollectServiceImpl extends ServiceImpl<CmsCollectMapper, CmsColl
      */
     @Override
     public String createOrDeleteCollection(Integer goodsId) {
-        // 解密token获取id
         CmsUser userInfo = userService.getUserInfo(false);
         Integer userId = userInfo.getId();
         QueryWrapper<CmsCollect> wrapper = new QueryWrapper<>();

@@ -45,4 +45,12 @@ public interface PmsGoodsService extends IService<PmsGoods> {
      * @return
      */
     HashMap<String, Object> wxDetail(Integer goodsId, HttpServletRequest request);
+
+    /**
+     * 微信端：根据关键字搜索商品
+     * @param searchDTO
+     * @param request
+     * @return
+     */
+    Page<PmsGoods> searchGoodsList(GoodsPageDTO searchDTO, HttpServletRequest request);
 }

@@ -1,5 +1,6 @@
 package com.hl.yyx.modules.pms.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -7,9 +8,10 @@ import com.hl.yyx.common.util.JWTUtils;
 import com.hl.yyx.common.vo.GoodsPageDTO;
 import com.hl.yyx.modules.cms.model.CmsCollect;
 import com.hl.yyx.modules.cms.model.CmsFootprint;
-import com.hl.yyx.modules.cms.model.CmsUser;
+import com.hl.yyx.modules.cms.model.CmsSearchHistory;
 import com.hl.yyx.modules.cms.service.CmsCollectService;
 import com.hl.yyx.modules.cms.service.CmsFootprintService;
+import com.hl.yyx.modules.cms.service.CmsSearchHistoryService;
 import com.hl.yyx.modules.cms.service.CmsUserService;
 import com.hl.yyx.modules.pms.dto.GoodsDTO;
 import com.hl.yyx.modules.pms.mapper.PmsGoodsMapper;
@@ -64,6 +66,9 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
     @Autowired
     CmsFootprintService footprintService;
 
+    @Autowired
+    CmsSearchHistoryService searchHistoryService;
+
     private final static ArrayBlockingQueue<Runnable> WORK_QUEUE = new ArrayBlockingQueue<>(9);
 
     private final static RejectedExecutionHandler HANDLER = new ThreadPoolExecutor.CallerRunsPolicy();
@@ -82,6 +87,13 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
         // 按照二级分类id查询商品
         if (paramsDTO.getCategoryId() != null) {
             wrapper.lambda().eq(PmsGoods::getCategoryId, paramsDTO.getCategoryId());
+        }
+        // 查询名称列或关键词列是否包含关键字
+        if (paramsDTO.getKeyword() != null) {
+            wrapper.lambda()
+                    .like(PmsGoods::getName, paramsDTO.getKeyword())
+                    .or()
+                    .like(PmsGoods::getKeywords, paramsDTO.getKeyword());
         }
         Page<PmsGoods> result = page(page, wrapper);
         for (PmsGoods record : result.getRecords()) {
@@ -276,6 +288,27 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
         goodsWxObj.put("products", goodsAndAttribute.get("products"));
         goodsWxObj.put("attributes", goodsAndAttribute.get("attributes"));
         return goodsWxObj;
+    }
+
+    /**
+     * 根据关键字搜索商品
+     * @param searchDTO
+     * @return
+     */
+    @Override
+    public Page<PmsGoods> searchGoodsList(GoodsPageDTO searchDTO, HttpServletRequest request) {
+        // 解密token获取id
+        String token = request.getHeader("Authorization").replace("Bearer ", "");
+        Integer userId = JWTUtils.getUserId(token);
+        // 添加到搜索历史
+        if (userId != null && !StrUtil.isEmpty(searchDTO.getKeyword())) {
+            CmsSearchHistory searchHistory = new CmsSearchHistory();
+            searchHistory.setUserId(userId);
+            searchHistory.setKeyword(searchDTO.getKeyword());
+            searchHistory.setFrom("wx");
+            searchHistoryService.save(searchHistory);
+        }
+        return pageList(searchDTO);
     }
 
     /**
