@@ -10,6 +10,7 @@ import com.hl.yyx.modules.cms.model.CmsUser;
 import com.hl.yyx.modules.cms.service.CmsSearchHistoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.modules.cms.service.CmsUserService;
+import com.hl.yyx.modules.ums.service.UmsAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,16 +23,28 @@ import org.springframework.stereotype.Service;
  * @since 2022-07-25
  */
 @Service
+@SuppressWarnings("all")
 public class CmsSearchHistoryServiceImpl extends ServiceImpl<CmsSearchHistoryMapper, CmsSearchHistory> implements CmsSearchHistoryService {
 
     @Autowired
     CmsUserService userService;
 
+    @Autowired
+    UmsAdminService adminService;
+
+    @Autowired
+    CmsSearchHistoryMapper searchHistoryMapper;
+
+    /**
+     * 分页查询 - 查出已逻辑删除和未逻辑删除的数据
+     * @param paramsDTO
+     * @return
+     */
     @Override
     public Page<CmsSearchHistory> pageList(PageParamsDTO paramsDTO) {
         Page<CmsSearchHistory> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
-        QueryWrapper<CmsSearchHistory> queryWrapper = new QueryWrapper<>();
-        return page(page, queryWrapper);
+        Page<CmsSearchHistory> allData = searchHistoryMapper.getAllData(page);
+        return allData;
     }
 
     /**

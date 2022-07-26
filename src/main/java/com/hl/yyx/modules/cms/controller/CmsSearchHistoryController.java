@@ -1,6 +1,11 @@
 package com.hl.yyx.modules.cms.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.vo.PageParamsDTO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,40 +25,19 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2022-07-25
  */
 @RestController
-@RequestMapping("/cms/cmsSearchHistory")
+@RequestMapping("/admin/cms/searchHistory")
+@Api(tags = "搜索历史", description = "搜索历史")
 public class CmsSearchHistoryController {
 
     @Autowired
     private CmsSearchHistoryService cmsSearchHistoryService;
 
-    // 新增
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public CommonResult save(@RequestBody CmsSearchHistory cmsSearchHistory) {
-        return CommonResult.success(cmsSearchHistoryService.save(cmsSearchHistory));
-    }
-
-    // 更新
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public CommonResult update(@RequestBody CmsSearchHistory cmsSearchHistory) {
-        return CommonResult.success(cmsSearchHistoryService.updateById(cmsSearchHistory));
-    }
-
-    // 删除
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public CommonResult delete(@PathVariable String id) {
-        return CommonResult.success( cmsSearchHistoryService.removeById(id));
-    }
-
-    // 获取全部
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public CommonResult list() {
-        return CommonResult.success(cmsSearchHistoryService.list());
-    }
-
-    // 查看
-    @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
-    public CommonResult findOne(@PathVariable String id) {
-        return CommonResult.success(cmsSearchHistoryService.getById(id));
+    // 分页
+    @ApiOperation("分页查询")
+    @RequestMapping(value = "/page", method = RequestMethod.POST)
+    public CommonResult page(@RequestBody PageParamsDTO paramsDTO) {
+        Page<CmsSearchHistory> pageList = cmsSearchHistoryService.pageList(paramsDTO);
+        return CommonResult.success(CommonPage.restPage(pageList));
     }
 
 }
