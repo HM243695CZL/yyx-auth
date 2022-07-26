@@ -18,7 +18,6 @@ public interface CmsSearchHistoryMapper extends BaseMapper<CmsSearchHistory> {
     /**
      * 查出已逻辑删除和未逻辑删除的数据
      * @param page
-     * @param id
      * @return
      */
     @Select("select * from cms_search_history order by add_time desc")
