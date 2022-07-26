@@ -24,4 +24,10 @@ public interface CmsSearchHistoryService extends IService<CmsSearchHistory> {
      * @return
      */
     Page<CmsSearchHistory> getHistory(PageParamsDTO paramsDTO);
+
+    /**
+     * 清空搜索历史
+     * @return
+     */
+    Boolean emptySearchHistory();
 }

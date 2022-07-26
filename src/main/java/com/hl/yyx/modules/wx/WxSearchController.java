@@ -67,4 +67,23 @@ public class WxSearchController {
     public CommonResult getHistory(@RequestBody PageParamsDTO paramsDTO) {
         return CommonResult.success(CommonPage.restPage(searchHistoryService.getHistory(paramsDTO)));
     }
+
+    /**
+     * 清空搜索历史
+     */
+    @ApiOperation("清空搜索历史")
+    @RequestMapping(value = "/emptySearchHistory", method = RequestMethod.GET)
+    public CommonResult emptySearchHistory() {
+        return CommonResult.success(searchHistoryService.emptySearchHistory());
+    }
+
+    /**
+     * 获取推荐关键词和热门关键词
+     */
+    @ApiOperation("获取推荐关键词和热门关键词")
+    @RequestMapping(value = "/getRecommendAndHotKeyword", method = RequestMethod.GET)
+    @NoWeiXinAuth
+    public CommonResult getRecommendAndHotKeyword() {
+        return CommonResult.success(keywordService.getRecommendAndHotKeyword());
+    }
 }

@@ -10,6 +10,7 @@ import com.hl.yyx.modules.pms.service.PmsKeywordService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -50,5 +51,25 @@ public class PmsKeywordServiceImpl extends ServiceImpl<PmsKeywordMapper, PmsKeyw
             keys[index++] = key.getKeyword();
         }
         return keys;
+    }
+
+    /**
+     * 获取推荐关键词和热门关键词
+     * @return
+     */
+    @Override
+    public Object getRecommendAndHotKeyword() {
+        QueryWrapper<PmsKeyword> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(PmsKeyword::getIsDefault, 1);
+        List<PmsKeyword> recommendList = list(queryWrapper);
+
+        QueryWrapper<PmsKeyword> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(PmsKeyword::getIsHot, 1);
+        List<PmsKeyword> hotList = list(wrapper);
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("recommendList", recommendList);
+        map.put("hotList", hotList);
+        return map;
     }
 }

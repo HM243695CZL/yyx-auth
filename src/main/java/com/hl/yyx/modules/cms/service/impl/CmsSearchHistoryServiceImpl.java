@@ -48,4 +48,17 @@ public class CmsSearchHistoryServiceImpl extends ServiceImpl<CmsSearchHistoryMap
         wrapper.lambda().orderByDesc(CmsSearchHistory::getUpdateTime);
         return page(page, wrapper);
     }
+
+    /**
+     * 清空搜索历史
+     * @return
+     */
+    @Override
+    public Boolean emptySearchHistory() {
+        CmsUser userInfo = userService.getUserInfo(false);
+        Integer userId = userInfo.getId();
+        QueryWrapper<CmsSearchHistory> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(CmsSearchHistory::getUserId, userId);
+        return remove(queryWrapper);
+    }
 }

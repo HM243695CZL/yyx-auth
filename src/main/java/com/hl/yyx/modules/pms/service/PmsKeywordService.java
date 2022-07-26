@@ -23,4 +23,6 @@ public interface PmsKeywordService extends IService<PmsKeyword> {
      * @return
      */
     Object getSearchHelper(SearchDTO searchDTO);
+
+    Object getRecommendAndHotKeyword();
 }
