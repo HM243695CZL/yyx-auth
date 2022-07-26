@@ -13,5 +13,6 @@ public class RegionDTO {
     private Integer id;
     private String code;
     private String value;
+    private Integer level;
     private List<RegionDTO> children;
 }

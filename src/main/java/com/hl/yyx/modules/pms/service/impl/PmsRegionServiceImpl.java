@@ -44,6 +44,7 @@ public class PmsRegionServiceImpl extends ServiceImpl<PmsRegionMapper, PmsRegion
         for (PmsRegion province : provinceList) {
             RegionDTO regionDTO = new RegionDTO();
             regionDTO.setId(province.getId());
+            regionDTO.setLevel(0);
             regionDTO.setValue(province.getName());
             regionDTO.setCode(province.getCode());
 
@@ -54,6 +55,7 @@ public class PmsRegionServiceImpl extends ServiceImpl<PmsRegionMapper, PmsRegion
                 for (PmsRegion cityVo : cityList) {
                     RegionDTO cityVO = new RegionDTO();
                     cityVO.setId(cityVo.getId());
+                    cityVO.setLevel(1);
                     cityVO.setValue(cityVo.getName());
                     cityVO.setCode(cityVo.getCode());
                     List<PmsRegion> areaList = areaListMap.get(cityVo.getId());
@@ -63,6 +65,7 @@ public class PmsRegionServiceImpl extends ServiceImpl<PmsRegionMapper, PmsRegion
                         for (PmsRegion area : areaList) {
                             RegionDTO areaVO = new RegionDTO();
                             areaVO.setId(area.getId());
+                            areaVO.setLevel(2);
                             areaVO.setValue(area.getName());
                             areaVO.setCode(area.getCode());
                             areaVOList.add(areaVO);
