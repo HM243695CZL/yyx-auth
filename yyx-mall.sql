@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 26/07/2022 17:33:32
+ Date: 27/07/2022 17:14:13
 */
 
 SET NAMES utf8mb4;
@@ -70,6 +70,31 @@ CREATE TABLE `cms_collect`  (
 INSERT INTO `cms_collect` VALUES (1, 6, 13, 0, '2022-07-25 11:12:30', '2022-07-25 11:12:30', 1);
 
 -- ----------------------------
+-- Table structure for cms_feedback
+-- ----------------------------
+DROP TABLE IF EXISTS `cms_feedback`;
+CREATE TABLE `cms_feedback`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL DEFAULT 0 COMMENT '用户表的用户ID',
+  `username` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '用户名称',
+  `mobile` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '手机号',
+  `feed_type` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '反馈类型',
+  `content` varchar(1023) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '反馈内容',
+  `status` int(3) NOT NULL DEFAULT 0 COMMENT '状态',
+  `has_picture` tinyint(1) NULL DEFAULT 0 COMMENT '是否含有图片',
+  `pic_urls` varchar(1023) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图片地址列表，采用JSON数组格式',
+  `add_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `id_value`(`status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '意见反馈表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of cms_feedback
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for cms_footprint
 -- ----------------------------
 DROP TABLE IF EXISTS `cms_footprint`;
@@ -81,13 +106,14 @@ CREATE TABLE `cms_footprint`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户浏览足迹表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户浏览足迹表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cms_footprint
 -- ----------------------------
 INSERT INTO `cms_footprint` VALUES (22, 6, 13, '2022-07-26 09:43:57', '2022-07-26 10:32:12', 1);
 INSERT INTO `cms_footprint` VALUES (23, 6, 12, '2022-07-26 10:32:27', '2022-07-26 10:32:27', 1);
+INSERT INTO `cms_footprint` VALUES (24, 6, 10, '2022-07-27 11:27:00', '2022-07-27 11:27:00', 1);
 
 -- ----------------------------
 -- Table structure for cms_search_history
@@ -436,7 +462,7 @@ CREATE TABLE `pms_region`  (
   `status` tinyint(1) NULL DEFAULT NULL COMMENT '状态 0 正常 -2 删除 -1 停用',
   `level` tinyint(1) NULL DEFAULT NULL COMMENT '级次id 0:省/自治区/直辖市 1:市级 2:县级',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3221 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 3220 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of pms_region
