@@ -71,8 +71,8 @@ public class PmsRegionServiceImpl extends ServiceImpl<PmsRegionMapper, PmsRegion
                             areaVOList.add(areaVO);
                         }
                         cityVO.setChildren(areaVOList);
-                        cityVoList.add(cityVO);
                     }
+                    cityVoList.add(cityVO);
                 }
                 regionDTO.setChildren(cityVoList);
             }
