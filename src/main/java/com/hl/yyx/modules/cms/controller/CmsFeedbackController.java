@@ -1,7 +1,11 @@
 package com.hl.yyx.modules.cms.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.vo.PageParamsDTO;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,23 +25,19 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2022-07-27
  */
 @RestController
-@RequestMapping("/cms/cmsFeedback")
+@RequestMapping("/admin/cms/feedback")
 @Api(tags = "意见反馈管理", description = "意见反馈管理")
 public class CmsFeedbackController {
 
     @Autowired
     private CmsFeedbackService cmsFeedbackService;
 
-    // 新增
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public CommonResult save(@RequestBody CmsFeedback cmsFeedback) {
-        return CommonResult.success(cmsFeedbackService.save(cmsFeedback));
-    }
-
-    // 更新
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public CommonResult update(@RequestBody CmsFeedback cmsFeedback) {
-        return CommonResult.success(cmsFeedbackService.updateById(cmsFeedback));
+    // 分页
+    @ApiOperation("分页查询")
+    @RequestMapping(value = "/page", method = RequestMethod.POST)
+    public CommonResult page(@RequestBody PageParamsDTO paramsDTO) {
+        Page<CmsFeedback> feedbackPage = cmsFeedbackService.pageList(paramsDTO);
+        return CommonResult.success(CommonPage.restPage(feedbackPage));
     }
 
     // 删除
