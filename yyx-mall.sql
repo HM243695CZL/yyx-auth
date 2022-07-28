@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 27/07/2022 17:14:13
+ Date: 28/07/2022 16:12:24
 */
 
 SET NAMES utf8mb4;
@@ -88,11 +88,15 @@ CREATE TABLE `cms_feedback`  (
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `id_value`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '意见反馈表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '意见反馈表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cms_feedback
 -- ----------------------------
+INSERT INTO `cms_feedback` VALUES (6, 6, 'hl243695czyn', '17885395648', '商品相关', '多加一点商品嘛', 0, 1, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/G0XZq30L6iZed7c9c5b431bf88de3342e892a853db12.png\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/O32UubUa740L1b51437e620bed05ef6ec58df8588e1a.png\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/mXBIQslOOkzEb005edd41a4b711ae8ed9953bdcec9e4.png\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/bLp3SB5jxbTT0e4f9c63b29245e3c27021e8e10a2d8e.png\"]', '2022-07-28 14:23:53', '2022-07-28 14:23:53', 1);
+INSERT INTO `cms_feedback` VALUES (7, 6, 'hl243695czyn', '17856137894', '商品相关', '可以加一点吃的东西吗？谢谢啦', 0, 1, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_34048c5f006157f7650cdedd2cdb5bdd1dd749ddc1737923.jpg\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_92954a57bf1ea3981ebbbd97c3f44b6ee74d27aa1a68ad56.jpg\"]', '2022-07-28 15:22:05', '2022-07-28 15:22:05', 1);
+INSERT INTO `cms_feedback` VALUES (8, 6, 'hl243695czyn', '17845612345', '优化建议', '图片多选测试', 0, 1, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_9901a7a262dea2c557ac21bc908775fd28706d902548b9a3.jpg\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_bb513252eb218ecad2a05b1435481f71b3b8342b5d5416f7.jpg\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_4100b362979a2b84cdc0f593a38c783d4548db958e217e4a.jpg\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_6eab10f61214f86b4ba791f0ce9eca69aaabf7d43c3902d5.jpg\"]', '2022-07-28 16:01:14', '2022-07-28 16:01:14', 1);
+INSERT INTO `cms_feedback` VALUES (9, 6, 'hl243695czyn', '17894653127', '优化建议', '拍照选取图片', 0, 1, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_932350f649ff4c719c1fe7fef8c5cd65f5017a577a858338.jpg\"]', '2022-07-28 16:02:33', '2022-07-28 16:02:33', 1);
 
 -- ----------------------------
 -- Table structure for cms_footprint
@@ -3705,7 +3709,7 @@ CREATE TABLE `ums_admin`  (
 -- ----------------------------
 -- Records of ums_admin
 -- ----------------------------
-INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2022-07-26 16:13:37', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-23 10:01:03', 1);
+INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2022-07-28 15:57:44', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-23 10:01:03', 1);
 INSERT INTO `ums_admin` VALUES (4, 'test', '123456', '', NULL, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220623/hw-logo.png', '2022-06-23 10:15:19', '2022-06-23 10:15:19', 1);
 
 -- ----------------------------
@@ -3744,7 +3748,7 @@ CREATE TABLE `ums_menu`  (
   `icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '菜单图标',
   `sort` int(10) NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_menu
@@ -3767,6 +3771,7 @@ INSERT INTO `ums_menu` VALUES (18, 13, '/cms/address', 'cmsAddress', '/cms/addre
 INSERT INTO `ums_menu` VALUES (19, 6, '/product/keyword', 'productKeyword', '/product/keyword', '关键字管理', '', 0, 1, 0, 0, 'iconfont icon-tongzhi1', 6);
 INSERT INTO `ums_menu` VALUES (20, 13, '/cms/searchHistory', 'cmsSearchHistory', '/cms/searchHistory', '搜索历史', '', 0, 1, 0, 0, 'iconfont icon--chaifenlie', 5);
 INSERT INTO `ums_menu` VALUES (21, 6, '/product/region', 'productRegion', '/product/region', '行政区域', '', 0, 1, 0, 0, 'iconfont icon-shouye_dongtaihui', 6);
+INSERT INTO `ums_menu` VALUES (22, 13, '/cms/feedback', 'cmsFeedback', '/cms/feedback', '意见反馈', '', 0, 1, 0, 0, 'iconfont icon--chaifenhang', 6);
 
 -- ----------------------------
 -- Table structure for ums_role
@@ -3800,30 +3805,31 @@ CREATE TABLE `ums_role_menu`  (
   `role_id` int(20) NULL DEFAULT NULL COMMENT '角色id',
   `menu_id` int(20) NULL DEFAULT NULL COMMENT '菜单id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 149 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色和菜单关系表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 168 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色和菜单关系表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_role_menu
 -- ----------------------------
 INSERT INTO `ums_role_menu` VALUES (5, 11, 6);
 INSERT INTO `ums_role_menu` VALUES (6, 11, 7);
-INSERT INTO `ums_role_menu` VALUES (131, 10, 1);
-INSERT INTO `ums_role_menu` VALUES (132, 10, 2);
-INSERT INTO `ums_role_menu` VALUES (133, 10, 4);
-INSERT INTO `ums_role_menu` VALUES (134, 10, 5);
-INSERT INTO `ums_role_menu` VALUES (135, 10, 6);
-INSERT INTO `ums_role_menu` VALUES (136, 10, 7);
-INSERT INTO `ums_role_menu` VALUES (137, 10, 9);
-INSERT INTO `ums_role_menu` VALUES (138, 10, 10);
-INSERT INTO `ums_role_menu` VALUES (139, 10, 11);
-INSERT INTO `ums_role_menu` VALUES (140, 10, 15);
-INSERT INTO `ums_role_menu` VALUES (141, 10, 19);
-INSERT INTO `ums_role_menu` VALUES (142, 10, 21);
-INSERT INTO `ums_role_menu` VALUES (143, 10, 13);
-INSERT INTO `ums_role_menu` VALUES (144, 10, 14);
-INSERT INTO `ums_role_menu` VALUES (145, 10, 16);
-INSERT INTO `ums_role_menu` VALUES (146, 10, 17);
-INSERT INTO `ums_role_menu` VALUES (147, 10, 18);
-INSERT INTO `ums_role_menu` VALUES (148, 10, 20);
+INSERT INTO `ums_role_menu` VALUES (149, 10, 1);
+INSERT INTO `ums_role_menu` VALUES (150, 10, 2);
+INSERT INTO `ums_role_menu` VALUES (151, 10, 4);
+INSERT INTO `ums_role_menu` VALUES (152, 10, 5);
+INSERT INTO `ums_role_menu` VALUES (153, 10, 6);
+INSERT INTO `ums_role_menu` VALUES (154, 10, 7);
+INSERT INTO `ums_role_menu` VALUES (155, 10, 9);
+INSERT INTO `ums_role_menu` VALUES (156, 10, 10);
+INSERT INTO `ums_role_menu` VALUES (157, 10, 11);
+INSERT INTO `ums_role_menu` VALUES (158, 10, 15);
+INSERT INTO `ums_role_menu` VALUES (159, 10, 19);
+INSERT INTO `ums_role_menu` VALUES (160, 10, 21);
+INSERT INTO `ums_role_menu` VALUES (161, 10, 13);
+INSERT INTO `ums_role_menu` VALUES (162, 10, 14);
+INSERT INTO `ums_role_menu` VALUES (163, 10, 16);
+INSERT INTO `ums_role_menu` VALUES (164, 10, 17);
+INSERT INTO `ums_role_menu` VALUES (165, 10, 18);
+INSERT INTO `ums_role_menu` VALUES (166, 10, 20);
+INSERT INTO `ums_role_menu` VALUES (167, 10, 22);
 
 SET FOREIGN_KEY_CHECKS = 1;
