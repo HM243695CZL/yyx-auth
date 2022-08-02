@@ -6,6 +6,7 @@ import com.hl.yyx.common.constants.Constants;
 import com.hl.yyx.common.exception.Asserts;
 import com.hl.yyx.modules.cms.model.CmsUser;
 import com.hl.yyx.modules.cms.service.CmsUserService;
+import com.hl.yyx.modules.pms.dto.CartCheckedDTO;
 import com.hl.yyx.modules.pms.dto.CartDTO;
 import com.hl.yyx.modules.pms.model.PmsCart;
 import com.hl.yyx.modules.pms.mapper.PmsCartMapper;
@@ -15,9 +16,14 @@ import com.hl.yyx.modules.pms.service.PmsCartService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.modules.pms.service.PmsGoodsProductService;
 import com.hl.yyx.modules.pms.service.PmsGoodsService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -29,6 +35,7 @@ import java.util.List;
  * @since 2022-08-01
  */
 @Service
+@Slf4j
 public class PmsCartServiceImpl extends ServiceImpl<PmsCartMapper, PmsCart> implements PmsCartService {
 
     @Autowired
@@ -48,7 +55,7 @@ public class PmsCartServiceImpl extends ServiceImpl<PmsCartMapper, PmsCart> impl
      */
     @Override
     public Object create(CartDTO cartDTO) {
-        CmsUser userInfo = userService.getUserInfo(false);
+        CmsUser userInfo = getUserInfo();
         Integer userId = userInfo.getId();
         // 判断商品是否可以购买
         PmsGoods goods = goodsService.getById(cartDTO.getGoodsId());
@@ -91,10 +98,86 @@ public class PmsCartServiceImpl extends ServiceImpl<PmsCartMapper, PmsCart> impl
     }
 
     /**
+     * 获取购物车信息
+     * @return
+     */
+    @Override
+    public Object getCartInfo() {
+        CmsUser userInfo = getUserInfo();
+        Integer userId = userInfo.getId();
+        QueryWrapper<PmsCart> queryWrapper = new QueryWrapper<>();
+        // 获取用户的购物车数据
+        queryWrapper.lambda().eq(PmsCart::getUserId, userId);
+        List<PmsCart> list = list(queryWrapper);
+        List<PmsCart> cartList = new ArrayList<>();
+        // 自动删除已下架商品
+        for (PmsCart cart : list) {
+            PmsGoods goods = goodsService.getById(cart.getGoodsId());
+            if (goods == null || !goods.getIsOnSale()) {
+                removeById(cart.getId());
+                log.info("系统自动删除失效购物车商品， goodsId = " + cart.getGoodsId() + " productId = " + cart.getProductId());
+            } else {
+                cartList.add(cart);
+            }
+        }
+        Integer goodsCount = 0; // 商品数量
+        BigDecimal goodsAmount = new BigDecimal("0.00"); // 商品总价
+        Integer checkedGoodsCount = 0; // 选中的数量
+        BigDecimal checkedGoodsAmount = new BigDecimal("0.00"); // 选中的总价
+        for (PmsCart cart : cartList) {
+            goodsCount += cart.getNumber();
+            goodsAmount = goodsAmount.add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
+            if (cart.getChecked()) {
+                checkedGoodsCount += cart.getNumber();
+                checkedGoodsAmount = checkedGoodsAmount.add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
+            }
+        }
+        HashMap<String, Object> cartTotal = new HashMap<>();
+        cartTotal.put("goodsCount", goodsCount);
+        cartTotal.put("goodsAmount", goodsAmount);
+        cartTotal.put("checkedGoodsCount", checkedGoodsCount);
+        cartTotal.put("checkedGoodsAmount", checkedGoodsAmount);
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("cartList", cartList);
+        result.put("cartTotal", cartTotal);
+        return result;
+    }
+
+    /**
+     * 改变购物车商品货品状态
+     * @param checkedDTO
+     * @return
+     */
+    @Transactional
+    @Override
+    public Object changeChecked(CartCheckedDTO checkedDTO) {
+        CmsUser userInfo = getUserInfo();
+        Integer userId = userInfo.getId();
+        List<Integer> productIds = checkedDTO.getProductIds();
+        for (Integer productId : productIds) {
+            QueryWrapper<PmsCart> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().eq(PmsCart::getProductId, productId);
+            queryWrapper.lambda().eq(PmsCart::getUserId, userId);
+            PmsCart cart = getOne(queryWrapper);
+            cart.setChecked(checkedDTO.getIsChecked());
+            updateById(cart);
+        }
+        return getCartInfo();
+    }
+
+    /**
+     * 获取用户信息
+     * @return
+     */
+    private CmsUser getUserInfo() {
+        return userService.getUserInfo(false);
+    }
+
+    /**
      * 获取购物车商品货品数量
      */
     public Object getGoodsCount() {
-        CmsUser userInfo = userService.getUserInfo(false);
+        CmsUser userInfo = getUserInfo();
         Integer userId = userInfo.getId();
         int goodsCount = 0;
         QueryWrapper<PmsCart> queryWrapper = new QueryWrapper<>();

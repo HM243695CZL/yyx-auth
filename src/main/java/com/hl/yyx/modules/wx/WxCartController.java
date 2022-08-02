@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.wx;
 
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.modules.pms.dto.CartCheckedDTO;
 import com.hl.yyx.modules.pms.dto.CartDTO;
 import com.hl.yyx.modules.pms.service.PmsCartService;
 import io.swagger.annotations.Api;
@@ -22,9 +23,33 @@ public class WxCartController {
     @Autowired
     PmsCartService cartService;
 
+    /**
+     * 添加到购物车
+     * @param cartDTO
+     * @return
+     */
     @ApiOperation("添加购物车")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public CommonResult addCart(@RequestBody CartDTO cartDTO) {
         return CommonResult.success(cartService.create(cartDTO));
+    }
+
+    /**
+     * 获取购物车信息
+     * @return
+     */
+    @ApiOperation("获取购物车信息")
+    @RequestMapping(value = "/getCartInfo", method = RequestMethod.POST)
+    public CommonResult getCartInfo() {
+        return CommonResult.success(cartService.getCartInfo());
+    }
+
+    /**
+     * 改变购物车商品货品状态
+     */
+    @ApiOperation("改变购物车商品货品状态")
+    @RequestMapping(value = "/checked", method = RequestMethod.POST)
+    public CommonResult changeChecked(@RequestBody CartCheckedDTO checkedDTO) {
+        return CommonResult.success(cartService.changeChecked(checkedDTO));
     }
 }
