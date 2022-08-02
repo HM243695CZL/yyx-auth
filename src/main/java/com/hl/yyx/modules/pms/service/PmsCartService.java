@@ -5,6 +5,8 @@ import com.hl.yyx.modules.pms.dto.CartDTO;
 import com.hl.yyx.modules.pms.model.PmsCart;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 购物车商品表 服务类
@@ -34,4 +36,17 @@ public interface PmsCartService extends IService<PmsCart> {
      * @return
      */
     Object changeChecked(CartCheckedDTO checkedDTO);
+
+    /**
+     * 删除购物车商品
+     * @param ids
+     * @return
+     */
+    Boolean emptyCart(List<Integer> ids);
+
+    /**
+     * 获取用户购物车的商品数量
+     * @return
+     */
+    Integer getCartCount(Integer userId);
 }

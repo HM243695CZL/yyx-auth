@@ -2,7 +2,6 @@ package com.hl.yyx.modules.cms.service.impl;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
-import cn.hutool.core.lang.Assert;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -23,6 +22,7 @@ import com.hl.yyx.modules.cms.mapper.CmsUserMapper;
 import com.hl.yyx.modules.cms.service.CmsUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.modules.cms.service.WxService;
+import com.hl.yyx.modules.pms.service.PmsCartService;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,6 +61,9 @@ public class CmsUserServiceImpl extends ServiceImpl<CmsUserMapper, CmsUser> impl
 
     @Autowired
     private WxMaService wxMaService;
+
+    @Autowired
+    private PmsCartService cartService;
 
     @Override
     public Object getSessionId(String code) {
@@ -132,8 +135,11 @@ public class CmsUserServiceImpl extends ServiceImpl<CmsUserMapper, CmsUser> impl
         user.setPassword(null);
         user.setUsername(null);
         user.setWeixinOpenid(null);
+        // 获取用户购物车的商品数量
+        Integer cartCount = cartService.getCartCount(user.getId());
         HashMap<Object, Object> result = new HashMap<>();
         result.put("token", token);
+        result.put("cartCount", cartCount);
         // 将用户信息保存到redis中
         redisTemplate.opsForValue().set(RedisKey.TOKEN_KEY + token, JSON.toJSONString(user), 7, TimeUnit.DAYS);
         return result;

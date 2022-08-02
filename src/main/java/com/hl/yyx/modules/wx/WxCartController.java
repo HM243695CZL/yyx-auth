@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * 微信-购物车
  */
@@ -51,5 +53,16 @@ public class WxCartController {
     @RequestMapping(value = "/checked", method = RequestMethod.POST)
     public CommonResult changeChecked(@RequestBody CartCheckedDTO checkedDTO) {
         return CommonResult.success(cartService.changeChecked(checkedDTO));
+    }
+
+    /**
+     * 删除购物车商品
+     * @param ids
+     * @return
+     */
+    @ApiOperation("删除购物车商品")
+    @RequestMapping(value = "/emptyCart", method = RequestMethod.POST)
+    public CommonResult emptyCart(@RequestBody List<Integer> ids) {
+        return CommonResult.success(cartService.emptyCart(ids));
     }
 }

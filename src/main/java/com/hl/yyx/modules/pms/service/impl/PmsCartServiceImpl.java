@@ -36,6 +36,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
+@SuppressWarnings("all")
 public class PmsCartServiceImpl extends ServiceImpl<PmsCartMapper, PmsCart> implements PmsCartService {
 
     @Autowired
@@ -46,6 +47,9 @@ public class PmsCartServiceImpl extends ServiceImpl<PmsCartMapper, PmsCart> impl
 
     @Autowired
     CmsUserService userService;
+
+    @Autowired
+    PmsCartMapper cartMapper;
 
     /**
      * 加入商品到购物车
@@ -166,6 +170,25 @@ public class PmsCartServiceImpl extends ServiceImpl<PmsCartMapper, PmsCart> impl
     }
 
     /**
+     * 删除购物车商品
+     * @param ids
+     * @return
+     */
+    @Transactional
+    @Override
+    public Boolean emptyCart(List<Integer> ids) {
+        CmsUser userInfo = getUserInfo();
+        QueryWrapper<PmsCart> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(PmsCart::getUserId, userInfo.getId());
+        for (Integer id : ids) {
+            queryWrapper.lambda().eq(PmsCart::getId, id);
+            queryWrapper.or();
+        }
+        int delete = cartMapper.delete(queryWrapper);
+        return ids.size() == delete;
+    }
+
+    /**
      * 获取用户信息
      * @return
      */
@@ -198,5 +221,21 @@ public class PmsCartServiceImpl extends ServiceImpl<PmsCartMapper, PmsCart> impl
         queryWrapper.lambda().eq(PmsCart::getGoodsId, goodsId);
         queryWrapper.lambda().eq(PmsCart::getProductId, productId);
         return getOne(queryWrapper);
+    }
+
+    /**
+     * 获取购物车的商品货品数量
+     * @return
+     */
+    public Integer getCartCount(Integer userId) {
+        QueryWrapper<PmsCart> queryWrapper = new QueryWrapper<>();
+        // 获取用户的购物车数据
+        queryWrapper.lambda().eq(PmsCart::getUserId, userId);
+        List<PmsCart> list = list(queryWrapper);
+        Integer number = 0;
+        for (PmsCart pmsCart : list) {
+            number += pmsCart.getNumber();
+        }
+        return number;
     }
 }

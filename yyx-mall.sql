@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 02/08/2022 09:13:48
+ Date: 02/08/2022 18:02:19
 */
 
 SET NAMES utf8mb4;
@@ -38,7 +38,7 @@ CREATE TABLE `cms_address`  (
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '收货地址表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '收货地址表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cms_address
@@ -62,7 +62,7 @@ CREATE TABLE `cms_collect`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE,
   INDEX `goods_id`(`value_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '收藏表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '收藏表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cms_collect
@@ -88,7 +88,7 @@ CREATE TABLE `cms_feedback`  (
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `id_value`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '意见反馈表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '意见反馈表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cms_feedback
@@ -109,16 +109,16 @@ CREATE TABLE `cms_footprint`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户浏览足迹表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户浏览足迹表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cms_footprint
 -- ----------------------------
-INSERT INTO `cms_footprint` VALUES (22, 6, 13, '2022-07-26 09:43:57', '2022-07-26 10:32:12', 1);
-INSERT INTO `cms_footprint` VALUES (23, 6, 12, '2022-07-26 10:32:27', '2022-08-01 23:28:00', 1);
-INSERT INTO `cms_footprint` VALUES (24, 6, 10, '2022-07-27 11:27:00', '2022-07-27 11:27:00', 1);
-INSERT INTO `cms_footprint` VALUES (25, 6, 9, '2022-07-28 17:48:33', '2022-08-02 00:06:02', 1);
-INSERT INTO `cms_footprint` VALUES (26, 6, 16, '2022-08-01 16:58:49', '2022-08-01 23:29:04', 1);
+INSERT INTO `cms_footprint` VALUES (25, 6, 9, '2022-07-28 17:48:33', '2022-08-02 17:19:16', 1);
+INSERT INTO `cms_footprint` VALUES (26, 6, 16, '2022-08-01 16:58:49', '2022-08-02 17:12:41', 1);
+INSERT INTO `cms_footprint` VALUES (27, 6, 11, '2022-08-02 11:36:28', '2022-08-02 17:46:47', 1);
+INSERT INTO `cms_footprint` VALUES (30, 6, 14, '2022-08-02 16:56:55', '2022-08-02 17:07:29', 1);
+INSERT INTO `cms_footprint` VALUES (31, 6, 13, '2022-08-02 17:19:39', '2022-08-02 17:19:39', 1);
 
 -- ----------------------------
 -- Table structure for cms_search_history
@@ -133,7 +133,7 @@ CREATE TABLE `cms_search_history`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '搜索历史表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '搜索历史表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cms_search_history
@@ -149,6 +149,7 @@ INSERT INTO `cms_search_history` VALUES (8, 6, '牛奶', 'wx', '2022-07-26 09:57
 INSERT INTO `cms_search_history` VALUES (9, 6, '食用油', 'wx', '2022-07-26 09:57:57', '2022-07-26 09:57:57', 0);
 INSERT INTO `cms_search_history` VALUES (10, 6, '特产', 'wx', '2022-07-26 10:32:24', '2022-07-26 10:32:24', 1);
 INSERT INTO `cms_search_history` VALUES (11, 6, '饮料', 'wx', '2022-07-26 10:32:25', '2022-07-26 10:32:25', 1);
+INSERT INTO `cms_search_history` VALUES (12, 6, '牛奶', 'wx', '2022-08-02 17:00:07', '2022-08-02 17:00:07', 1);
 
 -- ----------------------------
 -- Table structure for cms_user
@@ -174,7 +175,7 @@ CREATE TABLE `cms_user`  (
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `user_name`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cms_user
@@ -196,7 +197,7 @@ CREATE TABLE `pms_brand`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1046003 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '品牌商表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1046003 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '品牌商表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_brand
@@ -224,12 +225,13 @@ CREATE TABLE `pms_cart`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '购物车商品表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '购物车商品表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_cart
 -- ----------------------------
-INSERT INTO `pms_cart` VALUES (4, 6, 9, '100105', '德运 (Devondale) 澳大利亚原装进口 全脂纯牛奶早餐奶1L*10盒整箱装 高钙优质乳蛋白', 12, 96.00, 2, '[\"健康脱脂\"]', 1, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/d6dd8d2e58d22dd4.jpg.avif', '2022-08-02 00:06:16', '2022-08-02 00:06:16', 1);
+INSERT INTO `pms_cart` VALUES (9, 6, 12, '100113', '延中 经典原味盐汽水 饮料 600ml*20瓶 整箱', 18, 46.00, 1, '[\"小桃汽\"]', 1, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/00aa42fb88c91f8d.jpg.avif', '2022-08-02 16:56:42', '2022-08-02 16:56:42', 1);
+INSERT INTO `pms_cart` VALUES (10, 6, 11, '100111', '沃隆每日坚果750gA成人款（25g*30袋）坚果炒货年货礼盒 进口原料扁桃仁腰果核桃仁', 16, 135.00, 2, '[\"学生活力款\"]', 1, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/e7a076065778919b.jpg.avif', '2022-08-02 16:56:51', '2022-08-02 16:56:51', 1);
 
 -- ----------------------------
 -- Table structure for pms_category
@@ -250,7 +252,7 @@ CREATE TABLE `pms_category`  (
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `parent_id`(`pid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '类目表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '类目表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_category
@@ -296,7 +298,7 @@ CREATE TABLE `pms_goods`  (
   INDEX `cat_id`(`category_id`) USING BTREE,
   INDEX `brand_id`(`brand_id`) USING BTREE,
   INDEX `sort_order`(`sort_order`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品基本信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品基本信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_goods
@@ -324,7 +326,7 @@ CREATE TABLE `pms_goods_attribute`  (
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `goods_id`(`goods_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 90 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品参数表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 90 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品参数表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_goods_attribute
@@ -372,7 +374,7 @@ CREATE TABLE `pms_goods_product`  (
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `goods_id`(`goods_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品货品表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品货品表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_goods_product
@@ -409,7 +411,7 @@ CREATE TABLE `pms_goods_specification`  (
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `goods_id`(`goods_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品规格表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品规格表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_goods_specification
@@ -444,7 +446,7 @@ CREATE TABLE `pms_issue`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '常见问题表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '常见问题表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_issue
@@ -469,7 +471,7 @@ CREATE TABLE `pms_keyword`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '关键字表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '关键字表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_keyword
@@ -494,7 +496,7 @@ CREATE TABLE `pms_region`  (
   `status` tinyint(1) NULL DEFAULT NULL COMMENT '状态 0 正常 -2 删除 -1 停用',
   `level` tinyint(1) NULL DEFAULT NULL COMMENT '级次id 0:省/自治区/直辖市 1:市级 2:县级',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3220 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 3220 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of pms_region
@@ -3732,7 +3734,7 @@ CREATE TABLE `ums_admin`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '管理员表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '管理员表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_admin
@@ -3749,7 +3751,7 @@ CREATE TABLE `ums_admin_role`  (
   `admin_id` int(20) NULL DEFAULT NULL COMMENT '管理员id',
   `role_id` int(20) NULL DEFAULT NULL COMMENT '角色id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '后台用户和角色关系表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '后台用户和角色关系表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_admin_role
@@ -3776,7 +3778,7 @@ CREATE TABLE `ums_menu`  (
   `icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '菜单图标',
   `sort` int(10) NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_menu
@@ -3816,7 +3818,7 @@ CREATE TABLE `ums_role`  (
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `name_UNIQUE`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_role
@@ -3833,7 +3835,7 @@ CREATE TABLE `ums_role_menu`  (
   `role_id` int(20) NULL DEFAULT NULL COMMENT '角色id',
   `menu_id` int(20) NULL DEFAULT NULL COMMENT '菜单id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 168 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色和菜单关系表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 168 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色和菜单关系表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_role_menu
