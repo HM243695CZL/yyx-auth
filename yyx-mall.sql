@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 28/07/2022 16:12:24
+ Date: 02/08/2022 09:13:48
 */
 
 SET NAMES utf8mb4;
@@ -94,7 +94,6 @@ CREATE TABLE `cms_feedback`  (
 -- Records of cms_feedback
 -- ----------------------------
 INSERT INTO `cms_feedback` VALUES (6, 6, 'hl243695czyn', '17885395648', '商品相关', '多加一点商品嘛', 0, 1, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/G0XZq30L6iZed7c9c5b431bf88de3342e892a853db12.png\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/O32UubUa740L1b51437e620bed05ef6ec58df8588e1a.png\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/mXBIQslOOkzEb005edd41a4b711ae8ed9953bdcec9e4.png\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/bLp3SB5jxbTT0e4f9c63b29245e3c27021e8e10a2d8e.png\"]', '2022-07-28 14:23:53', '2022-07-28 14:23:53', 1);
-INSERT INTO `cms_feedback` VALUES (7, 6, 'hl243695czyn', '17856137894', '商品相关', '可以加一点吃的东西吗？谢谢啦', 0, 1, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_34048c5f006157f7650cdedd2cdb5bdd1dd749ddc1737923.jpg\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_92954a57bf1ea3981ebbbd97c3f44b6ee74d27aa1a68ad56.jpg\"]', '2022-07-28 15:22:05', '2022-07-28 15:22:05', 1);
 INSERT INTO `cms_feedback` VALUES (8, 6, 'hl243695czyn', '17845612345', '优化建议', '图片多选测试', 0, 1, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_9901a7a262dea2c557ac21bc908775fd28706d902548b9a3.jpg\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_bb513252eb218ecad2a05b1435481f71b3b8342b5d5416f7.jpg\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_4100b362979a2b84cdc0f593a38c783d4548db958e217e4a.jpg\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_6eab10f61214f86b4ba791f0ce9eca69aaabf7d43c3902d5.jpg\"]', '2022-07-28 16:01:14', '2022-07-28 16:01:14', 1);
 INSERT INTO `cms_feedback` VALUES (9, 6, 'hl243695czyn', '17894653127', '优化建议', '拍照选取图片', 0, 1, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_932350f649ff4c719c1fe7fef8c5cd65f5017a577a858338.jpg\"]', '2022-07-28 16:02:33', '2022-07-28 16:02:33', 1);
 
@@ -110,14 +109,16 @@ CREATE TABLE `cms_footprint`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户浏览足迹表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户浏览足迹表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cms_footprint
 -- ----------------------------
 INSERT INTO `cms_footprint` VALUES (22, 6, 13, '2022-07-26 09:43:57', '2022-07-26 10:32:12', 1);
-INSERT INTO `cms_footprint` VALUES (23, 6, 12, '2022-07-26 10:32:27', '2022-07-26 10:32:27', 1);
+INSERT INTO `cms_footprint` VALUES (23, 6, 12, '2022-07-26 10:32:27', '2022-08-01 23:28:00', 1);
 INSERT INTO `cms_footprint` VALUES (24, 6, 10, '2022-07-27 11:27:00', '2022-07-27 11:27:00', 1);
+INSERT INTO `cms_footprint` VALUES (25, 6, 9, '2022-07-28 17:48:33', '2022-08-02 00:06:02', 1);
+INSERT INTO `cms_footprint` VALUES (26, 6, 16, '2022-08-01 16:58:49', '2022-08-01 23:29:04', 1);
 
 -- ----------------------------
 -- Table structure for cms_search_history
@@ -173,7 +174,7 @@ CREATE TABLE `cms_user`  (
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `user_name`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cms_user
@@ -195,13 +196,40 @@ CREATE TABLE `pms_brand`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1046003 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '品牌商表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1046003 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '品牌商表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_brand
 -- ----------------------------
 INSERT INTO `pms_brand` VALUES (1046001, 'WMF制造商', '严选找寻德国百年高端厨具WMF的制造商， 选择拥有14年经验的不锈钢生产工厂， 为你甄选事半功倍的优质厨具。', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220624/2018e9ac91ec37d9aaf437a1fd5d7070.png', 50, 9.90, '2022-06-24 13:23:15', '2022-06-24 13:23:15', 1);
 INSERT INTO `pms_brand` VALUES (1046002, 'KitchenAid制造商', '严选寻访KitchenAid品牌的制造商， 采用德国LFGB认证食品级专用不锈钢， 欧式简约设计，可靠安心，尽享下厨乐趣。', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220624/e11385bf29d1b3949435b80fcd000948.png', 50, 98.00, '2022-06-24 13:23:50', '2022-06-24 13:51:29', 1);
+
+-- ----------------------------
+-- Table structure for pms_cart
+-- ----------------------------
+DROP TABLE IF EXISTS `pms_cart`;
+CREATE TABLE `pms_cart`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NULL DEFAULT NULL COMMENT '用户表的用户ID',
+  `goods_id` int(11) NULL DEFAULT NULL COMMENT '商品表的商品ID',
+  `goods_sn` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品编号',
+  `goods_name` varchar(127) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品名称',
+  `product_id` int(11) NULL DEFAULT NULL COMMENT '商品货品表的货品ID',
+  `price` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '商品货品的价格',
+  `number` smallint(5) NULL DEFAULT 0 COMMENT '商品货品的数量',
+  `specifications` varchar(1023) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品规格值列表，采用JSON数组格式',
+  `checked` tinyint(1) NULL DEFAULT 1 COMMENT '购物车中商品是否选择状态',
+  `pic_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品图片或者商品货品图片',
+  `add_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '购物车商品表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of pms_cart
+-- ----------------------------
+INSERT INTO `pms_cart` VALUES (4, 6, 9, '100105', '德运 (Devondale) 澳大利亚原装进口 全脂纯牛奶早餐奶1L*10盒整箱装 高钙优质乳蛋白', 12, 96.00, 2, '[\"健康脱脂\"]', 1, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/d6dd8d2e58d22dd4.jpg.avif', '2022-08-02 00:06:16', '2022-08-02 00:06:16', 1);
 
 -- ----------------------------
 -- Table structure for pms_category
@@ -222,7 +250,7 @@ CREATE TABLE `pms_category`  (
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `parent_id`(`pid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '类目表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '类目表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_category
@@ -268,7 +296,7 @@ CREATE TABLE `pms_goods`  (
   INDEX `cat_id`(`category_id`) USING BTREE,
   INDEX `brand_id`(`brand_id`) USING BTREE,
   INDEX `sort_order`(`sort_order`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品基本信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品基本信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_goods
@@ -280,7 +308,7 @@ INSERT INTO `pms_goods` VALUES (00000000012, '100113', '延中 经典原味盐�
 INSERT INTO `pms_goods` VALUES (00000000013, '100113', ' 蒙牛 特仑苏 纯牛奶250ml*16每100ml含3.6g优质蛋白质 礼盒装', 2, 1046001, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/880f921501da06c4.jpg.avif\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/6348016a04950f5c.jpg.avif\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/ad48bcf71922f775.jpg.avif\"]', '', ' 蒙牛 特仑苏 纯牛奶250ml*16每100ml含3.6g优质蛋白质 礼盒装', 1, 100, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/242d4558a95a361e.jpg.avif', NULL, 1, 1, '箱', 67.90, 67.90, '<p><img src=\"https://img14.360buyimg.com/n1/jfs/t1/156765/20/22512/403077/6183a292E66f2cc39/232529fcf416c674.jpg.avif\" alt=\"\" data-href=\"\" style=\"\"/></p><p><img src=\"https://img14.360buyimg.com/n1/jfs/t1/205560/1/13963/483306/6183a268E39682246/c41d088f71c04ce0.jpg.avif\" alt=\"\" data-href=\"\" style=\"\"/></p>', '2022-07-14 13:39:10', '2022-07-14 13:39:10', 1);
 INSERT INTO `pms_goods` VALUES (00000000014, '100115', '东北大米 蟹田大米 蟹稻共生 原粮产地盘锦 软糯香2斤真空装包邮', 2, 1046001, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/26ceda9145fb3c2a.jpg.avif\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/325e992cab532435.jpg.avif\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/ca410e6be2e97384.jpg.avif\"]', '面', '东北大米 蟹田大米 蟹稻共生 原粮产地盘锦 软糯香2斤真空装包邮', 1, 100, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/0cd6a467c612682b.jpg.avif', NULL, 1, 1, '千克', 12.00, 12.00, '<p><img src=\"https://img13.360buyimg.com/n1/jfs/t1/127414/3/18182/101260/5faaa44fE117e471a/bbe0e5448cc63915.jpg.avif\" alt=\"\" data-href=\"\" style=\"\"/></p><p><img src=\"https://img13.360buyimg.com/n1/jfs/t1/126083/19/18295/85581/5faaa457Ed04b6a5c/10465d35b1dc2453.jpg.avif\" alt=\"\" data-href=\"\" style=\"\"/></p>', '2022-07-14 13:42:59', '2022-07-14 13:42:59', 1);
 INSERT INTO `pms_goods` VALUES (00000000015, '100116', ' 鲁花 食用油 5S物理压榨 压榨一级 花生油 6.18L', 3, 1046001, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/58fea755Ndf878657.jpg.avif\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/58fea756N3144a6b1.jpg.avif\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/aae13b3e70ad981b.jpg.avif\"]', '', ' 鲁花 食用油 5S物理压榨 压榨一级 花生油 6.18L', 1, 100, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/58fea755Na5ee2e70.jpg.avif', NULL, 1, 1, '瓶', 193.30, 193.30, '<p><img src=\"https://img12.360buyimg.com/n1/jfs/t1/198081/38/20521/380265/61b85200E3b2f2bae/8e21b555f66a1cd1.jpg.avif\" alt=\"\" data-href=\"\" style=\"\"/></p><p><img src=\"https://img12.360buyimg.com/n1/jfs/t1/134190/9/18622/138122/5fcb2ba8Ecc27f8c0/5f57ceeae15e1fee.jpg.avif\" alt=\"\" data-href=\"\" style=\"\"/></p>', '2022-07-14 13:46:28', '2022-07-14 13:46:28', 1);
-INSERT INTO `pms_goods` VALUES (00000000016, '100118', '【俄罗斯国家馆】中国产俄罗斯风味牛筋肠牛肉火腿香肠早餐地道美食鑫圣和源 俄式牛筋风味肠2根', 2, 1046001, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/9ae153e05248dae8.jpg.avif\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/u=675803222,1534446410&fm=253&fmt=auto&app=138&f=JPEG.webp\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/u=2464803713,3587022025&fm=253&fmt=auto&app=138&f=PNG.webp\"]', '', '【俄罗斯国家馆】中国产俄罗斯风味牛筋肠牛肉火腿香肠早餐地道美食鑫圣和源 俄式牛筋风味肠2根', 1, 100, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/1f298983be8e98a5.jpg.avif', NULL, 1, 0, '包', 75.90, 75.90, '<p><img src=\"https://img10.360buyimg.com/n1/jfs/t1/136472/2/27274/65534/6265ffecEe15b7f26/999db4952e0b509e.jpg.avif\" alt=\"\" data-href=\"\" style=\"\"/></p><p><img src=\"https://img10.360buyimg.com/n1/jfs/t1/176619/36/24215/151180/61d25f05Edfc09062/90ec3aaa47298069.jpg.avif\" alt=\"\" data-href=\"\" style=\"\"/></p>', '2022-07-14 14:02:36', '2022-07-15 11:10:39', 1);
+INSERT INTO `pms_goods` VALUES (00000000016, '100118', '【俄罗斯国家馆】中国产俄罗斯风味牛筋肠牛肉火腿香肠早餐地道美食鑫圣和源 俄式牛筋风味肠2根', 2, 1046001, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/9ae153e05248dae8.jpg.avif\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/u=675803222,1534446410&fm=253&fmt=auto&app=138&f=JPEG.webp\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/u=2464803713,3587022025&fm=253&fmt=auto&app=138&f=PNG.webp\"]', '', '【俄罗斯国家馆】中国产俄罗斯风味牛筋肠牛肉火腿香肠早餐地道美食鑫圣和源 俄式牛筋风味肠2根', 1, 100, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/1f298983be8e98a5.jpg.avif', NULL, 1, 0, '包', 75.90, 75.90, '<p><img src=\"https://img10.360buyimg.com/n1/jfs/t1/136472/2/27274/65534/6265ffecEe15b7f26/999db4952e0b509e.jpg.avif\" alt=\"\" data-href=\"\" style=\"\"/></p><p><img src=\"https://img10.360buyimg.com/n1/jfs/t1/176619/36/24215/151180/61d25f05Edfc09062/90ec3aaa47298069.jpg.avif\" alt=\"\" data-href=\"\" style=\"\"/></p>', '2022-07-14 14:02:36', '2022-08-01 17:52:23', 1);
 
 -- ----------------------------
 -- Table structure for pms_goods_attribute
@@ -296,7 +324,7 @@ CREATE TABLE `pms_goods_attribute`  (
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `goods_id`(`goods_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 87 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品参数表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 90 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品参数表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_goods_attribute
@@ -324,9 +352,9 @@ INSERT INTO `pms_goods_attribute` VALUES (80, 9, '商品毛重', '11.25kg', '202
 INSERT INTO `pms_goods_attribute` VALUES (81, 9, '商品产地', '中国大陆', '2022-07-15 11:10:21', '2022-07-15 11:10:21', 1);
 INSERT INTO `pms_goods_attribute` VALUES (82, 9, '是否有机', '非有机', '2022-07-15 11:10:21', '2022-07-15 11:10:21', 1);
 INSERT INTO `pms_goods_attribute` VALUES (83, 9, '包装形式', '箱装', '2022-07-15 11:10:21', '2022-07-15 11:10:21', 1);
-INSERT INTO `pms_goods_attribute` VALUES (84, 16, '商品产地', '中国大陆', '2022-07-15 11:10:39', '2022-07-15 11:10:39', 1);
-INSERT INTO `pms_goods_attribute` VALUES (85, 16, '包装形式', '袋装', '2022-07-15 11:10:39', '2022-07-15 11:10:39', 1);
-INSERT INTO `pms_goods_attribute` VALUES (86, 16, '类别', '猪肉肠', '2022-07-15 11:10:39', '2022-07-15 11:10:39', 1);
+INSERT INTO `pms_goods_attribute` VALUES (87, 16, '商品产地', '中国大陆', '2022-08-01 17:52:23', '2022-08-01 17:52:23', 1);
+INSERT INTO `pms_goods_attribute` VALUES (88, 16, '包装形式', '袋装', '2022-08-01 17:52:23', '2022-08-01 17:52:23', 1);
+INSERT INTO `pms_goods_attribute` VALUES (89, 16, '类别', '猪肉肠', '2022-08-01 17:52:23', '2022-08-01 17:52:23', 1);
 
 -- ----------------------------
 -- Table structure for pms_goods_product
@@ -344,7 +372,7 @@ CREATE TABLE `pms_goods_product`  (
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `goods_id`(`goods_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品货品表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品货品表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_goods_product
@@ -363,7 +391,7 @@ INSERT INTO `pms_goods_product` VALUES (21, 14, '[\"一级\"]', 18.00, 200, 'htt
 INSERT INTO `pms_goods_product` VALUES (22, 14, '[\"二级\"]', 12.00, 30, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/ca410e6be2e97384.jpg.avif', '2022-07-14 13:42:59', '2022-07-14 13:42:59', 1);
 INSERT INTO `pms_goods_product` VALUES (23, 15, '[\"花生油3.09L\"]', 193.30, 30, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/58fea756N3144a6b1.jpg.avif', '2022-07-14 13:46:28', '2022-07-14 13:46:28', 1);
 INSERT INTO `pms_goods_product` VALUES (24, 15, '[\"花生油6.18L\"]', 225.60, 30, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/aae13b3e70ad981b.jpg.avif', '2022-07-14 13:46:28', '2022-07-14 13:46:28', 1);
-INSERT INTO `pms_goods_product` VALUES (25, 16, '[\"俄式牛筋风味肠1根\",\"大型\"]', 75.90, 0, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/1f298983be8e98a5.jpg.avif', '2022-07-14 14:02:37', '2022-07-15 11:10:39', 1);
+INSERT INTO `pms_goods_product` VALUES (25, 16, '[\"俄式牛筋风味肠1根\",\"大型\"]', 75.90, 10, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/1f298983be8e98a5.jpg.avif', '2022-07-14 14:02:37', '2022-08-01 17:52:23', 1);
 INSERT INTO `pms_goods_product` VALUES (26, 16, '[\"早餐火腿420克1根\",\"大型\"]', 85.00, 35, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/bd5dc008caf60212.jpg.avif', '2022-07-14 14:02:37', '2022-07-14 14:02:37', 1);
 
 -- ----------------------------
@@ -381,7 +409,7 @@ CREATE TABLE `pms_goods_specification`  (
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `goods_id`(`goods_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品规格表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品规格表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_goods_specification
@@ -416,7 +444,7 @@ CREATE TABLE `pms_issue`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '常见问题表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '常见问题表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_issue
@@ -466,7 +494,7 @@ CREATE TABLE `pms_region`  (
   `status` tinyint(1) NULL DEFAULT NULL COMMENT '状态 0 正常 -2 删除 -1 停用',
   `level` tinyint(1) NULL DEFAULT NULL COMMENT '级次id 0:省/自治区/直辖市 1:市级 2:县级',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3220 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 3220 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of pms_region
@@ -3704,12 +3732,12 @@ CREATE TABLE `ums_admin`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '管理员表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '管理员表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ums_admin
 -- ----------------------------
-INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2022-07-28 15:57:44', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-23 10:01:03', 1);
+INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2022-08-01 10:32:28', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-23 10:01:03', 1);
 INSERT INTO `ums_admin` VALUES (4, 'test', '123456', '', NULL, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220623/hw-logo.png', '2022-06-23 10:15:19', '2022-06-23 10:15:19', 1);
 
 -- ----------------------------
@@ -3721,7 +3749,7 @@ CREATE TABLE `ums_admin_role`  (
   `admin_id` int(20) NULL DEFAULT NULL COMMENT '管理员id',
   `role_id` int(20) NULL DEFAULT NULL COMMENT '角色id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '后台用户和角色关系表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '后台用户和角色关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ums_admin_role
@@ -3748,7 +3776,7 @@ CREATE TABLE `ums_menu`  (
   `icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '菜单图标',
   `sort` int(10) NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ums_menu
@@ -3788,7 +3816,7 @@ CREATE TABLE `ums_role`  (
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `name_UNIQUE`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ums_role
@@ -3805,7 +3833,7 @@ CREATE TABLE `ums_role_menu`  (
   `role_id` int(20) NULL DEFAULT NULL COMMENT '角色id',
   `menu_id` int(20) NULL DEFAULT NULL COMMENT '菜单id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 168 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色和菜单关系表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 168 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色和菜单关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ums_role_menu
