@@ -3,6 +3,7 @@ package com.hl.yyx.modules.wx;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.modules.pms.dto.CartCheckedDTO;
 import com.hl.yyx.modules.pms.dto.CartDTO;
+import com.hl.yyx.modules.pms.dto.ShoppingOrderDTO;
 import com.hl.yyx.modules.pms.service.PmsCartService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,6 +38,17 @@ public class WxCartController {
     }
 
     /**
+     * 立即购买
+     * @param cartDTO
+     * @return
+     */
+    @ApiOperation("立即购买")
+    @RequestMapping(value = "/fastAdd", method = RequestMethod.POST)
+    public CommonResult fastAdd(@RequestBody CartDTO cartDTO) {
+        return CommonResult.success(cartService.fastAdd(cartDTO));
+    }
+
+    /**
      * 获取购物车信息
      * @return
      */
@@ -64,5 +76,15 @@ public class WxCartController {
     @RequestMapping(value = "/emptyCart", method = RequestMethod.POST)
     public CommonResult emptyCart(@RequestBody List<Integer> ids) {
         return CommonResult.success(cartService.emptyCart(ids));
+    }
+
+    /**
+     * 购物车下单
+     * @return
+     */
+    @ApiOperation("购物车下单")
+    @RequestMapping(value = "/shoppingOrder", method = RequestMethod.POST)
+    public CommonResult shoppingOrder(@RequestBody ShoppingOrderDTO orderDTO) {
+        return CommonResult.success(cartService.shoppingOrder(orderDTO));
     }
 }

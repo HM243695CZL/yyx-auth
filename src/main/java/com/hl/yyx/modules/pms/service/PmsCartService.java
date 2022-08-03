@@ -2,6 +2,7 @@ package com.hl.yyx.modules.pms.service;
 
 import com.hl.yyx.modules.pms.dto.CartCheckedDTO;
 import com.hl.yyx.modules.pms.dto.CartDTO;
+import com.hl.yyx.modules.pms.dto.ShoppingOrderDTO;
 import com.hl.yyx.modules.pms.model.PmsCart;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -49,4 +50,18 @@ public interface PmsCartService extends IService<PmsCart> {
      * @return
      */
     Integer getCartCount(Integer userId);
+
+    /**
+     * 立即购买
+     * @param cartDTO
+     * @return
+     */
+    Integer fastAdd(CartDTO cartDTO);
+
+    /**
+     * 购物车下单
+     * @param orderDTO
+     * @return
+     */
+    Object shoppingOrder(ShoppingOrderDTO orderDTO);
 }
