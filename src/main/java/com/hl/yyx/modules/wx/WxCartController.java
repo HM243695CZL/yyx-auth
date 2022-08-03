@@ -84,7 +84,7 @@ public class WxCartController {
      */
     @ApiOperation("购物车下单")
     @RequestMapping(value = "/shoppingOrder", method = RequestMethod.POST)
-    public CommonResult shoppingOrder(@RequestBody ShoppingOrderDTO orderDTO) {
-        return CommonResult.success(cartService.shoppingOrder(orderDTO));
+    public CommonResult shoppingOrder(@RequestBody List<Integer> cardIds) {
+        return CommonResult.success(cartService.shoppingOrder(cardIds));
     }
 }

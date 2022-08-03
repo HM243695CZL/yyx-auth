@@ -25,4 +25,11 @@ public interface CmsAddressService extends IService<CmsAddress> {
     List<CmsAddress> getAddressList();
 
     Boolean deleteAddress(List<Integer> ids);
+
+    /**
+     * 获取用户默认地址
+     * @param id
+     * @return
+     */
+    CmsAddress getDefaultAddress(Integer id);
 }

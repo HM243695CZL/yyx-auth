@@ -60,8 +60,8 @@ public interface PmsCartService extends IService<PmsCart> {
 
     /**
      * 购物车下单
-     * @param orderDTO
+     * @param cardIds 购物车商品id数组
      * @return
      */
-    Object shoppingOrder(ShoppingOrderDTO orderDTO);
+    Object shoppingOrder(List<Integer> cardIds);
 }

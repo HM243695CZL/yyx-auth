@@ -2,20 +2,19 @@ package com.hl.yyx.modules.pms.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.common.constants.Constants;
 import com.hl.yyx.common.exception.Asserts;
-import com.hl.yyx.modules.cms.model.CmsAddress;
 import com.hl.yyx.modules.cms.model.CmsUser;
+import com.hl.yyx.modules.cms.service.CmsAddressService;
 import com.hl.yyx.modules.cms.service.CmsUserService;
 import com.hl.yyx.modules.pms.dto.CartCheckedDTO;
 import com.hl.yyx.modules.pms.dto.CartDTO;
-import com.hl.yyx.modules.pms.dto.ShoppingOrderDTO;
-import com.hl.yyx.modules.pms.model.PmsCart;
 import com.hl.yyx.modules.pms.mapper.PmsCartMapper;
+import com.hl.yyx.modules.pms.model.PmsCart;
 import com.hl.yyx.modules.pms.model.PmsGoods;
 import com.hl.yyx.modules.pms.model.PmsGoodsProduct;
 import com.hl.yyx.modules.pms.service.PmsCartService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.modules.pms.service.PmsGoodsProductService;
 import com.hl.yyx.modules.pms.service.PmsGoodsService;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +51,9 @@ public class PmsCartServiceImpl extends ServiceImpl<PmsCartMapper, PmsCart> impl
 
     @Autowired
     PmsCartMapper cartMapper;
+
+    @Autowired
+    CmsAddressService addressService;
 
     /**
      * 加入商品到购物车
@@ -219,8 +221,29 @@ public class PmsCartServiceImpl extends ServiceImpl<PmsCartMapper, PmsCart> impl
      * @return
      */
     @Override
-    public Object shoppingOrder(ShoppingOrderDTO orderDTO) {
-        return null;
+    public Object shoppingOrder(List<Integer> cardIds) {
+        List<PmsCart> cartList = new ArrayList<>();
+        if (cardIds.size() == 1) {
+            // 表示选择的是立即购买
+            Integer cardId = cardIds.get(0);
+            PmsCart cart = getById(cardId);
+            cartList.add(cart);
+        } else {
+            // 表示选择是的结算
+            for (Integer cardId : cardIds) {
+                PmsCart cart = getById(cardId);
+                cartList.add(cart);
+            }
+        }
+        // 商品价格
+        BigDecimal checkGoodsAmount = new BigDecimal("0.00");
+        for (PmsCart cart : cartList) {
+            checkGoodsAmount = checkGoodsAmount.add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
+        }
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("checkedGoodsPrice", checkGoodsAmount);
+        result.put("checkedGoodsList", cartList);
+        return result;
     }
 
     /**

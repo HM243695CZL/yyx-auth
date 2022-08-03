@@ -94,4 +94,17 @@ public class CmsAddressServiceImpl extends ServiceImpl<CmsAddressMapper, CmsAddr
         int delete = addressMapper.delete(queryWrapper);
         return ids.size() == delete;
     }
+
+    /**
+     * 获取用户默认地址
+     * @param id
+     * @return
+     */
+    @Override
+    public CmsAddress getDefaultAddress(Integer id) {
+        QueryWrapper<CmsAddress> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(CmsAddress::getUserId, id);
+        queryWrapper.lambda().eq(CmsAddress::getIsDefault, true);
+        return getOne(queryWrapper);
+    }
 }
