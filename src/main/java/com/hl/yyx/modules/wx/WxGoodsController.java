@@ -20,7 +20,7 @@ import java.util.HashMap;
  */
 @RestController
 @RequestMapping("/wx/goods")
-@Api(tags = "商品相关", description = "商品相关操作")
+@Api(tags = "微信端-商品相关", description = "微信端-商品相关操作")
 public class WxGoodsController {
 
     @Autowired

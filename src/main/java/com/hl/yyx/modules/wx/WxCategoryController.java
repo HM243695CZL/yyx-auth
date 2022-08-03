@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/wx/category")
-@Api(tags = "商品分类", description = "微信商品分类")
+@Api(tags = "微信端-商品分类", description = "微信端-商品分类")
 public class WxCategoryController {
 
     @Autowired

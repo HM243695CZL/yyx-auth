@@ -37,6 +37,10 @@ public class LoginHandler implements HandlerInterceptor {
         if (request.getRequestURL().indexOf("/admin") > -1) {
             return true;
         }
+        // 放行接口文档相关
+        if (request.getRequestURL().indexOf("swagger") > -1) {
+            return true;
+        }
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }

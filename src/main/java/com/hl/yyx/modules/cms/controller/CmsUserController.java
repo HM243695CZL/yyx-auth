@@ -35,7 +35,7 @@ import java.util.HashMap;
  */
 @RestController
 @RequestMapping("/wx/cms/user")
-@Api(tags = "会员管理", description = "会员管理")
+@Api(tags = "微信端-会员管理", description = "微信端-会员管理")
 @Slf4j
 public class CmsUserController {
 
