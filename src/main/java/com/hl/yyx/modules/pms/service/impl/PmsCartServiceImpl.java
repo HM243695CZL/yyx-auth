@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.common.constants.Constants;
 import com.hl.yyx.common.exception.Asserts;
+import com.hl.yyx.config.SystemConfig;
 import com.hl.yyx.modules.cms.model.CmsUser;
 import com.hl.yyx.modules.cms.service.CmsAddressService;
 import com.hl.yyx.modules.cms.service.CmsUserService;
@@ -236,13 +237,23 @@ public class PmsCartServiceImpl extends ServiceImpl<PmsCartMapper, PmsCart> impl
             }
         }
         // 商品价格
-        BigDecimal checkGoodsAmount = new BigDecimal("0.00");
+        BigDecimal checkGoodsPrice = new BigDecimal("0.00");
         for (PmsCart cart : cartList) {
-            checkGoodsAmount = checkGoodsAmount.add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
+            checkGoodsPrice = checkGoodsPrice.add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
         }
+        // 根据商品价格计算运费
+        BigDecimal fregihtPrice = new BigDecimal("0.00");
+        if (checkGoodsPrice.compareTo(SystemConfig.getFreightLimit()) < 0) {
+            fregihtPrice = SystemConfig.getFreight();
+        }
+        // 订单费用
+        BigDecimal orderTotalPrice = checkGoodsPrice.add(fregihtPrice);
+
         HashMap<String, Object> result = new HashMap<>();
-        result.put("checkedGoodsPrice", checkGoodsAmount);
+        result.put("checkedGoodsPrice", checkGoodsPrice);
         result.put("checkedGoodsList", cartList);
+        result.put("fregihtPrice", fregihtPrice);
+        result.put("orderTotalPrice", orderTotalPrice);
         return result;
     }
 
