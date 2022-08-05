@@ -2,8 +2,10 @@ package com.hl.yyx.modules.cms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.common.exception.Asserts;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.cms.dto.AddressParamsDTO;
+import com.hl.yyx.modules.cms.dto.SetDefaultAddDTO;
 import com.hl.yyx.modules.cms.model.CmsAddress;
 import com.hl.yyx.modules.cms.mapper.CmsAddressMapper;
 import com.hl.yyx.modules.cms.model.CmsUser;
@@ -97,14 +99,53 @@ public class CmsAddressServiceImpl extends ServiceImpl<CmsAddressMapper, CmsAddr
 
     /**
      * 获取用户默认地址
+     * @param userId
+     * @return
+     */
+    @Override
+    public CmsAddress getDefaultAddress(Integer userId) {
+        QueryWrapper<CmsAddress> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(CmsAddress::getUserId, userId);
+        queryWrapper.lambda().eq(CmsAddress::getIsDefault, true);
+        CmsAddress address = getOne(queryWrapper);
+        return address;
+    }
+
+    /**
+     * 获取地址详情或默认地址
      * @param id
      * @return
      */
     @Override
-    public CmsAddress getDefaultAddress(Integer id) {
-        QueryWrapper<CmsAddress> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(CmsAddress::getUserId, id);
-        queryWrapper.lambda().eq(CmsAddress::getIsDefault, true);
-        return getOne(queryWrapper);
+    public CmsAddress getAddressInfo(Integer addressId) {
+        CmsAddress address = new CmsAddress();
+        if (addressId == 0) {
+            // 获取默认地址
+            CmsUser userInfo = userService.getUserInfo(false);
+            address = getDefaultAddress(userInfo.getId());
+        } else {
+            address = getById(addressId);
+        }
+        return address;
+    }
+
+    /**
+     * 设置默认地址
+     * @param defaultAddDTO
+     * @return
+     */
+    @Transactional
+    @Override
+    public Boolean setDefaultAddress(SetDefaultAddDTO defaultAddDTO) {
+        // 之前的默认地址
+        CmsAddress defaultAddress = getById(defaultAddDTO.getDefaultId());
+        defaultAddress.setIsDefault(false);
+        // 需要设置为默认的地址
+        CmsAddress selectAddress = getById(defaultAddDTO.getSelectId());
+        selectAddress.setIsDefault(true);
+
+        updateById(defaultAddress);
+        updateById(selectAddress);
+        return true;
     }
 }
