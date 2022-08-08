@@ -17,4 +17,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class PmsGoodsProductServiceImpl extends ServiceImpl<PmsGoodsProductMapper, PmsGoodsProduct> implements PmsGoodsProductService {
 
+    /**
+     * 减少商品库存
+     * @param productId 商品id
+     * @param number 减少的数量
+     * @return
+     */
+    @Override
+    public boolean reduceStock(Integer productId, Integer number) {
+        PmsGoodsProduct goodsProduct = getById(productId);
+        // 剩余数量
+        int surplus = goodsProduct.getNumber() - number;
+        goodsProduct.setNumber(surplus);
+        return updateById(goodsProduct);
+    }
 }

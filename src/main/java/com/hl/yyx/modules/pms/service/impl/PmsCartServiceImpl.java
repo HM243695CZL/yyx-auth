@@ -11,6 +11,7 @@ import com.hl.yyx.modules.cms.service.CmsAddressService;
 import com.hl.yyx.modules.cms.service.CmsUserService;
 import com.hl.yyx.modules.pms.dto.CartCheckedDTO;
 import com.hl.yyx.modules.pms.dto.CartDTO;
+import com.hl.yyx.modules.pms.dto.GoodsPriceAndFreightPriceDTO;
 import com.hl.yyx.modules.pms.mapper.PmsCartMapper;
 import com.hl.yyx.modules.pms.model.PmsCart;
 import com.hl.yyx.modules.pms.model.PmsGoods;
@@ -236,6 +237,24 @@ public class PmsCartServiceImpl extends ServiceImpl<PmsCartMapper, PmsCart> impl
                 cartList.add(cart);
             }
         }
+        GoodsPriceAndFreightPriceDTO goodsObj = calcGoodsPrice(cartList);
+        // 订单费用
+        BigDecimal orderTotalPrice = goodsObj.getGoodsPrice().add(goodsObj.getFreightPrice());
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("checkedGoodsPrice", goodsObj.getGoodsPrice());
+        result.put("checkedGoodsList", cartList);
+        result.put("freightPrice", goodsObj.getFreightPrice());
+        result.put("orderTotalPrice", orderTotalPrice);
+        return result;
+    }
+
+    /**
+     * 计算购物车中选中的商品价格
+     * @param cartList
+     * @return
+     */
+    public GoodsPriceAndFreightPriceDTO calcGoodsPrice(List<PmsCart> cartList) {
         // 商品价格
         BigDecimal checkGoodsPrice = new BigDecimal("0.00");
         for (PmsCart cart : cartList) {
@@ -246,15 +265,10 @@ public class PmsCartServiceImpl extends ServiceImpl<PmsCartMapper, PmsCart> impl
         if (checkGoodsPrice.compareTo(SystemConfig.getFreightLimit()) < 0) {
             fregihtPrice = SystemConfig.getFreight();
         }
-        // 订单费用
-        BigDecimal orderTotalPrice = checkGoodsPrice.add(fregihtPrice);
-
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("checkedGoodsPrice", checkGoodsPrice);
-        result.put("checkedGoodsList", cartList);
-        result.put("fregihtPrice", fregihtPrice);
-        result.put("orderTotalPrice", orderTotalPrice);
-        return result;
+        GoodsPriceAndFreightPriceDTO goodsPriceAndFreightPriceDTO = new GoodsPriceAndFreightPriceDTO();
+        goodsPriceAndFreightPriceDTO.setGoodsPrice(checkGoodsPrice);
+        goodsPriceAndFreightPriceDTO.setFreightPrice(fregihtPrice);
+        return goodsPriceAndFreightPriceDTO;
     }
 
     /**

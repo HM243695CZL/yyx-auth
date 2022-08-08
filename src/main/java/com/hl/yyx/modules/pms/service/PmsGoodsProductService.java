@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface PmsGoodsProductService extends IService<PmsGoodsProduct> {
 
+    boolean reduceStock(Integer productId, Integer number);
 }
