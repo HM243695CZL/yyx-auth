@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  * 微信端-订单
  */
@@ -29,7 +31,7 @@ public class WxOrderController {
      */
     @ApiOperation("提交订单")
     @RequestMapping(value = "/submitOrder", method = RequestMethod.POST)
-    public CommonResult submitOrder(@RequestBody SubOrderDTO orderDTO) {
+    public CommonResult submitOrder(@Valid @RequestBody SubOrderDTO orderDTO) {
         return CommonResult.success(orderService.submitOrder(orderDTO));
     }
 }

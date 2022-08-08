@@ -1,6 +1,9 @@
 package com.hl.yyx.modules.pms.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hl.yyx.common.exception.ApiException;
+import com.hl.yyx.common.exception.Asserts;
+import com.hl.yyx.common.task.OrderUnpaidTask;
 import com.hl.yyx.common.util.OrderUtil;
 import com.hl.yyx.common.task.TaskService;
 import com.hl.yyx.common.util.RandomUtil;
@@ -25,7 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -76,6 +81,9 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
         CmsUser userInfo = userService.getUserInfo(false);
         // 收货地址
         CmsAddress address = addressService.getById(orderDTO.getAddressId());
+        if (address == null) {
+            Asserts.fail("收货地址不能为空");
+        }
         // 货品价格
         List<PmsCart> cartList = new ArrayList<>();
         for (Integer cartId : orderDTO.getCartIds()) {
@@ -95,7 +103,8 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
         order.setOrderSn(RandomUtil.generateUniqueKey());
         order.setOrderStatus(OrderUtil.STATUS_CREATE);
         order.setConsignee(address.getName());
-        order.setMessage(address.getTel());
+        order.setMobile(address.getTel());
+        order.setMessage(orderDTO.getMessage());
         String detailAddress = address.getProvince() + address.getCity() + address.getCounty() + " " + address.getAddressDetail();
         order.setAddress(detailAddress);
         order.setGoodsPrice(orderTotalPrice);
@@ -134,17 +143,21 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
 
             int remainNumber = product.getNumber() - cart.getNumber();
             if (remainNumber < 0) {
-                throw new RuntimeException("下单的商品货品数量大于库存量");
+                Asserts.fail("下单的商品货品数量大于库存量");
             }
-            if (productService.reduceStock(productId, cart.getNumber())) {
-                throw new RuntimeException("商品货品库存减少失败");
+            if (!productService.reduceStock(productId, cart.getNumber())) {
+                Asserts.fail("商品货品库存减少失败");
             }
         }
 
         boolean payed = false;
         // 订单支付超期任务
-        taskService.addTask();
-        return null;
+        taskService.addTask(new OrderUnpaidTask(orderId));
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("orderId", orderId);
+        result.put("payed", payed);
+        return result;
     }
 
 

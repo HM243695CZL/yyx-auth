@@ -29,6 +29,21 @@ public class PmsGoodsProductServiceImpl extends ServiceImpl<PmsGoodsProductMappe
         // 剩余数量
         int surplus = goodsProduct.getNumber() - number;
         goodsProduct.setNumber(surplus);
+        updateById(goodsProduct);
         return updateById(goodsProduct);
+    }
+
+    /**
+     * 增加商品库存
+     * @param productId
+     * @param number
+     * @return
+     */
+    @Override
+    public boolean addStock(Integer productId, Integer number) {
+        PmsGoodsProduct product = getById(productId);
+        int surplus = product.getNumber() + number;
+        product.setNumber(surplus);
+        return updateById(product);
     }
 }

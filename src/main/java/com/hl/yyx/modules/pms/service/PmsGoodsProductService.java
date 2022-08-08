@@ -13,5 +13,19 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface PmsGoodsProductService extends IService<PmsGoodsProduct> {
 
+    /**
+     * 减少库存
+     * @param productId
+     * @param number
+     * @return
+     */
     boolean reduceStock(Integer productId, Integer number);
+
+    /**
+     * 增加库存
+     * @param productId
+     * @param number
+     * @return
+     */
+    boolean addStock(Integer productId, Integer number);
 }
