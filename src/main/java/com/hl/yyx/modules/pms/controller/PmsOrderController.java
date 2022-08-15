@@ -1,6 +1,13 @@
 package com.hl.yyx.modules.pms.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.pms.dto.OrderPageDTO;
+import com.hl.yyx.modules.pms.dto.OrderParamsDTO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,37 +27,30 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2022-08-05
  */
 @RestController
-@RequestMapping("/pms/pmsOrder")
+@RequestMapping("/admin/pms/order")
+@Api(tags = "订单管理", description = "订单管理")
 public class PmsOrderController {
 
     @Autowired
     private PmsOrderService pmsOrderService;
 
-    // 新增
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public CommonResult save(@RequestBody PmsOrder pmsOrder) {
-        return CommonResult.success(pmsOrderService.save(pmsOrder));
-    }
-
-    // 更新
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public CommonResult update(@RequestBody PmsOrder pmsOrder) {
-        return CommonResult.success(pmsOrderService.updateById(pmsOrder));
+    // 分页
+    @ApiOperation("分页查询")
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    public CommonResult page(@RequestBody OrderParamsDTO paramsDTO) {
+        return CommonResult.success(pmsOrderService.list(paramsDTO));
     }
 
     // 删除
+    @ApiOperation("删除订单")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id) {
         return CommonResult.success( pmsOrderService.removeById(id));
     }
 
-    // 获取全部
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public CommonResult list() {
-        return CommonResult.success(pmsOrderService.list());
-    }
 
     // 查看
+    @ApiOperation("查看订单")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable String id) {
         return CommonResult.success(pmsOrderService.getById(id));

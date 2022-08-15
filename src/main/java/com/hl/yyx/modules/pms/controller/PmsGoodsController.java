@@ -43,30 +43,35 @@ public class PmsGoodsController {
     }
 
     // 新增
+    @ApiOperation("新增商品")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public CommonResult save(@RequestBody GoodsDTO goodsDTO) {
         return CommonResult.success(pmsGoodsService.create(goodsDTO));
     }
 
     // 更新
+    @ApiOperation("更新商品")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public CommonResult update(@RequestBody GoodsDTO goodsDTO) {
         return CommonResult.success(pmsGoodsService.update(goodsDTO));
     }
 
     // 删除
+    @ApiOperation("删除商品")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id) {
         return CommonResult.success( pmsGoodsService.removeById(id));
     }
 
     // 获取全部
+    @ApiOperation("获取全部商品")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public CommonResult list() {
         return CommonResult.success(pmsGoodsService.list());
     }
 
     // 查看
+    @ApiOperation("查看商品")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable Integer id) {
         return CommonResult.success(pmsGoodsService.view(id));

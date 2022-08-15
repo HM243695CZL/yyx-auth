@@ -1,5 +1,9 @@
 package com.hl.yyx.modules.pms.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.common.exception.ApiException;
 import com.hl.yyx.common.exception.Asserts;
@@ -7,11 +11,14 @@ import com.hl.yyx.common.task.OrderUnpaidTask;
 import com.hl.yyx.common.util.OrderUtil;
 import com.hl.yyx.common.task.TaskService;
 import com.hl.yyx.common.util.RandomUtil;
+import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.cms.model.CmsAddress;
 import com.hl.yyx.modules.cms.model.CmsUser;
 import com.hl.yyx.modules.cms.service.CmsAddressService;
 import com.hl.yyx.modules.cms.service.CmsUserService;
 import com.hl.yyx.modules.pms.dto.GoodsPriceAndFreightPriceDTO;
+import com.hl.yyx.modules.pms.dto.OrderPageDTO;
+import com.hl.yyx.modules.pms.dto.OrderParamsDTO;
 import com.hl.yyx.modules.pms.dto.SubOrderDTO;
 import com.hl.yyx.modules.pms.mapper.PmsOrderMapper;
 import com.hl.yyx.modules.pms.model.PmsCart;
@@ -31,6 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -129,6 +137,7 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
             orderGoods.setGoodsName(cart.getGoodsName());
             orderGoods.setPicUrl(cart.getPicUrl());
             orderGoods.setNumber(cart.getNumber());
+            orderGoods.setPrice(cart.getPrice());
             orderGoods.setSpecifications(cart.getSpecifications());
 
             orderGoodsService.save(orderGoods);
@@ -160,5 +169,33 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
         return result;
     }
 
-
+    /**
+     * 分页查询
+     * @param paramsDTO
+     * @return
+     */
+    @Override
+    public Object list(OrderParamsDTO paramsDTO) {
+        List<PmsOrder> pageList = list();
+        String nickName = paramsDTO.getNickName();
+        QueryWrapper<CmsUser> wrapper = new QueryWrapper<>();
+        List<CmsUser> users = userService.list(wrapper.like("nickname", nickName));
+        ArrayList<OrderPageDTO> lists = new ArrayList<>();
+        OrderPageDTO orderPageDTO = new OrderPageDTO();
+        for (PmsOrder record : pageList) {
+            for (CmsUser user : users) {
+                if (record.getUserId() == user.getId()) {
+                    BeanUtil.copyProperties(record, orderPageDTO);
+                    orderPageDTO.setUserName(user.getNickname());
+                    orderPageDTO.setAvatar(user.getAvatar());
+                    QueryWrapper<PmsOrderGoods> query = new QueryWrapper<>();
+                    query.lambda().eq(PmsOrderGoods::getOrderId, record.getId());
+                    List<PmsOrderGoods> list = orderGoodsService.list(query);
+                    orderPageDTO.setOrderGoodsList(list);
+                    lists.add(orderPageDTO);
+                }
+            }
+        }
+        return lists;
+    }
 }

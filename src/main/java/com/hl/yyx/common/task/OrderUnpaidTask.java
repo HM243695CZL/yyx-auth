@@ -63,6 +63,8 @@ public class OrderUnpaidTask extends Task {
             Integer productId = orderGoods.getProductId();
             Integer number = orderGoods.getNumber();
             if (productService.addStock(productId, number)) {
+                System.out.println("productId: " + productId);
+                System.out.println("number: " + number);
                 throw new RuntimeException("商品货品库存增加失败");
             }
         }

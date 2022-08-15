@@ -1,8 +1,9 @@
 package com.hl.yyx.modules.pms.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.hl.yyx.modules.pms.dto.OrderParamsDTO;
 import com.hl.yyx.modules.pms.dto.SubOrderDTO;
 import com.hl.yyx.modules.pms.model.PmsOrder;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
@@ -20,4 +21,6 @@ public interface PmsOrderService extends IService<PmsOrder> {
      * @return
      */
     Object submitOrder(SubOrderDTO orderDTO);
+
+    Object list(OrderParamsDTO paramsDTO);
 }
