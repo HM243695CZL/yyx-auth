@@ -6,6 +6,7 @@ import com.hl.yyx.modules.ums.model.UmsSystem;
 import com.hl.yyx.modules.ums.mapper.UmsSystemMapper;
 import com.hl.yyx.modules.ums.service.UmsSystemService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,7 +63,7 @@ public class UmsSystemServiceImpl extends ServiceImpl<UmsSystemMapper, UmsSystem
         return true;
     }
 
-    public Object getKeyAndValue(String key) {
+    public Map<String, String> getKeyAndValue(String key) {
         QueryWrapper<UmsSystem> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().like(UmsSystem::getKeyName, key);
         List<UmsSystem> list = list(queryWrapper);

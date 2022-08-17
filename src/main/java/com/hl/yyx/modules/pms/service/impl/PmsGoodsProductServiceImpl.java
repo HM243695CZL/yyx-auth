@@ -44,6 +44,7 @@ public class PmsGoodsProductServiceImpl extends ServiceImpl<PmsGoodsProductMappe
         PmsGoodsProduct product = getById(productId);
         int surplus = product.getNumber() + number;
         product.setNumber(surplus);
+        System.out.println(product);
         return updateById(product);
     }
 }

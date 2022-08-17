@@ -1,5 +1,9 @@
 package com.hl.yyx.common.util;
 
+import com.hl.yyx.common.design.strategy.OrderCancel;
+import com.hl.yyx.common.design.strategy.OrderContext;
+import com.hl.yyx.common.design.strategy.OrderDelete;
+import com.hl.yyx.common.exception.ApiException;
 import com.hl.yyx.modules.pms.model.PmsOrder;
 
 /**
@@ -21,5 +25,22 @@ public interface OrderUtil {
 
     public static boolean isCreateStatus(PmsOrder order) {
         return OrderUtil.STATUS_CREATE.equals(order.getOrderStatus());
+    }
+
+    public static OrderHandleOption build(PmsOrder order) {
+        Integer orderStatus = order.getOrderStatus();
+        OrderContext orderContext = null;
+        switch (orderStatus) {
+            case 101:
+                orderContext = new OrderContext(new OrderCancel());
+                break;
+            case 102:
+            case 103:
+                orderContext = new OrderContext(new OrderDelete());
+                break;
+            default:
+                throw new ApiException("status不支持");
+        }
+        return orderContext.buildOrderAuth();
     }
 }

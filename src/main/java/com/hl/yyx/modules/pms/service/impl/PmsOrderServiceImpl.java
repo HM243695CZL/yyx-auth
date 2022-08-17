@@ -1,23 +1,21 @@
 package com.hl.yyx.modules.pms.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.common.exception.ApiException;
 import com.hl.yyx.common.exception.Asserts;
 import com.hl.yyx.common.task.OrderUnpaidTask;
-import com.hl.yyx.common.util.OrderUtil;
 import com.hl.yyx.common.task.TaskService;
+import com.hl.yyx.common.util.OrderHandleOption;
+import com.hl.yyx.common.util.OrderUtil;
 import com.hl.yyx.common.util.RandomUtil;
-import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.cms.model.CmsAddress;
 import com.hl.yyx.modules.cms.model.CmsUser;
 import com.hl.yyx.modules.cms.service.CmsAddressService;
 import com.hl.yyx.modules.cms.service.CmsUserService;
 import com.hl.yyx.modules.pms.dto.GoodsPriceAndFreightPriceDTO;
-import com.hl.yyx.modules.pms.dto.OrderPageDTO;
 import com.hl.yyx.modules.pms.dto.OrderParamsDTO;
 import com.hl.yyx.modules.pms.dto.SubOrderDTO;
 import com.hl.yyx.modules.pms.mapper.PmsOrderMapper;
@@ -29,16 +27,15 @@ import com.hl.yyx.modules.pms.service.PmsCartService;
 import com.hl.yyx.modules.pms.service.PmsGoodsProductService;
 import com.hl.yyx.modules.pms.service.PmsOrderGoodsService;
 import com.hl.yyx.modules.pms.service.PmsOrderService;
+import com.hl.yyx.modules.ums.service.impl.UmsSystemServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * <p>
@@ -75,6 +72,9 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
 
     @Autowired
     TaskService taskService;
+
+    @Autowired
+    UmsSystemServiceImpl systemService;
     /**
      * 提交订单
      * 1、创建订单表项和订单商品表项
@@ -175,27 +175,65 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
      * @return
      */
     @Override
-    public Object list(OrderParamsDTO paramsDTO) {
-        List<PmsOrder> pageList = list();
-        String nickName = paramsDTO.getNickName();
-        QueryWrapper<CmsUser> wrapper = new QueryWrapper<>();
-        List<CmsUser> users = userService.list(wrapper.like("nickname", nickName));
-        ArrayList<OrderPageDTO> lists = new ArrayList<>();
-        OrderPageDTO orderPageDTO = new OrderPageDTO();
-        for (PmsOrder record : pageList) {
-            for (CmsUser user : users) {
-                if (record.getUserId() == user.getId()) {
-                    BeanUtil.copyProperties(record, orderPageDTO);
-                    orderPageDTO.setUserName(user.getNickname());
-                    orderPageDTO.setAvatar(user.getAvatar());
-                    QueryWrapper<PmsOrderGoods> query = new QueryWrapper<>();
-                    query.lambda().eq(PmsOrderGoods::getOrderId, record.getId());
-                    List<PmsOrderGoods> list = orderGoodsService.list(query);
-                    orderPageDTO.setOrderGoodsList(list);
-                    lists.add(orderPageDTO);
-                }
-            }
+    public Page<PmsOrder> pageList(OrderParamsDTO paramsDTO) {
+        Page<PmsOrder> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
+        Page<PmsOrder> orderPage = orderMapper.pageList(page, paramsDTO);
+        for (PmsOrder record : orderPage.getRecords()) {
+            QueryWrapper<PmsOrderGoods> wrapper = new QueryWrapper<>();
+            wrapper.lambda().eq(PmsOrderGoods::getOrderId, record.getId());
+            List<PmsOrderGoods> list = orderGoodsService.list(wrapper);
+            record.setOrderGoodsList(list);
         }
-        return lists;
+        return orderPage;
+    }
+
+    /**
+     * 获取订单详情
+     * @param orderId
+     * @return
+     */
+    @Override
+    public Object getOrderInfo(Integer orderId) throws ParseException {
+
+        PmsOrder orderInfo = getById(orderId);
+
+        QueryWrapper<PmsOrderGoods> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(PmsOrderGoods::getOrderId, orderId);
+        List<PmsOrderGoods> orderGoodsList = orderGoodsService.list(wrapper);
+        OrderHandleOption handleOption = OrderUtil.build(orderInfo);
+
+        // 获取自动取消订单的时长
+        String unpaidMap = systemService.getKeyAndValue("yyx_order_unpaid").get("yyx_order_unpaid");
+        // 计算出超时时刻，根据添加时间 + 自动取消时长得出超时的时刻
+        Integer unpaid = Integer.parseInt(unpaidMap) * 1000 * 60;
+        String formatStr = "yyyy-MM-dd HH:mm:ss";
+        String addTimeFormat = DateUtil.format(orderInfo.getAddTime(), formatStr);
+        long now = new Date().getTime();
+        long time = new SimpleDateFormat(formatStr).parse(addTimeFormat).getTime() + unpaid;
+        Date unpairTime = new Date(time);
+        String unpairTimeFormat = DateUtil.format(unpairTime, formatStr);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderInfo", orderInfo);
+        map.put("orderGoodsList", orderGoodsList);
+        map.put("handleOption", handleOption);
+        map.put("unpairTime", unpairTimeFormat);
+        return map;
+    }
+
+    /**
+     * 支付
+     * @param orderId
+     * @return
+     */
+    @Override
+    public Object prePay(Integer orderId) {
+        PmsOrder order = getById(orderId);
+        if (order == null) {
+            throw new ApiException("订单不存在");
+        }
+        // 发起支付
+
+        return null;
     }
 }

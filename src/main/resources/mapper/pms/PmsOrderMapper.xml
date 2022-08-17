@@ -36,5 +36,25 @@
         <result column="update_time" property="updateTime" />
         <result column="deleted" property="deleted" />
     </resultMap>
+    <select id="pageList" resultType="com.hl.yyx.modules.pms.model.PmsOrder">
+        SELECT
+            po.*,
+            cu.username userName,
+            cu.avatar avatar
+        FROM
+            pms_order po
+            LEFT JOIN cms_user cu ON po.user_id = cu.id
+        <where>
+            <if test="paramsDTO.nickName != '' and paramsDTO.nickName != null">
+                cu.username like concat('%', #{paramsDTO.nickName}, '%')
+            </if>
+            <if test="paramsDTO.orderSn != '' and paramsDTO.orderSn != null">
+                and po.order_sn like concat('%', #{paramsDTO.orderSn}, '%')
+            </if>
+            <if test="paramsDTO.consignee != '' and paramsDTO.consignee != null">
+                and po.consignee like concat('%', #{paramsDTO.consignee}, '%')
+            </if>
+        </where>
+    </select>
 
 </mapper>

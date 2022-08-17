@@ -36,9 +36,9 @@ public class PmsOrderController {
 
     // 分页
     @ApiOperation("分页查询")
-    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    @RequestMapping(value = "/page", method = RequestMethod.POST)
     public CommonResult page(@RequestBody OrderParamsDTO paramsDTO) {
-        return CommonResult.success(pmsOrderService.list(paramsDTO));
+        return CommonResult.success(CommonPage.restPage(pmsOrderService.pageList(paramsDTO)));
     }
 
     // 删除

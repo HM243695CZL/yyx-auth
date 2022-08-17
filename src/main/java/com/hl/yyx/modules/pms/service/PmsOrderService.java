@@ -1,9 +1,12 @@
 package com.hl.yyx.modules.pms.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hl.yyx.modules.pms.dto.OrderParamsDTO;
 import com.hl.yyx.modules.pms.dto.SubOrderDTO;
 import com.hl.yyx.modules.pms.model.PmsOrder;
+
+import java.text.ParseException;
 
 /**
  * <p>
@@ -22,5 +25,19 @@ public interface PmsOrderService extends IService<PmsOrder> {
      */
     Object submitOrder(SubOrderDTO orderDTO);
 
-    Object list(OrderParamsDTO paramsDTO);
+    Page<PmsOrder> pageList(OrderParamsDTO paramsDTO);
+
+    /**
+     * 获取订单详情
+     * @param orderId
+     * @return
+     */
+    Object getOrderInfo(Integer orderId) throws ParseException;
+
+    /**
+     * 支付
+     * @param orderId
+     * @return
+     */
+    Object prePay(Integer orderId);
 }
