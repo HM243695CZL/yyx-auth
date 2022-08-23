@@ -33,6 +33,7 @@
         <fastjson.version>1.2.54</fastjson.version>
         <java-jwt.version>3.2.0</java-jwt.version>
         <weixin-java-miniapp.version>4.1.0</weixin-java-miniapp.version>
+        <best-pay-sdk.version>1.1.0</best-pay-sdk.version>
     </properties>
     <dependencies>
         <!--SpringBoot通用依赖模块-->
@@ -165,6 +166,11 @@
             <groupId>com.github.binarywang</groupId>
             <artifactId>weixin-java-miniapp</artifactId>
             <version>${weixin-java-miniapp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.springboot</groupId>
+            <artifactId>best-pay-sdk</artifactId>
+            <version>${best-pay-sdk.version}</version>
         </dependency>
     </dependencies>
 

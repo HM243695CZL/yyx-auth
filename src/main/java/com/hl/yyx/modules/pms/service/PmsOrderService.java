@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hl.yyx.modules.pms.dto.OrderParamsDTO;
 import com.hl.yyx.modules.pms.dto.SubOrderDTO;
+import com.hl.yyx.modules.pms.dto.WxOrderDTO;
 import com.hl.yyx.modules.pms.model.PmsOrder;
 
 import java.text.ParseException;
@@ -40,4 +41,25 @@ public interface PmsOrderService extends IService<PmsOrder> {
      * @return
      */
     Object prePay(Integer orderId);
+
+    /**
+     * 获取订单列表
+     * @param paramsDTO
+     * @return
+     */
+     Object getOrderList(WxOrderDTO paramsDTO);
+
+    /**
+     * 取消订单
+     * @param orderId
+     * @return
+     */
+    Boolean cancelOrder(Integer orderId);
+
+    /**
+     * 订单申请退款
+     * @param orderId
+     * @return
+     */
+    Boolean refundOrder(Integer orderId);
 }

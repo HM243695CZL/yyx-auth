@@ -54,6 +54,9 @@
             <if test="paramsDTO.consignee != '' and paramsDTO.consignee != null">
                 and po.consignee like concat('%', #{paramsDTO.consignee}, '%')
             </if>
+            <if test="paramsDTO.orderStatus != '' and paramsDTO.orderStatus != null">
+                and po.order_status = #{paramsDTO.orderStatus}
+            </if>
         </where>
     </select>
 

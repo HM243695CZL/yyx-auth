@@ -1,11 +1,13 @@
 package com.hl.yyx.modules.wx;
 
+import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.modules.pms.dto.OrderParamsDTO;
 import com.hl.yyx.modules.pms.dto.SubOrderDTO;
+import com.hl.yyx.modules.pms.dto.WxOrderDTO;
 import com.hl.yyx.modules.pms.service.PmsOrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.bouncycastle.cert.ocsp.Req;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,5 +56,33 @@ public class WxOrderController {
     @RequestMapping(value = "/pay", method = RequestMethod.GET)
     public CommonResult prePay(@RequestParam Integer orderId) {
         return CommonResult.success(orderService.prePay(orderId));
+    }
+
+    /**
+     * 获取订单列表
+     * @param paramsDTO
+     * @return
+     */
+    @ApiOperation("获取订单列表")
+    @RequestMapping(value = "/getOrderList", method = RequestMethod.POST)
+    public CommonResult getOrderList(@RequestBody WxOrderDTO paramsDTO) {
+        return CommonResult.success(orderService.getOrderList(paramsDTO));
+    }
+
+    /**
+     * 取消订单
+     * @param orderId
+     * @return
+     */
+    @ApiOperation("取消订单")
+    @RequestMapping(value = "/cancel", method = RequestMethod.GET)
+    public CommonResult cancelOrder(@RequestParam Integer orderId) {
+        return CommonResult.success(orderService.cancelOrder(orderId));
+    }
+
+    @ApiOperation("申请退款")
+    @RequestMapping(value = "/refund", method = RequestMethod.GET)
+    public CommonResult refundOrder(@RequestParam Integer orderId) {
+        return CommonResult.success(orderService.refundOrder(orderId));
     }
 }

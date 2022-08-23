@@ -11,6 +11,7 @@ import com.hl.yyx.common.task.TaskService;
 import com.hl.yyx.common.util.OrderHandleOption;
 import com.hl.yyx.common.util.OrderUtil;
 import com.hl.yyx.common.util.RandomUtil;
+import com.hl.yyx.common.util.WxResponseCode;
 import com.hl.yyx.modules.cms.model.CmsAddress;
 import com.hl.yyx.modules.cms.model.CmsUser;
 import com.hl.yyx.modules.cms.service.CmsAddressService;
@@ -18,6 +19,7 @@ import com.hl.yyx.modules.cms.service.CmsUserService;
 import com.hl.yyx.modules.pms.dto.GoodsPriceAndFreightPriceDTO;
 import com.hl.yyx.modules.pms.dto.OrderParamsDTO;
 import com.hl.yyx.modules.pms.dto.SubOrderDTO;
+import com.hl.yyx.modules.pms.dto.WxOrderDTO;
 import com.hl.yyx.modules.pms.mapper.PmsOrderMapper;
 import com.hl.yyx.modules.pms.model.PmsCart;
 import com.hl.yyx.modules.pms.model.PmsGoodsProduct;
@@ -232,8 +234,98 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
         if (order == null) {
             throw new ApiException("订单不存在");
         }
-        // 发起支付
+        OrderHandleOption handleOption = OrderUtil.build(order);
+        if (!handleOption.isPay()) {
+            throw new ApiException(WxResponseCode.ORDER_INVALID_OPERATION);
+        }
+        // todo 支付逻辑，待申请到商户号
+        // 更新订单状态
+        order.setOrderStatus(OrderUtil.STATUS_PAY);
+        order.setPayId(RandomUtil.generateUniqueKey());
+        order.setPayTime(new Date());
+        updateById(order);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("orderId", order.getId());
+        map.put("actualPrice", order.getActualPrice());
+        return map;
+    }
 
+    /**
+     * 获取订单列表
+     * type 0 全部订单 1 待付款 2 待收货 3 待评价
+     * @param paramsDTO
+     * @return
+     */
+    @Override
+    public Object getOrderList(WxOrderDTO paramsDTO) {
+        // 转换订单状态
+        List<Integer> orderStatus = OrderUtil.orderStatus(paramsDTO.getType());
+        CmsUser userInfo = userService.getUserInfo(false);
+        QueryWrapper<PmsOrder> wrapper = new QueryWrapper<>();
+        Page<PmsOrder> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
+        wrapper.lambda().eq(PmsOrder::getUserId, userInfo.getId());
+        if (orderStatus.size() != 0) {
+            wrapper.lambda().in(PmsOrder::getOrderStatus, orderStatus);
+        }
+        wrapper.lambda().orderByDesc(PmsOrder::getUpdateTime);
+        Page<PmsOrder> orderPage = page(page, wrapper);
+
+        List<Map<String, Object>> orderVoList = new ArrayList<>();
+        for (PmsOrder record : orderPage.getRecords()) {
+            HashMap<String, Object> orderVo = new HashMap<>();
+            orderVo.put("id", record.getId());
+            orderVo.put("orderSn", record.getOrderSn());
+            orderVo.put("actualPrice", record.getActualPrice());
+            orderVo.put("orderStatusText", OrderUtil.orderStatusText(record));
+            orderVo.put("handleOption", OrderUtil.build(record));
+            orderVo.put("afterSaleStatus", record.getAftersaleStatus());
+
+            QueryWrapper<PmsOrderGoods> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().eq(PmsOrderGoods::getOrderId, record.getId());
+            List<PmsOrderGoods> list = orderGoodsService.list(queryWrapper);
+            orderVo.put("orderGoodsList", list);
+
+            orderVoList.add(orderVo);
+        }
+        return orderVoList;
+    }
+
+    /**
+     * 取消订单
+     * @param orderId
+     * @return
+     */
+    @Transactional
+    @Override
+    public Boolean cancelOrder(Integer orderId) {
+        PmsOrder order = getById(orderId);
+        order.setOrderStatus(OrderUtil.STATUS_CANCEL);
+        boolean result = updateById(order);
+        // 商品货品数量增加
+        QueryWrapper<PmsOrderGoods> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(PmsOrderGoods::getOrderId, orderId);
+        List<PmsOrderGoods> list = orderGoodsService.list(wrapper);
+        for (PmsOrderGoods orderGoods : list) {
+            Integer productId = orderGoods.getProductId();
+            Integer number = orderGoods.getNumber();
+            if (!productService.addStock(productId, number)) {
+                throw new ApiException("商品货品库存增加失败");
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 订单申请退款
+     * @param orderId
+     * @return
+     */
+    @Override
+    @Transactional
+    public Boolean refundOrder(Integer orderId) {
+        PmsOrder order = getById(orderId);
+        order.setOrderStatus(OrderUtil.STATUS_REFUND);
+        boolean result = updateById(order);
         return null;
     }
 }

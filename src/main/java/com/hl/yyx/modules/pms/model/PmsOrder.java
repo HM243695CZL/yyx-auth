@@ -84,6 +84,7 @@ public class PmsOrder implements Serializable {
     @ApiModelProperty(value = "微信付款编号")
     private String payId;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "微信付款时间")
     private Date payTime;
 
@@ -93,6 +94,7 @@ public class PmsOrder implements Serializable {
     @ApiModelProperty(value = "发货快递公司")
     private String shipChannel;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "发货开始时间")
     private Date shipTime;
 
@@ -105,15 +107,19 @@ public class PmsOrder implements Serializable {
     @ApiModelProperty(value = "退款备注")
     private String refundContent;
 
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "退款时间")
     private Date refundTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "用户确认收货时间")
     private Date confirmTime;
 
     @ApiModelProperty(value = "待评价订单商品数量")
     private Integer comments;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "订单关闭时间")
     private Date endTime;
 

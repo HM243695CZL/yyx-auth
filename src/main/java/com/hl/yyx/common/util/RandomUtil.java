@@ -14,9 +14,9 @@ public class RandomUtil {
         Random random = new Random();
         Integer r = random.nextInt(900000000) + 100000000;
         Long timeMillis = System.currentTimeMillis();
-        DateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        DateFormat sdf = new SimpleDateFormat("yyyyMMddHH");
         String timeStr = sdf.format(new Date());
 //        return  timeMillis + String.valueOf(r); // 13位毫秒+9位随机数
-        return timeStr + r; // 17位时间+9位随机数
+        return timeStr + r; // 10位时间+9位随机数
     }
 }
