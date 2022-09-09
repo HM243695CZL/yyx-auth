@@ -90,7 +90,6 @@ public interface OrderUtil {
             case 4:
                 // 待评价
                 status.add(401);
-                status.add(402);
                 break;
             default:
                 status = null;

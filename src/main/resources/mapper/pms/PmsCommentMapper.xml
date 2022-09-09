@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hl.yyx.modules.pms.mapper.PmsCommentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hl.yyx.modules.pms.model.PmsComment">
+        <id column="id" property="id" />
+        <result column="value_id" property="valueId" />
+        <result column="type" property="type" />
+        <result column="content" property="content" />
+        <result column="admin_content" property="adminContent" />
+        <result column="user_id" property="userId" />
+        <result column="has_picture" property="hasPicture" />
+        <result column="pic_urls" property="picUrls" />
+        <result column="star" property="star" />
+        <result column="add_time" property="addTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="deleted" property="deleted" />
+    </resultMap>
+    <select id="pageList" resultType="com.hl.yyx.modules.pms.model.PmsComment">
+        SELECT
+            pc.*,
+            cu.username username,
+            pog.goods_name goodsName
+        FROM
+            pms_comment pc
+            LEFT JOIN cms_user cu ON pc.user_id = cu.id
+            LEFT JOIN pms_order_goods pog ON pog.id = pc.value_id
+        <where>
+            <if test="pageDto.goodsName != '' and pageDto.goodsName != null">
+                pog.goods_name like concat('%', #{pageDto.goodsName}, '%')
+            </if>
+        </where>
+        <where>
+            <if test="pageDto.username != '' and pageDto.username != null">
+                and cu.username like concat('%', #{pageDto.username}, '%')
+            </if>
+        </where>
+        <where>
+            <if test="pageDto.star != '' and pageDto.star != null">
+                and pc.star = #{pageDto.star}
+            </if>
+        </where>
+    </select>
+
+</mapper>

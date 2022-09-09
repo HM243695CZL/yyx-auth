@@ -1,0 +1,16 @@
+package com.hl.yyx.common.express.config;
+
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.List;
+import java.util.Map;
+
+@Data
+@ConfigurationProperties(prefix = "yyx.express")
+public class ExpressProperties {
+
+    private boolean enable;
+    private String appId;
+    private String appKey;
+}
