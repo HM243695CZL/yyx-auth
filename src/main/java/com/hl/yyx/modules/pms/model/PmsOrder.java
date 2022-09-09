@@ -107,6 +107,9 @@ public class PmsOrder implements Serializable {
     @ApiModelProperty(value = "退款备注")
     private String refundContent;
 
+    @ApiModelProperty(value = "申请退款原因")
+    private String applyRefundReason;
+
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "退款时间")

@@ -3,8 +3,12 @@ package com.hl.yyx.modules.wx;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.modules.pms.dto.OrderParamsDTO;
+import com.hl.yyx.modules.pms.dto.OrderRefundDTO;
 import com.hl.yyx.modules.pms.dto.SubOrderDTO;
 import com.hl.yyx.modules.pms.dto.WxOrderDTO;
+import com.hl.yyx.modules.pms.model.PmsComment;
+import com.hl.yyx.modules.pms.service.PmsCommentService;
+import com.hl.yyx.modules.pms.service.PmsOrderGoodsService;
 import com.hl.yyx.modules.pms.service.PmsOrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,6 +28,12 @@ public class WxOrderController {
 
     @Autowired
     PmsOrderService orderService;
+
+    @Autowired
+    PmsOrderGoodsService orderGoodsService;
+
+    @Autowired
+    PmsCommentService commentService;
 
     /**
      * 提交订单
@@ -80,9 +90,59 @@ public class WxOrderController {
         return CommonResult.success(orderService.cancelOrder(orderId));
     }
 
+    /**
+     * 申请退款
+     * @param refundDTO
+     * @return
+     */
     @ApiOperation("申请退款")
-    @RequestMapping(value = "/refund", method = RequestMethod.GET)
-    public CommonResult refundOrder(@RequestParam Integer orderId) {
-        return CommonResult.success(orderService.refundOrder(orderId));
+    @RequestMapping(value = "/applyRefund", method = RequestMethod.POST)
+    public CommonResult applyRefund(@RequestBody OrderRefundDTO refundDTO) {
+        return CommonResult.success(orderService.applyRefund(refundDTO));
+    }
+
+    /**
+     * 确认收货
+     * @param orderId
+     * @return
+     */
+    @ApiOperation("确认收货")
+    @RequestMapping(value = "/confirm", method = RequestMethod.GET)
+    public CommonResult confirmOrder(@RequestParam Integer orderId) {
+        return CommonResult.success(orderService.confirmOrder(orderId));
+    }
+
+
+    /**
+     * 删除订单
+     * @param orderId
+     * @return
+     */
+    @ApiOperation("删除订单")
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public CommonResult deleteOrder(@RequestParam Integer orderId) {
+        return CommonResult.success(orderService.removeById(orderId));
+    }
+
+    /**
+     * 获取待评价商品信息
+     * @param orderGoodsId
+     * @return
+     */
+    @ApiOperation("获取待评价商品信息")
+    @RequestMapping(value = "/orderGoods", method = RequestMethod.GET)
+    public CommonResult getOrderGoodsInfo(@RequestParam Integer orderGoodsId) {
+        return CommonResult.success(orderGoodsService.getById(orderGoodsId));
+    }
+
+    /**
+     * 评价订单商品
+     * @param comment
+     * @return
+     */
+    @ApiOperation("评价订单商品")
+    @RequestMapping(value = "/comment", method = RequestMethod.POST)
+    public CommonResult commentGoods(@RequestBody PmsComment comment) {
+        return CommonResult.success(orderService.commentGoods(comment));
     }
 }

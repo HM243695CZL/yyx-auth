@@ -2,9 +2,12 @@ package com.hl.yyx.modules.pms.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hl.yyx.modules.cms.dto.ShipOrderDTO;
 import com.hl.yyx.modules.pms.dto.OrderParamsDTO;
+import com.hl.yyx.modules.pms.dto.OrderRefundDTO;
 import com.hl.yyx.modules.pms.dto.SubOrderDTO;
 import com.hl.yyx.modules.pms.dto.WxOrderDTO;
+import com.hl.yyx.modules.pms.model.PmsComment;
 import com.hl.yyx.modules.pms.model.PmsOrder;
 
 import java.text.ParseException;
@@ -58,8 +61,32 @@ public interface PmsOrderService extends IService<PmsOrder> {
 
     /**
      * 订单申请退款
+     * @param refundDTO
+     * @return
+     */
+    Boolean applyRefund(OrderRefundDTO refundDTO);
+
+    /**
+     * 订单退款
+     * @param id
+     * @return
+     */
+    Boolean refund(String id);
+
+    Boolean shipOrder(ShipOrderDTO shipOrderDTO);
+
+    /**
+     * 确认收货
      * @param orderId
      * @return
      */
-    Boolean refundOrder(Integer orderId);
+    Boolean confirmOrder(Integer orderId);
+
+
+    /**
+     * 评价订单商品
+     * @param comment
+     * @return
+     */
+    Boolean commentGoods(PmsComment comment);
 }

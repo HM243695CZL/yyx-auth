@@ -34,6 +34,7 @@
         <java-jwt.version>3.2.0</java-jwt.version>
         <weixin-java-miniapp.version>4.1.0</weixin-java-miniapp.version>
         <best-pay-sdk.version>1.1.0</best-pay-sdk.version>
+        <mail.version>2.1.5.RELEASE</mail.version>
     </properties>
     <dependencies>
         <!--SpringBoot通用依赖模块-->
@@ -171,6 +172,17 @@
             <groupId>cn.springboot</groupId>
             <artifactId>best-pay-sdk</artifactId>
             <version>${best-pay-sdk.version}</version>
+        </dependency>
+        <!-- websocket -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <!-- 邮箱 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+            <version>${mail.version}</version>
         </dependency>
     </dependencies>
 

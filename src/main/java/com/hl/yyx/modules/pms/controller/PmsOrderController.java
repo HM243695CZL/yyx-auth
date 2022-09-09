@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.cms.dto.ShipOrderDTO;
 import com.hl.yyx.modules.pms.dto.OrderPageDTO;
 import com.hl.yyx.modules.pms.dto.OrderParamsDTO;
 import io.swagger.annotations.Api;
@@ -54,6 +55,22 @@ public class PmsOrderController {
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable String id) {
         return CommonResult.success(pmsOrderService.getById(id));
+    }
+
+
+    // 退款
+    @ApiOperation("订单退款")
+    @RequestMapping(value = "/refund/{id}", method = RequestMethod.GET)
+    public CommonResult refund(@PathVariable String id) {
+        return CommonResult.success(pmsOrderService.refund(id));
+    }
+
+
+    // 发货
+    @ApiOperation("订单发货")
+    @RequestMapping(value = "/ship", method = RequestMethod.POST)
+    public CommonResult shipOrder(@RequestBody ShipOrderDTO shipOrderDTO) {
+        return CommonResult.success(pmsOrderService.shipOrder(shipOrderDTO));
     }
 
 }

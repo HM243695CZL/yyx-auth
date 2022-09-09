@@ -6,6 +6,14 @@ spring:
     name: mall-tiny
   profiles:
     active: dev
+  mail:
+    host: smtp.qq.com # 发送邮件服务器
+    username: 1224311695@qq.com # 发送邮件的邮箱地址
+    password: iurudbzncyryhbdc #客户端授权码
+    port: 587 # 端口号465或587
+    properties:
+      mail:
+        debug: true # 开启debug模式，这样邮件发送过程的日志会在控制台打印出来，方便排查错误
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
@@ -17,6 +25,13 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+yyx:
+  mail:
+    sendTo: 2609043397@qq.com # 邮件收件人
+  express: # 快鸟物流查询配置
+    enable: false
+    appId: "hl243695czyn"
+    appKey: "hl243695czyn"
 jwt:
   tokenHeader: Authorization #JWT存储的请求头
   secret: mall-admin-secret #JWT加解密使用的密钥

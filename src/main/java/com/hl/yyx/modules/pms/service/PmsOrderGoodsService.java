@@ -13,4 +13,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface PmsOrderGoodsService extends IService<PmsOrderGoods> {
 
+    /**
+     * 获取待评价订单商品数量
+     * @param orderId
+     * @return
+     */
+    Integer getComments(Integer orderId);
 }

@@ -1,5 +1,6 @@
 package com.hl.yyx.modules.pms.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hl.yyx.modules.pms.model.PmsOrderGoods;
 import com.hl.yyx.modules.pms.mapper.PmsOrderGoodsMapper;
 import com.hl.yyx.modules.pms.service.PmsOrderGoodsService;
@@ -17,4 +18,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class PmsOrderGoodsServiceImpl extends ServiceImpl<PmsOrderGoodsMapper, PmsOrderGoods> implements PmsOrderGoodsService {
 
+    /**
+     * 获取待评价订单商品数量
+     * @param orderId
+     * @return
+     */
+    @Override
+    public Integer getComments(Integer orderId) {
+        QueryWrapper<PmsOrderGoods> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(PmsOrderGoods::getOrderId, orderId);
+        return count(queryWrapper);
+    }
 }

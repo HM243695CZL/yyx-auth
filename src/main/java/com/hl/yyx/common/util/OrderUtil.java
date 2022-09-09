@@ -1,11 +1,20 @@
 package com.hl.yyx.common.util;
 
+import cn.hutool.core.date.DateUtil;
 import com.hl.yyx.common.design.strategy.*;
 import com.hl.yyx.common.exception.ApiException;
+import com.hl.yyx.common.express.ExpressService;
 import com.hl.yyx.modules.pms.model.PmsOrder;
+import com.hl.yyx.modules.pms.model.PmsOrderGoods;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
+import javax.xml.crypto.Data;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 订单常量
@@ -43,7 +52,9 @@ public interface OrderUtil {
                 break;
             case 201:
                 orderContext = new OrderContext(new OrderRefund());
+                break;
             case 202:
+                orderContext = new OrderContext(new OrderNoAuth());
                 break;
             case 301:
                 orderContext = new OrderContext(new OrderConfirm());
@@ -51,6 +62,7 @@ public interface OrderUtil {
             case 401:
             case 402:
                 orderContext = new OrderContext(new OrderRebuy());
+                break;
             default:
                 throw new ApiException("status不支持");
         }
@@ -67,11 +79,15 @@ public interface OrderUtil {
                 status.add(101);
                 break;
             case 2:
-                // 待收货
+                // 待发货
                 status.add(201);
-                status.add(301);
+                status.add(202);
                 break;
             case 3:
+                // 待收货
+                status.add(301);
+                break;
+            case 4:
                 // 待评价
                 status.add(401);
                 status.add(402);
@@ -117,5 +133,70 @@ public interface OrderUtil {
                 statusText = "";
         }
         return statusText;
+    }
+
+    /**
+     * 根据订单信息拼接申请退款邮件内容
+     * @param order
+     * @return
+     */
+    public static String orderToApplyRefundMail(PmsOrder order) {
+        String payTime = DateUtil.format(order.getPayTime(), "yyyy-MM-dd HH:mm:ss");
+        String refundTime = DateUtil.format(order.getRefundTime(), "yyyy-MM-dd HH:mm:ss");
+        return "用户【" + order.getConsignee() + "】申请退款\n" +
+                "订单详情：\n" +
+                "订单编号：【..." + order.getOrderSn().substring(13, 19) + "】\n" +
+                "订单金额：【￥" + order.getActualPrice() + "】\n" +
+                "订单备注：【" + order.getMessage() + "】\n" +
+                "支付时间：【" + payTime + "】\n" +
+                "申请退款时间：【" + refundTime + "】\n" +
+                "申请退款原因：【" + order.getApplyRefundReason() + "】";
+    }
+
+    /**
+     * 根据订单信息拼接退款成功邮件内容
+     * @param order
+     * @return
+     */
+    public static String orderToRefundSuccessMail(PmsOrder order) {
+        String refundTime = DateUtil.format(order.getRefundTime(), "yyyy-MM-dd HH:mm:ss");
+        return "用户【" + order.getConsignee() + "】的退款已完成\n" +
+                "订单详情：\n" +
+                "订单编号：【..." + order.getOrderSn().substring(13, 19) + "】\n" +
+                "订单金额：【￥" + order.getActualPrice() + "】\n" +
+                "退款金额：【￥" + order.getRefundAmount() + "】\n" +
+                "退款方式：【" + order.getRefundType() + "】\n" +
+                "退款备注：【" + order.getRefundContent() + "】\n" +
+                "退款时间：【" + refundTime + "】";
+    }
+
+    /**
+     * 根据订单信息拼接发货邮件内容
+     * @param order
+     * @return
+     */
+    public static String orderToShipMail(PmsOrder order) {
+
+        String shipTime = DateUtil.format(order.getShipTime(), "yyyy-MM-dd HH:mm:ss");
+        return "用户【" + order.getConsignee() + "】的订单已发货\n" +
+                "订单详情：\n" +
+                "订单编号：【..." + order.getOrderSn().substring(13, 19) + "】\n" +
+                "快递单号：【" + order.getShipSn() + "】\n" +
+                "物流公司：【" + order.getShipChannel() + "】\n" +
+                "发货时间：【" + shipTime + "】";
+    }
+
+
+    /**
+     * 根据订单信息拼接确认收货邮件内容
+     * @param order
+     * @return
+     */
+    public static String orderToConfirmMail(PmsOrder order) {
+        String confirmTime = DateUtil.format(order.getConfirmTime(), "yyyy-MM-dd HH:mm:ss");
+        return "用户【" + order.getConsignee() + "】的订单已确认收货\n" +
+                "订单详情：\n" +
+                "订单编号：【..." + order.getOrderSn().substring(13, 19) +"】\n" +
+                "确认收货时间：【" + confirmTime + "】";
     }
 }

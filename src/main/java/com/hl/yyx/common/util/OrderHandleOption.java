@@ -9,6 +9,7 @@ public class OrderHandleOption {
     private boolean delete = false; // 删除操作
     private boolean pay = false; // 支付操作
     private boolean comment = false; // 评论操作
+    private boolean logistics = false; // 查看物流
     private boolean confirm = false; // 确认收货操作
     private boolean refund = false; // 取消订单并退款操作
     private boolean reBuy = false; // 再次购买

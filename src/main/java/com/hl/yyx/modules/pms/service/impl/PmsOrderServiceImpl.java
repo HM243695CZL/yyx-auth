@@ -6,29 +6,25 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.common.exception.ApiException;
 import com.hl.yyx.common.exception.Asserts;
+import com.hl.yyx.common.express.ExpressService;
 import com.hl.yyx.common.task.OrderUnpaidTask;
 import com.hl.yyx.common.task.TaskService;
 import com.hl.yyx.common.util.OrderHandleOption;
 import com.hl.yyx.common.util.OrderUtil;
 import com.hl.yyx.common.util.RandomUtil;
 import com.hl.yyx.common.util.WxResponseCode;
+import com.hl.yyx.modules.cms.dto.ShipOrderDTO;
 import com.hl.yyx.modules.cms.model.CmsAddress;
 import com.hl.yyx.modules.cms.model.CmsUser;
 import com.hl.yyx.modules.cms.service.CmsAddressService;
 import com.hl.yyx.modules.cms.service.CmsUserService;
-import com.hl.yyx.modules.pms.dto.GoodsPriceAndFreightPriceDTO;
-import com.hl.yyx.modules.pms.dto.OrderParamsDTO;
-import com.hl.yyx.modules.pms.dto.SubOrderDTO;
-import com.hl.yyx.modules.pms.dto.WxOrderDTO;
+import com.hl.yyx.modules.pms.dto.*;
 import com.hl.yyx.modules.pms.mapper.PmsOrderMapper;
-import com.hl.yyx.modules.pms.model.PmsCart;
-import com.hl.yyx.modules.pms.model.PmsGoodsProduct;
-import com.hl.yyx.modules.pms.model.PmsOrder;
-import com.hl.yyx.modules.pms.model.PmsOrderGoods;
-import com.hl.yyx.modules.pms.service.PmsCartService;
-import com.hl.yyx.modules.pms.service.PmsGoodsProductService;
-import com.hl.yyx.modules.pms.service.PmsOrderGoodsService;
-import com.hl.yyx.modules.pms.service.PmsOrderService;
+import com.hl.yyx.modules.pms.model.*;
+import com.hl.yyx.modules.pms.service.*;
+import com.hl.yyx.modules.sms.service.SmsMailService;
+import com.hl.yyx.modules.ums.model.UmsDict;
+import com.hl.yyx.modules.ums.service.UmsDictService;
 import com.hl.yyx.modules.ums.service.impl.UmsSystemServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,6 +73,19 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
 
     @Autowired
     UmsSystemServiceImpl systemService;
+
+    @Autowired
+    SmsMailService mailService;
+
+    @Autowired
+    ExpressService expressService;
+
+    @Autowired
+    UmsDictService dictService;
+
+    @Autowired
+    PmsCommentService commentService;
+
     /**
      * 提交订单
      * 1、创建订单表项和订单商品表项
@@ -185,6 +194,14 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
             wrapper.lambda().eq(PmsOrderGoods::getOrderId, record.getId());
             List<PmsOrderGoods> list = orderGoodsService.list(wrapper);
             record.setOrderGoodsList(list);
+
+            // 查询物流的键对应的值信息
+            QueryWrapper<UmsDict> queryWrapper = new QueryWrapper<>();
+            if (record.getShipChannel() != null) {
+                queryWrapper.lambda().eq(UmsDict::getDataKey, record.getShipChannel());
+                UmsDict dict = dictService.getOne(queryWrapper);
+                record.setShipChannel(dict.getDataValue());
+            }
         }
         return orderPage;
     }
@@ -252,7 +269,7 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
 
     /**
      * 获取订单列表
-     * type 0 全部订单 1 待付款 2 待收货 3 待评价
+     * type 0 全部订单 1 待付款 2 待发货 3 待收货 4 待评价
      * @param paramsDTO
      * @return
      */
@@ -322,10 +339,128 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
      */
     @Override
     @Transactional
-    public Boolean refundOrder(Integer orderId) {
-        PmsOrder order = getById(orderId);
+    public Boolean applyRefund(OrderRefundDTO refundDTO) {
+        PmsOrder order = getById(refundDTO.getOrderId());
         order.setOrderStatus(OrderUtil.STATUS_REFUND);
+        order.setApplyRefundReason(refundDTO.getRefundReason());
+        order.setRefundTime(new Date());
         boolean result = updateById(order);
-        return null;
+        // todo 发送邮件和短信通知   有用户申请退款，邮件通知运营人员
+        mailService.sendSimpleMail("退款申请", OrderUtil.orderToApplyRefundMail(order));
+        return result;
     }
+
+    /**
+     * 订单退款
+     * 1、微信退款操作
+     * 2、设置订单退款确认状态
+     * 3、订单商品库存回库
+     * 从安全角度考虑，采用以下两步
+     *  1、管理员登录微信官方支付平台进行退款操作
+     *  2、管理员登录本系统点击退款进行订单状态修改和商品库存回库
+     * @param id
+     * @return
+     */
+    @Override
+    @Transactional
+    public Boolean refund(String id) {
+        // todo 微信退款操作
+        Date now = new Date();
+        // 设置订单状态和结束时间
+        PmsOrder order = getById(id);
+        order.setOrderStatus(OrderUtil.STATUS_REFUND_CONFIRM);
+        order.setEndTime(now);
+        // 记录订单退款相关信息
+        order.setRefundAmount(order.getActualPrice());
+        order.setRefundType("微信退款接口");
+        order.setRefundContent("微信退款返回的备注信息，【待接入微信支付】");
+        order.setRefundTime(now);
+        boolean result = updateById(order);
+
+        // 商品货品数量增加
+        QueryWrapper<PmsOrderGoods> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(PmsOrderGoods::getOrderId, id);
+        List<PmsOrderGoods> list = orderGoodsService.list(wrapper);
+        for (PmsOrderGoods orderGoods : list) {
+            Integer productId = orderGoods.getProductId();
+            Integer number = orderGoods.getNumber();
+            if (!productService.addStock(productId, number)) {
+                throw new ApiException("商品货品库存增加失败");
+            }
+        }
+
+        // todo 发送短信通知用户
+        // 退款成功通知用户，如"你申请的订单退款【单号：{1}】已成功，请耐心等待到账" 订单号只发后6位
+        // 发送邮件通知管理员
+        mailService.sendSimpleMail("退款成功", OrderUtil.orderToRefundSuccessMail(order));
+        return result;
+    }
+
+    /**
+     * 订单发货
+     * @param shipOrderDTO
+     * @return
+     */
+    @Override
+    public Boolean shipOrder(ShipOrderDTO shipOrderDTO) {
+        PmsOrder order = getById(shipOrderDTO.getOrderId());
+        order.setOrderStatus(OrderUtil.STATUS_SHIP);
+        order.setShipSn(shipOrderDTO.getShipSn());
+        order.setShipChannel(shipOrderDTO.getShipChannel());
+        order.setShipTime(new Date());
+        boolean result = updateById(order);
+
+        // todo 发送短信通知用户
+        // 发送邮件通知管理员
+        mailService.sendSimpleMail("订单发货", OrderUtil.orderToShipMail(order));
+        return result;
+    }
+
+    /**
+     * 确认收货
+     * @param orderId
+     * @return
+     */
+    @Override
+    public Boolean confirmOrder(Integer orderId) {
+        PmsOrder order = getById(orderId);
+        Integer comments = orderGoodsService.getComments(orderId);
+        order.setComments(comments);
+        order.setOrderStatus(OrderUtil.STATUS_CONFIRM);
+        order.setConfirmTime(new Date());
+
+        // todo 发送短信通知管理员
+        // 发送邮件通知管理员
+        mailService.sendSimpleMail("确认收货", OrderUtil.orderToConfirmMail(order));
+        return updateById(order);
+    }
+
+    /**
+     * 评价订单商品
+     * @param comment
+     * @return
+     */
+    @Override
+    @Transactional
+    public Boolean commentGoods(PmsComment comment) {
+        CmsUser userInfo = userService.getUserInfo(false);
+        comment.setUserId(userInfo.getId());
+        commentService.save(comment);
+
+        // 更新订单商品的评价列表
+        PmsOrderGoods orderGoods = orderGoodsService.getById(comment.getValueId());
+        orderGoods.setComment(comment.getId());
+        orderGoodsService.updateById(orderGoods);
+
+        // 更新订单中未评价的订单商品可评价数量
+        Integer orderId = orderGoods.getOrderId();
+        PmsOrder order = getById(orderId);
+        Integer commentCount = order.getComments();
+        if (commentCount > 0) {
+            commentCount --;
+        }
+        order.setComments(commentCount);
+        return updateById(order);
+    }
+
 }
