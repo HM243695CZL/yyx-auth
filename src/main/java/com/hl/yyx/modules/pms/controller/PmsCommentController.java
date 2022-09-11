@@ -3,6 +3,7 @@ package com.hl.yyx.modules.pms.controller;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.modules.pms.dto.CommentPageDto;
+import com.hl.yyx.modules.pms.dto.ReplyCommentDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,24 @@ public class PmsCommentController {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id) {
         return CommonResult.success( pmsCommentService.removeById(id));
+    }
+
+    // 查看
+    @ApiOperation("查看评论")
+    @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
+    public CommonResult findOne(@PathVariable String id) {
+        return CommonResult.success(pmsCommentService.getById(id));
+    }
+
+    /**
+     * 回复评论
+     * @param commentDTO
+     * @return
+     */
+    @ApiOperation("回复评论")
+    @RequestMapping(value = "/reply", method = RequestMethod.POST)
+    public CommonResult replyComment(@RequestBody ReplyCommentDTO commentDTO) {
+        return CommonResult.success(pmsCommentService.replyComment(commentDTO));
     }
 
 }

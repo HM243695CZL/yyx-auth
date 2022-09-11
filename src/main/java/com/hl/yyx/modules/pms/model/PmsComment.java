@@ -78,5 +78,9 @@ public class PmsComment implements Serializable {
     @TableField(exist = false)
     private String goodsName;
 
+    @ApiModelProperty(value = "订单商品id")
+    @TableField(exist = false)
+    private Integer orderGoodsId;
+
 
 }

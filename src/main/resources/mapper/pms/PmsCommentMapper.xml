@@ -21,24 +21,26 @@
         SELECT
             pc.*,
             cu.username username,
-            pog.goods_name goodsName
+            pg.name goodsName
         FROM
             pms_comment pc
             LEFT JOIN cms_user cu ON pc.user_id = cu.id
-            LEFT JOIN pms_order_goods pog ON pog.id = pc.value_id
+            LEFT JOIN pms_goods pg ON pg.id = pc.value_id
         <where>
             <if test="pageDto.goodsName != '' and pageDto.goodsName != null">
-                pog.goods_name like concat('%', #{pageDto.goodsName}, '%')
+                pg.name like concat('%', #{pageDto.goodsName}, '%')
             </if>
-        </where>
-        <where>
             <if test="pageDto.username != '' and pageDto.username != null">
                 and cu.username like concat('%', #{pageDto.username}, '%')
             </if>
-        </where>
-        <where>
             <if test="pageDto.star != '' and pageDto.star != null">
                 and pc.star = #{pageDto.star}
+            </if>
+            <if test="pageDto.goodsId != '' and pageDto.goodsId != null">
+                and pc.value_id = #{pageDto.goodsId}
+            </if>
+            <if test="pageDto.type != '' and pageDto.type != null">
+                and pc.has_picture = #{pageDto.type}
             </if>
         </where>
     </select>

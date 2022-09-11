@@ -73,6 +73,11 @@ public interface PmsOrderService extends IService<PmsOrder> {
      */
     Boolean refund(String id);
 
+    /**
+     * 订单发货
+     * @param shipOrderDTO
+     * @return
+     */
     Boolean shipOrder(ShipOrderDTO shipOrderDTO);
 
     /**

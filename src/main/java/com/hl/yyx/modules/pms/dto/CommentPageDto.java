@@ -19,4 +19,10 @@ public class CommentPageDto extends PageParamsDTO {
     @ApiModelProperty(value = "分数")
     private Integer star;
 
+    @ApiModelProperty(value = "商品id")
+    private Integer goodsId;
+
+    @ApiModelProperty(value = "0：全部； 1：有图")
+    private Integer type;
+
 }

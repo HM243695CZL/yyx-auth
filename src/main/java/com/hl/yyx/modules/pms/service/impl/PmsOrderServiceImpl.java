@@ -19,6 +19,7 @@ import com.hl.yyx.modules.cms.model.CmsUser;
 import com.hl.yyx.modules.cms.service.CmsAddressService;
 import com.hl.yyx.modules.cms.service.CmsUserService;
 import com.hl.yyx.modules.pms.dto.*;
+import com.hl.yyx.modules.pms.mapper.PmsCommentMapper;
 import com.hl.yyx.modules.pms.mapper.PmsOrderMapper;
 import com.hl.yyx.modules.pms.model.*;
 import com.hl.yyx.modules.pms.service.*;
@@ -84,7 +85,7 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
     UmsDictService dictService;
 
     @Autowired
-    PmsCommentService commentService;
+    PmsCommentMapper commentMapper;
 
     /**
      * 提交订单
@@ -412,6 +413,11 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
 
         // todo 发送短信通知用户
         // 发送邮件通知管理员
+        // 查询物流对应的中文名
+        QueryWrapper<UmsDict> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(UmsDict::getDataKey, shipOrderDTO.getShipChannel());
+        UmsDict dict = dictService.getOne(queryWrapper);
+        order.setShipChannel(dict.getDataValue());
         mailService.sendSimpleMail("订单发货", OrderUtil.orderToShipMail(order));
         return result;
     }
@@ -444,12 +450,25 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
     @Transactional
     public Boolean commentGoods(PmsComment comment) {
         CmsUser userInfo = userService.getUserInfo(false);
-        comment.setUserId(userInfo.getId());
-        commentService.save(comment);
+
+        Integer commentId = null;
+
+        PmsComment pmsComment = new PmsComment();
+        pmsComment.setContent(comment.getContent());
+        pmsComment.setHasPicture(comment.getHasPicture());
+        pmsComment.setPicUrls(comment.getPicUrls());
+        pmsComment.setStar(comment.getStar());
+        pmsComment.setType(comment.getType());
+        pmsComment.setValueId(comment.getValueId());
+        pmsComment.setUserId(userInfo.getId());
+
+        commentMapper.insert(pmsComment);
+        commentId = pmsComment.getId();
+
 
         // 更新订单商品的评价列表
-        PmsOrderGoods orderGoods = orderGoodsService.getById(comment.getValueId());
-        orderGoods.setComment(comment.getId());
+        PmsOrderGoods orderGoods = orderGoodsService.getById(comment.getOrderGoodsId());
+        orderGoods.setComment(commentId);
         orderGoodsService.updateById(orderGoods);
 
         // 更新订单中未评价的订单商品可评价数量
