@@ -127,7 +127,7 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
         order.setMessage(orderDTO.getMessage());
         String detailAddress = address.getProvince() + address.getCity() + address.getCounty() + " " + address.getAddressDetail();
         order.setAddress(detailAddress);
-        order.setGoodsPrice(orderTotalPrice);
+        order.setGoodsPrice(goodsObj.getGoodsPrice());
         order.setFreightPrice(goodsObj.getFreightPrice());
         order.setCouponPrice(new BigDecimal(0));
         order.setIntegralPrice(new BigDecimal(0));
@@ -480,6 +480,48 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
         }
         order.setComments(commentCount);
         return updateById(order);
+    }
+
+    /**
+     * 获取PC端订单详情
+     * @param id
+     * @return
+     */
+    @Override
+    public Object view(String id) {
+        PmsOrder order = getById(id);
+
+        CmsUser user = userService.getById(order.getUserId());
+        order.setUserName(user.getNickname());
+        // 获取物流公司名称
+        QueryWrapper<UmsDict> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(UmsDict::getDataKey, order.getShipChannel());
+        UmsDict dict = dictService.getOne(queryWrapper);
+        if (dict != null) {
+            order.setShipName(dict.getDataValue());
+        }
+
+
+        QueryWrapper<PmsOrderGoods> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(PmsOrderGoods::getOrderId, id);
+        List<PmsOrderGoods> orderGoodsList = orderGoodsService.list(wrapper);
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("orderInfo", order);
+        map.put("orderGoodsList", orderGoodsList);
+        return map;
+    }
+
+    /**
+     * 更新订单的售后状态
+     * @param orderId
+     * @param status
+     */
+    @Override
+    public void setOrderAfterSaleStatus(Integer orderId, Integer status) {
+        PmsOrder order = getById(orderId);
+        order.setAftersaleStatus(status);
+        updateById(order);
     }
 
 }

@@ -94,6 +94,10 @@ public class PmsOrder implements Serializable {
     @ApiModelProperty(value = "发货快递公司")
     private String shipChannel;
 
+    @ApiModelProperty(value = "快递公司名称")
+    @TableField(exist = false)
+    private String shipName;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "发货开始时间")
     private Date shipTime;

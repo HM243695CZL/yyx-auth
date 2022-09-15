@@ -94,4 +94,18 @@ public interface PmsOrderService extends IService<PmsOrder> {
      * @return
      */
     Boolean commentGoods(PmsComment comment);
+
+    /**
+     * pc端订单详情
+     * @param id
+     * @return
+     */
+    Object view(String id);
+
+    /**
+     * 更新订单的售后状态
+     * @param orderId
+     * @param status
+     */
+    void setOrderAfterSaleStatus(Integer orderId, Integer status);
 }

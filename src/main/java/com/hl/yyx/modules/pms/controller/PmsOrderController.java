@@ -54,7 +54,7 @@ public class PmsOrderController {
     @ApiOperation("查看订单")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable String id) {
-        return CommonResult.success(pmsOrderService.getById(id));
+        return CommonResult.success(pmsOrderService.view(id));
     }
 
 

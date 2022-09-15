@@ -3,18 +3,10 @@ package com.hl.yyx.common.util;
 import cn.hutool.core.date.DateUtil;
 import com.hl.yyx.common.design.strategy.*;
 import com.hl.yyx.common.exception.ApiException;
-import com.hl.yyx.common.express.ExpressService;
 import com.hl.yyx.modules.pms.model.PmsOrder;
-import com.hl.yyx.modules.pms.model.PmsOrderGoods;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
-import javax.xml.crypto.Data;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 订单常量

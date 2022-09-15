@@ -6,7 +6,9 @@ import com.hl.yyx.modules.pms.dto.OrderParamsDTO;
 import com.hl.yyx.modules.pms.dto.OrderRefundDTO;
 import com.hl.yyx.modules.pms.dto.SubOrderDTO;
 import com.hl.yyx.modules.pms.dto.WxOrderDTO;
+import com.hl.yyx.modules.pms.model.PmsAftersale;
 import com.hl.yyx.modules.pms.model.PmsComment;
+import com.hl.yyx.modules.pms.service.PmsAftersaleService;
 import com.hl.yyx.modules.pms.service.PmsCommentService;
 import com.hl.yyx.modules.pms.service.PmsOrderGoodsService;
 import com.hl.yyx.modules.pms.service.PmsOrderService;
@@ -34,6 +36,9 @@ public class WxOrderController {
 
     @Autowired
     PmsCommentService commentService;
+
+    @Autowired
+    PmsAftersaleService afterSaleService;
 
     /**
      * 提交订单
@@ -144,5 +149,16 @@ public class WxOrderController {
     @RequestMapping(value = "/comment", method = RequestMethod.POST)
     public CommonResult commentGoods(@RequestBody PmsComment comment) {
         return CommonResult.success(orderService.commentGoods(comment));
+    }
+
+    /**
+     * 订单售后
+     * @param aftersale
+     * @return
+     */
+    @ApiOperation("订单售后")
+    @RequestMapping(value = "/afterSale", method = RequestMethod.POST)
+    public CommonResult orderAfterSale(@RequestBody PmsAftersale aftersale) {
+        return CommonResult.success(afterSaleService.orderAfterSale(aftersale));
     }
 }
