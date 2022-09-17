@@ -19,5 +19,27 @@
         <result column="update_time" property="updateTime" />
         <result column="deleted" property="deleted" />
     </resultMap>
+    <select id="pageList" resultType="com.hl.yyx.modules.pms.model.PmsAftersale">
+        SELECT
+        pas.*,
+        cu.username username 
+    FROM
+        pms_aftersale pas
+        LEFT JOIN cms_user cu ON cu.id = pas.user_id
+        <where>
+            <if test="paramsDTO.username != '' and paramsDTO.username != null">
+                cu.username like concat('%', #{paramsDTO.username}, '%')
+            </if>
+            <if test="paramsDTO.afterSaleSn != '' and paramsDTO.afterSaleSn != null">
+                pas.aftersale_sn like concat('%', #{paramsDTO.afterSaleSn}, '%')
+            </if>
+            <if test="paramsDTO.status != '' and paramsDTO.status != null">
+                pas.status = #{paramsDTO.status}
+            </if>
+            <if test="paramsDTO.type != '' and paramsDTO.type != null">
+                pas.type = #{paramsDTO.type}
+            </if>
+        </where>
+    </select>
 
 </mapper>

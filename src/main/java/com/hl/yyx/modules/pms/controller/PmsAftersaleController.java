@@ -1,6 +1,8 @@
 package com.hl.yyx.modules.pms.controller;
 
+import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.modules.pms.dto.OrderAfterSalePageDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +25,18 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(tags = "售后管理", description = "售后管理")
 @RestController
-@RequestMapping("/pms/after-sale")
+@RequestMapping("/admin/pms/afterSale")
 public class PmsAftersaleController {
 
     @Autowired
     private PmsAftersaleService pmsAftersaleService;
+
+    // 分页
+    @ApiOperation("分页查询")
+    @RequestMapping(value = "/page", method = RequestMethod.POST)
+    public CommonResult page(@RequestBody OrderAfterSalePageDTO paramsDTO) {
+        return CommonResult.success(CommonPage.restPage(pmsAftersaleService.pageList(paramsDTO)));
+    }
 
     // 删除
     @ApiOperation("删除售后")
@@ -36,6 +45,15 @@ public class PmsAftersaleController {
         return CommonResult.success( pmsAftersaleService.removeById(id));
     }
 
-
+    /**
+     * 查看
+     * @param id 订单id
+     * @return
+     */
+    @ApiOperation("查看售后")
+    @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
+    public CommonResult view(@PathVariable String id) {
+        return CommonResult.success(pmsAftersaleService.getAfterSaleInfo(id));
+    }
 }
 

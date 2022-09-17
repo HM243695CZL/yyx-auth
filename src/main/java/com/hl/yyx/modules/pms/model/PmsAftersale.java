@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
 import java.io.Serializable;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -77,6 +78,14 @@ public class PmsAftersale implements Serializable {
 //    @TableLogic(value = "1", delval = "0")
     @JsonIgnore
     private Boolean deleted;
+
+    @ApiModelProperty(value = "用户名称")
+    @TableField(exist = false)
+    private String username;
+
+    @ApiModelProperty(value = "订单商品列表")
+    @TableField(exist = false)
+    private List<PmsOrderGoods> orderGoodsList;
 
 
 }
