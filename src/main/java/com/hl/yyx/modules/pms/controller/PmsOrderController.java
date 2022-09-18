@@ -3,6 +3,7 @@ package com.hl.yyx.modules.pms.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.cms.dto.ShipOrderDTO;
 import com.hl.yyx.modules.pms.dto.OrderPageDTO;
@@ -38,6 +39,7 @@ public class PmsOrderController {
     // 分页
     @ApiOperation("分页查询")
     @RequestMapping(value = "/page", method = RequestMethod.POST)
+    @LogAnnotation()
     public CommonResult page(@RequestBody OrderParamsDTO paramsDTO) {
         return CommonResult.success(CommonPage.restPage(pmsOrderService.pageList(paramsDTO)));
     }

@@ -198,11 +198,12 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
 
             // 查询物流的键对应的值信息
             QueryWrapper<UmsDict> queryWrapper = new QueryWrapper<>();
-            if (record.getShipChannel() != null) {
-                queryWrapper.lambda().eq(UmsDict::getDataKey, record.getShipChannel());
-                UmsDict dict = dictService.getOne(queryWrapper);
-                record.setShipChannel(dict.getDataValue());
-            }
+            queryWrapper.lambda().eq(UmsDict::getDataKey, record.getShipChannel());
+            UmsDict dict = dictService.getOne(queryWrapper);
+            record.setShipChannel(dict.getDataValue());
+//            if (record.getShipChannel() != null) {
+//
+//            }
         }
         return orderPage;
     }

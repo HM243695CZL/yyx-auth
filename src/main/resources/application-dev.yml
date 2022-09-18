@@ -14,6 +14,7 @@ logging:
   level:
     root: info
     com.macro.mall: debug
+  config: classpath:logback.xml
 
 aliyun:
   oss:

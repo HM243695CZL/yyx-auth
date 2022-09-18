@@ -35,6 +35,7 @@
         <weixin-java-miniapp.version>4.1.0</weixin-java-miniapp.version>
         <best-pay-sdk.version>1.1.0</best-pay-sdk.version>
         <mail.version>2.1.5.RELEASE</mail.version>
+        <log4j.version>1.2.14</log4j.version>
     </properties>
     <dependencies>
         <!--SpringBoot通用依赖模块-->
@@ -183,6 +184,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
             <version>${mail.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
         </dependency>
     </dependencies>
 
