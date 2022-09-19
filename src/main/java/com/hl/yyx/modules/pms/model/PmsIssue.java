@@ -7,10 +7,13 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hl.yyx.common.aop.TableDataUnique;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import javax.validation.constraints.NotBlank;
 
 /**
  * <p>
@@ -32,9 +35,12 @@ public class PmsIssue implements Serializable {
     private Integer id;
 
     @ApiModelProperty(value = "问题标题")
+    @NotBlank(message = "问题标题不能为空")
+    @TableDataUnique(table = "pms_issue", column = "question", message = "问题标题已存在")
     private String question;
 
     @ApiModelProperty(value = "问题答案")
+    @NotBlank(message = "问题答案不能为空")
     private String answer;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

@@ -42,9 +42,7 @@ public class CmsFeedbackServiceImpl extends ServiceImpl<CmsFeedbackMapper, CmsFe
     public Boolean create(CmsFeedback feedback) {
         CmsUser userInfo = userService.getUserInfo(false);
         Integer id = userInfo.getId();
-        String username = userInfo.getNickname();
         feedback.setUserId(id);
-        feedback.setUsername(username);
         return save(feedback);
     }
 }

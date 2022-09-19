@@ -200,10 +200,9 @@ public class PmsOrderServiceImpl extends ServiceImpl<PmsOrderMapper, PmsOrder> i
             QueryWrapper<UmsDict> queryWrapper = new QueryWrapper<>();
             queryWrapper.lambda().eq(UmsDict::getDataKey, record.getShipChannel());
             UmsDict dict = dictService.getOne(queryWrapper);
-            record.setShipChannel(dict.getDataValue());
-//            if (record.getShipChannel() != null) {
-//
-//            }
+            if (record.getShipChannel() != null) {
+                record.setShipChannel(dict.getDataValue());
+            }
         }
         return orderPage;
     }

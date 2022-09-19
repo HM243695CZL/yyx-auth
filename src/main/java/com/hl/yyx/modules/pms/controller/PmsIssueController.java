@@ -16,6 +16,8 @@ import com.hl.yyx.modules.pms.model.PmsIssue;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  * <p>
  * 常见问题表 前端控制器
@@ -43,14 +45,14 @@ public class PmsIssueController {
     // 新增
     @ApiOperation("新增常见问题")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public CommonResult save(@RequestBody PmsIssue pmsIssue) {
+    public CommonResult save(@Valid @RequestBody PmsIssue pmsIssue) {
         return CommonResult.success(pmsIssueService.save(pmsIssue));
     }
 
     // 更新
     @ApiOperation("更新常见问题")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public CommonResult update(@RequestBody PmsIssue pmsIssue) {
+    public CommonResult update(@Valid @RequestBody PmsIssue pmsIssue) {
         return CommonResult.success(pmsIssueService.updateById(pmsIssue));
     }
 

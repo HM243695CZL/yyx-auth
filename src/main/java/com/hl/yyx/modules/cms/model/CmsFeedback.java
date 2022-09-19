@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * <p>
  * 意见反馈表
@@ -34,16 +36,16 @@ public class CmsFeedback implements Serializable {
     @ApiModelProperty(value = "用户表的用户ID")
     private Integer userId;
 
-    @ApiModelProperty(value = "用户名称")
-    private String username;
-
     @ApiModelProperty(value = "手机号")
+    @NotBlank(message = "手机号不能为空")
     private String mobile;
 
     @ApiModelProperty(value = "反馈类型")
+    @NotBlank(message = "反馈类型不能为空")
     private String feedType;
 
     @ApiModelProperty(value = "反馈内容")
+    @NotBlank(message = "反馈内容不能为空")
     private String content;
 
     @ApiModelProperty(value = "状态")

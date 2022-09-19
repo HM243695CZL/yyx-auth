@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * <p>
  * 收藏表
@@ -35,9 +37,11 @@ public class CmsCollect implements Serializable {
     private Integer userId;
 
     @ApiModelProperty(value = "如果type=0，则是商品ID；如果type=1，则是专题ID")
+    @NotBlank(message = "商品id不能为空")
     private Integer valueId;
 
     @ApiModelProperty(value = "收藏类型，如果type=0，则是商品ID；如果type=1，则是专题ID")
+    @NotBlank(message = "类型不能为空")
     private Integer type;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

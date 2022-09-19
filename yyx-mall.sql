@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 17/09/2022 23:24:47
+ Date: 19/09/2022 22:31:37
 */
 
 SET NAMES utf8mb4;
@@ -79,7 +79,6 @@ DROP TABLE IF EXISTS `cms_feedback`;
 CREATE TABLE `cms_feedback`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL DEFAULT 0 COMMENT '用户表的用户ID',
-  `username` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '用户名称',
   `mobile` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '手机号',
   `feed_type` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '反馈类型',
   `content` varchar(1023) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '反馈内容',
@@ -96,9 +95,9 @@ CREATE TABLE `cms_feedback`  (
 -- ----------------------------
 -- Records of cms_feedback
 -- ----------------------------
-INSERT INTO `cms_feedback` VALUES (6, 6, 'hl243695czyn', '17885395648', '商品相关', '多加一点商品嘛', 0, 1, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/G0XZq30L6iZed7c9c5b431bf88de3342e892a853db12.png\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/O32UubUa740L1b51437e620bed05ef6ec58df8588e1a.png\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/mXBIQslOOkzEb005edd41a4b711ae8ed9953bdcec9e4.png\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/bLp3SB5jxbTT0e4f9c63b29245e3c27021e8e10a2d8e.png\"]', '2022-07-28 14:23:53', '2022-07-28 14:23:53', 1);
-INSERT INTO `cms_feedback` VALUES (8, 6, 'hl243695czyn', '17845612345', '优化建议', '图片多选测试', 0, 1, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_9901a7a262dea2c557ac21bc908775fd28706d902548b9a3.jpg\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_bb513252eb218ecad2a05b1435481f71b3b8342b5d5416f7.jpg\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_4100b362979a2b84cdc0f593a38c783d4548db958e217e4a.jpg\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_6eab10f61214f86b4ba791f0ce9eca69aaabf7d43c3902d5.jpg\"]', '2022-07-28 16:01:14', '2022-07-28 16:01:14', 1);
-INSERT INTO `cms_feedback` VALUES (9, 6, 'hl243695czyn', '17894653127', '优化建议', '拍照选取图片', 0, 1, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_932350f649ff4c719c1fe7fef8c5cd65f5017a577a858338.jpg\"]', '2022-07-28 16:02:33', '2022-07-28 16:02:33', 1);
+INSERT INTO `cms_feedback` VALUES (6, 6, '17885395648', '商品相关', '多加一点商品嘛', 0, 1, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/G0XZq30L6iZed7c9c5b431bf88de3342e892a853db12.png\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/O32UubUa740L1b51437e620bed05ef6ec58df8588e1a.png\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/mXBIQslOOkzEb005edd41a4b711ae8ed9953bdcec9e4.png\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/bLp3SB5jxbTT0e4f9c63b29245e3c27021e8e10a2d8e.png\"]', '2022-07-28 14:23:53', '2022-07-28 14:23:53', 1);
+INSERT INTO `cms_feedback` VALUES (8, 6, '17845612345', '优化建议', '图片多选测试', 0, 1, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_9901a7a262dea2c557ac21bc908775fd28706d902548b9a3.jpg\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_bb513252eb218ecad2a05b1435481f71b3b8342b5d5416f7.jpg\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_4100b362979a2b84cdc0f593a38c783d4548db958e217e4a.jpg\",\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_6eab10f61214f86b4ba791f0ce9eca69aaabf7d43c3902d5.jpg\"]', '2022-07-28 16:01:14', '2022-07-28 16:01:14', 1);
+INSERT INTO `cms_feedback` VALUES (9, 6, '17894653127', '优化建议', '拍照选取图片', 0, 1, '[\"https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220728/tmp_932350f649ff4c719c1fe7fef8c5cd65f5017a577a858338.jpg\"]', '2022-07-28 16:02:33', '2022-07-28 16:02:33', 1);
 
 -- ----------------------------
 -- Table structure for cms_footprint
@@ -271,9 +270,9 @@ DROP TABLE IF EXISTS `pms_category`;
 CREATE TABLE `pms_category`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '类目名称',
-  `keywords` varchar(1023) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '类目关键字，以JSON数组格式',
+  `keywords` varchar(1023) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '类目关键字，以JSON数组格式',
   `desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '类目广告语介绍',
-  `pid` int(11) NOT NULL DEFAULT 0 COMMENT '父类目ID',
+  `pid` int(11) NULL DEFAULT 0 COMMENT '父类目ID',
   `icon_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '类目图标',
   `pic_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '类目图片',
   `level` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'L1',
@@ -283,7 +282,7 @@ CREATE TABLE `pms_category`  (
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `parent_id`(`pid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '类目表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '类目表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_category
@@ -294,9 +293,7 @@ INSERT INTO `pms_category` VALUES (3, '肉制品', '', '佳肴美馔真滋味', 
 INSERT INTO `pms_category` VALUES (4, '餐厨', '', '爱，囿于厨房', 0, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220624/ad8b00d084cb7d0958998edb5fee9c0a.png', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220624/3708dbcb35ad5abf9e001500f73db615.png', 'L1', 2, '2022-06-24 11:08:46', '2022-06-24 11:09:20', 1);
 INSERT INTO `pms_category` VALUES (5, '锅具', '', '一口好锅，炖煮生活一日三餐', 4, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220624/4aab4598017b5749e3b63309d25e9f6b.png', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220624/d2db0d1d0622c621a8aa5a7c06b0fc6d.png', 'L2', 1, '2022-06-24 11:10:48', '2022-06-24 11:13:07', 1);
 INSERT INTO `pms_category` VALUES (6, '餐具', '', '餐桌上的舞蹈', 4, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220624/f109afbb7e7a00c243c1da29991a5aa3.png', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220624/695ed861a63d8c0fc51a51f42a5a993b.png', 'L2', 2, '2022-06-24 11:12:42', '2022-06-24 11:12:42', 1);
-INSERT INTO `pms_category` VALUES (7, '111', '', '11', 0, '', '', 'L1', 50, '2022-06-24 14:16:28', '2022-06-24 14:16:28', 0);
-INSERT INTO `pms_category` VALUES (8, '2222', '', '222', 7, '', '', 'L2', 50, '2022-06-24 14:16:38', '2022-06-24 14:16:38', 0);
-INSERT INTO `pms_category` VALUES (9, '333', '', '333', 7, '', '', 'L2', 50, '2022-06-24 14:16:57', '2022-06-24 14:16:57', 0);
+INSERT INTO `pms_category` VALUES (12, '餐具', '', '', 0, '', '', 'L1', 50, '2022-09-19 21:20:56', '2022-09-19 21:20:56', 0);
 
 -- ----------------------------
 -- Table structure for pms_comment
@@ -497,8 +494,8 @@ INSERT INTO `pms_goods_specification` VALUES (28, 16, '尺寸', '大型', 'https
 DROP TABLE IF EXISTS `pms_issue`;
 CREATE TABLE `pms_issue`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `question` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '问题标题',
-  `answer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '问题答案',
+  `question` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '问题标题',
+  `answer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '问题答案',
   `add_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
@@ -520,10 +517,10 @@ DROP TABLE IF EXISTS `pms_keyword`;
 CREATE TABLE `pms_keyword`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `keyword` varchar(127) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '关键字',
-  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '关键字的跳转链接',
-  `is_hot` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否是热门关键字',
-  `is_default` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否是默认关键字',
-  `sort_order` int(11) NOT NULL DEFAULT 100 COMMENT '排序',
+  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '关键字的跳转链接',
+  `is_hot` tinyint(1) NULL DEFAULT 0 COMMENT '是否是热门关键字',
+  `is_default` tinyint(1) NULL DEFAULT 0 COMMENT '是否是默认关键字',
+  `sort_order` int(11) NULL DEFAULT 100 COMMENT '排序',
   `add_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
@@ -3918,7 +3915,7 @@ CREATE TABLE `ums_admin`  (
 -- ----------------------------
 -- Records of ums_admin
 -- ----------------------------
-INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2022-09-17 19:22:36', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-23 10:01:03', 1);
+INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2022-09-19 19:32:49', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-23 10:01:03', 1);
 INSERT INTO `ums_admin` VALUES (4, 'test', '123456', '', NULL, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220623/hw-logo.png', '2022-06-23 10:15:19', '2022-06-23 10:15:19', 1);
 
 -- ----------------------------
@@ -3944,15 +3941,15 @@ INSERT INTO `ums_admin_role` VALUES (4, 4, 11);
 DROP TABLE IF EXISTS `ums_dict`;
 CREATE TABLE `ums_dict`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `data_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '字典类型',
-  `data_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '字典键',
-  `data_value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '字典值',
+  `data_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '字典类型',
+  `data_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '字典键',
+  `data_value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '字典值',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   `add_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ums_dict

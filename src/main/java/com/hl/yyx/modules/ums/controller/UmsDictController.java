@@ -16,6 +16,8 @@ import com.hl.yyx.modules.ums.model.UmsDict;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  * <p>
  *  前端控制器
@@ -50,14 +52,14 @@ public class UmsDictController {
     // 新增
     @ApiOperation("新增字典")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public CommonResult save(@RequestBody UmsDict umsDict) {
+    public CommonResult save(@Valid @RequestBody UmsDict umsDict) {
         return CommonResult.success(umsDictService.save(umsDict));
     }
 
     // 更新
     @ApiOperation("更新字典")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public CommonResult update(@RequestBody UmsDict umsDict) {
+    public CommonResult update(@Valid @RequestBody UmsDict umsDict) {
         return CommonResult.success(umsDictService.updateById(umsDict));
     }
 

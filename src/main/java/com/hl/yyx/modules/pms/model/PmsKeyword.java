@@ -7,10 +7,13 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hl.yyx.common.aop.TableDataUnique;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import javax.validation.constraints.NotBlank;
 
 /**
  * <p>
@@ -32,6 +35,8 @@ public class PmsKeyword implements Serializable {
     private Integer id;
 
     @ApiModelProperty(value = "关键字")
+    @NotBlank(message = "关键字不能为空")
+    @TableDataUnique(table = "pms_keyword", column = "keyword", message = "关键字已存在")
     private String keyword;
 
     @ApiModelProperty(value = "关键字的跳转链接")

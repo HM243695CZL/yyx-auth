@@ -16,6 +16,8 @@ import com.hl.yyx.modules.pms.model.PmsBrand;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  * <p>
  * 品牌商表 前端控制器
@@ -43,14 +45,14 @@ public class PmsBrandController {
     // 新增
     @ApiOperation("新增品牌商")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public CommonResult save(@RequestBody PmsBrand pmsBrand) {
+    public CommonResult save(@Valid @RequestBody PmsBrand pmsBrand) {
         return CommonResult.success(pmsBrandService.save(pmsBrand));
     }
 
     // 更新
     @ApiOperation("更新品牌商")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public CommonResult update(@RequestBody PmsBrand pmsBrand) {
+    public CommonResult update(@Valid @RequestBody PmsBrand pmsBrand) {
         return CommonResult.success(pmsBrandService.updateById(pmsBrand));
     }
 

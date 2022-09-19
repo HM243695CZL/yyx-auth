@@ -14,6 +14,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * <p>
  * 
@@ -33,12 +35,15 @@ public class UmsDict implements Serializable {
     private Integer id;
 
     @ApiModelProperty(value = "字典类型")
+    @NotBlank(message = "字典类型不能为空")
     private String dataType;
 
     @ApiModelProperty(value = "字典键")
+    @NotBlank(message = "字典键不能为空")
     private String dataKey;
 
     @ApiModelProperty(value = "字典值")
+    @NotBlank(message = "字典值不能为空")
     private String dataValue;
 
     @ApiModelProperty(value = "备注")

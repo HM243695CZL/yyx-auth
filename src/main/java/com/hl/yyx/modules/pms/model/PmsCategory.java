@@ -1,18 +1,18 @@
 package com.hl.yyx.modules.pms.model;
 
 import com.baomidou.mybatisplus.annotation.*;
-
-import java.util.Date;
-import java.io.Serializable;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hl.yyx.common.aop.TableDataUnique;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.validator.constraints.UniqueElements;
+
+import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -35,7 +35,8 @@ public class PmsCategory implements Serializable {
 
     @ApiModelProperty(value = "类目名称")
     @TableField("`name`")
-    @UniqueElements
+    @NotBlank(message = "类目名称不能为空")
+    @TableDataUnique(table = "pms_category", column = "name", message = "类目名称已存在")
     private String name;
 
     @ApiModelProperty(value = "类目关键字，以JSON数组格式")

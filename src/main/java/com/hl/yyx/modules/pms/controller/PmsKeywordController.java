@@ -16,6 +16,8 @@ import com.hl.yyx.modules.pms.model.PmsKeyword;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  * <p>
  * 关键字表 前端控制器
@@ -44,14 +46,14 @@ public class PmsKeywordController {
     // 新增
     @ApiOperation("新增关键字")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public CommonResult save(@RequestBody PmsKeyword pmsKeyword) {
+    public CommonResult save(@Valid @RequestBody PmsKeyword pmsKeyword) {
         return CommonResult.success(pmsKeywordService.save(pmsKeyword));
     }
 
     // 更新
     @ApiOperation("更新关键字")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public CommonResult update(@RequestBody PmsKeyword pmsKeyword) {
+    public CommonResult update(@Valid @RequestBody PmsKeyword pmsKeyword) {
         return CommonResult.success(pmsKeywordService.updateById(pmsKeyword));
     }
 

@@ -7,6 +7,8 @@ import com.hl.yyx.modules.pms.model.PmsGoodsSpecification;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.Valid;
+
 /**
  * 商品的DTO
  */
@@ -14,6 +16,7 @@ import lombok.Data;
 public class GoodsDTO {
 
     @ApiModelProperty(value = "商品信息")
+    @Valid
     PmsGoods goods;
 
     @ApiModelProperty(value = "商品规格")

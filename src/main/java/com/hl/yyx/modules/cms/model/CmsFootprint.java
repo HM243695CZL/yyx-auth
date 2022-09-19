@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * <p>
  * 用户浏览足迹表
@@ -35,6 +37,7 @@ public class CmsFootprint implements Serializable {
     private Integer userId;
 
     @ApiModelProperty(value = "浏览商品ID")
+    @NotBlank(message = "商品id不能为空")
     private Integer goodsId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

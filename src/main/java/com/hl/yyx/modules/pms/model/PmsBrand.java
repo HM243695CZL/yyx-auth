@@ -14,6 +14,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * <p>
  * 品牌商表
@@ -35,13 +37,16 @@ public class PmsBrand implements Serializable {
 
     @ApiModelProperty(value = "品牌商名称")
     @TableField("`name`")
+    @NotBlank(message = "品牌商名称不能为空")
     private String name;
 
     @ApiModelProperty(value = "品牌商简介")
     @TableField("`desc`")
+    @NotBlank(message = "品牌商简介不能为空")
     private String desc;
 
     @ApiModelProperty(value = "品牌商页的品牌商图片")
+    @NotBlank(message = "品牌商图片不能为空")
     private String picUrl;
 
     private Integer sortOrder;

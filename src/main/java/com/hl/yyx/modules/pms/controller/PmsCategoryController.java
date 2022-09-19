@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -31,14 +32,14 @@ public class PmsCategoryController {
     // 新增
     @ApiOperation("新增商品类目")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public CommonResult save(@RequestBody PmsCategory pmsCategory) {
+    public CommonResult save(@Valid @RequestBody PmsCategory pmsCategory) {
         return CommonResult.success(pmsCategoryService.save(pmsCategory));
     }
 
     // 更新
     @ApiOperation("更新商品类目")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public CommonResult update(@RequestBody PmsCategory pmsCategory) {
+    public CommonResult update(@Valid @RequestBody PmsCategory pmsCategory) {
         return CommonResult.success(pmsCategoryService.updateById(pmsCategory));
     }
 
