@@ -1,7 +1,6 @@
 package com.hl.yyx.common.exception;
 
 import com.hl.yyx.common.api.CommonResult;
-import com.hl.yyx.common.api.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -9,7 +8,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -38,7 +36,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = RuntimeException.class)
     public CommonResult handleRuntimeException(RuntimeException e) {
         log.error("运行时异常：", e);
-        return CommonResult.failed(ResultCode.UN_KNOWN);
+//        return CommonResult.failed(ResultCode.UN_KNOWN);
+        // 返回具体异常
+        return CommonResult.failed(e.getMessage());
+
     }
 
     @ResponseBody

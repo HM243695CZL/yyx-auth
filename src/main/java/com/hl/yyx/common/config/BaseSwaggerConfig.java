@@ -24,9 +24,10 @@ public abstract class BaseSwaggerConfig {
         SwaggerProperties swaggerProperties = swaggerProperties();
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo(swaggerProperties))
+                .groupName("管理端接口")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(swaggerProperties.getApiBasePackage()))
-                .paths(PathSelectors.any())
+                .paths(PathSelectors.regex("/admin/.*"))
                 .build();
         if (swaggerProperties.isEnableSecurity()) {
             docket.securitySchemes(securitySchemes()).securityContexts(securityContexts());

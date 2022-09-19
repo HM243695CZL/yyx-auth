@@ -59,7 +59,8 @@ public class CommonResult<T> {
      * @param message 提示信息
      */
     public static <T> CommonResult<T> failed(String message) {
-        return new CommonResult<T>(ResultCode.FAILED.getCode(), message, null);
+        String errorMessage = message != null ? message : ResultCode.UN_KNOWN.getMessage();
+        return new CommonResult<T>(ResultCode.UN_KNOWN.getCode(), errorMessage, null);
     }
 
     /**
