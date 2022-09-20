@@ -23,38 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/pms/pmsGoodsSpecification")
 public class PmsGoodsSpecificationController {
 
-    @Autowired
-    private PmsGoodsSpecificationService pmsGoodsSpecificationService;
-
-    // 新增
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public CommonResult save(@RequestBody PmsGoodsSpecification pmsGoodsSpecification) {
-        return CommonResult.success(pmsGoodsSpecificationService.save(pmsGoodsSpecification));
-    }
-
-    // 更新
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public CommonResult update(@RequestBody PmsGoodsSpecification pmsGoodsSpecification) {
-        return CommonResult.success(pmsGoodsSpecificationService.updateById(pmsGoodsSpecification));
-    }
-
-    // 删除
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public CommonResult delete(@PathVariable String id) {
-        return CommonResult.success( pmsGoodsSpecificationService.removeById(id));
-    }
-
-    // 获取全部
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public CommonResult list() {
-        return CommonResult.success(pmsGoodsSpecificationService.list());
-    }
-
-    // 查看
-    @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
-    public CommonResult findOne(@PathVariable String id) {
-        return CommonResult.success(pmsGoodsSpecificationService.getById(id));
-    }
 
 }
 

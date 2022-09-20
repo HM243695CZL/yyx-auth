@@ -2,6 +2,7 @@ package com.hl.yyx.modules.pms.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.pms.dto.BrandPageDTO;
 import com.hl.yyx.modules.pms.model.PmsBrand;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -15,5 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface PmsBrandService extends IService<PmsBrand> {
 
-    Page<PmsBrand> pageList(PageParamsDTO paramsDTO);
+    Page<PmsBrand> pageList(BrandPageDTO paramsDTO);
 }

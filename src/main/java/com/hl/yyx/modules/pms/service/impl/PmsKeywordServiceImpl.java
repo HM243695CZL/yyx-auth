@@ -1,8 +1,10 @@
 package com.hl.yyx.modules.pms.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.pms.dto.KeywordPageDTO;
 import com.hl.yyx.modules.pms.dto.SearchDTO;
 import com.hl.yyx.modules.pms.model.PmsKeyword;
 import com.hl.yyx.modules.pms.mapper.PmsKeywordMapper;
@@ -30,9 +32,12 @@ public class PmsKeywordServiceImpl extends ServiceImpl<PmsKeywordMapper, PmsKeyw
      * @return
      */
     @Override
-    public Page<PmsKeyword> pageList(PageParamsDTO paramsDTO) {
+    public Page<PmsKeyword> pageList(KeywordPageDTO paramsDTO) {
         Page<PmsKeyword> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
         QueryWrapper<PmsKeyword> queryWrapper = new QueryWrapper<>();
+        if (StrUtil.isNotEmpty(paramsDTO.getKeyword())) {
+            queryWrapper.lambda().like(PmsKeyword::getKeyword, paramsDTO.getKeyword());
+        }
         return page(page, queryWrapper);
     }
 

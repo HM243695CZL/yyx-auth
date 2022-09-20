@@ -1,5 +1,6 @@
 package com.hl.yyx.modules.ums.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.modules.ums.dto.DictListDTO;
@@ -38,7 +39,8 @@ public class UmsDictController {
     @ApiOperation("分页")
     @RequestMapping(value = "/page", method = RequestMethod.POST)
     public CommonResult page(@RequestBody DictPageDTO pageDTO) {
-        return CommonResult.success(CommonPage.restPage(umsDictService.pageList(pageDTO)));
+        Page<UmsDict> pageList = umsDictService.pageList(pageDTO);
+        return CommonResult.success(CommonPage.restPage(pageList));
     }
 
     // 获取列表

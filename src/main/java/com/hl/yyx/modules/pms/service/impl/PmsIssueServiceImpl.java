@@ -1,8 +1,10 @@
 package com.hl.yyx.modules.pms.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.pms.dto.IssuePageDTO;
 import com.hl.yyx.modules.pms.model.PmsIssue;
 import com.hl.yyx.modules.pms.mapper.PmsIssueMapper;
 import com.hl.yyx.modules.pms.service.PmsIssueService;
@@ -26,9 +28,12 @@ public class PmsIssueServiceImpl extends ServiceImpl<PmsIssueMapper, PmsIssue> i
      * @return
      */
     @Override
-    public Page<PmsIssue> pageList(PageParamsDTO paramsDTO) {
+    public Page<PmsIssue> pageList(IssuePageDTO paramsDTO) {
         Page<PmsIssue> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
         QueryWrapper<PmsIssue> wrapper = new QueryWrapper<>();
+        if (StrUtil.isNotEmpty(paramsDTO.getQuestion())) {
+            wrapper.lambda().like(PmsIssue::getQuestion, paramsDTO.getQuestion());
+        }
         return page(page, wrapper);
     }
 }
