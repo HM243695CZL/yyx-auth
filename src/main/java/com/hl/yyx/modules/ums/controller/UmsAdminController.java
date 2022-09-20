@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.ums.dto.AdminPageDTO;
 import com.hl.yyx.modules.ums.dto.InitMenuDTO;
 import com.hl.yyx.modules.ums.dto.UmsAdminLoginParam;
 import com.hl.yyx.modules.ums.dto.UpdatePassDTO;
@@ -63,7 +64,7 @@ public class UmsAdminController {
     // 分页
     @ApiOperation("分页查询")
     @RequestMapping(value = "/page", method = RequestMethod.POST)
-    public CommonResult page(@RequestBody PageParamsDTO paramsDTO) {
+    public CommonResult page(@RequestBody AdminPageDTO paramsDTO) {
         Page<UmsAdmin> adminList = umsAdminService.pageList(paramsDTO);
         return CommonResult.success(CommonPage.restPage(adminList));
     }

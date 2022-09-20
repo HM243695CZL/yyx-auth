@@ -3,6 +3,7 @@ package com.hl.yyx.modules.ums.model;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hl.yyx.common.aop.TableDataUnique;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -34,6 +35,7 @@ public class UmsRole implements Serializable {
     @ApiModelProperty(value = "角色名称")
     @TableField("`name`")
     @NotBlank(message = "角色名称不能为空")
+    @TableDataUnique(table = "ums_role", column = "name", message = "角色名称已存在")
     private String name;
 
     @ApiModelProperty(value = "角色key")

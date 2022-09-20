@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.domain.AdminUserDetails;
+import com.hl.yyx.modules.ums.dto.AdminPageDTO;
 import com.hl.yyx.modules.ums.dto.UpdatePassDTO;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
 
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface UmsAdminService extends IService<UmsAdmin> {
 
-    Page<UmsAdmin> pageList(PageParamsDTO paramsDTO);
+    Page<UmsAdmin> pageList(AdminPageDTO paramsDTO);
 
     boolean create(UmsAdmin umsAdmin);
 

@@ -1,5 +1,6 @@
 package com.hl.yyx.modules.ums.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.modules.ums.dto.DictListDTO;
@@ -27,13 +28,13 @@ public class UmsDictServiceImpl extends ServiceImpl<UmsDictMapper, UmsDict> impl
     public Page<UmsDict> pageList(DictPageDTO pageDTO) {
         Page<UmsDict> page = new Page<>(pageDTO.getPageIndex(), pageDTO.getPageSize());
         QueryWrapper<UmsDict> wrapper = new QueryWrapper<>();
-        if (pageDTO.getDateType() != null) {
+        if (StrUtil.isNotEmpty(pageDTO.getDateType())) {
             wrapper.lambda().like(UmsDict::getDataType, pageDTO.getDateType());
         }
-        if (pageDTO.getDateKey() != null) {
+        if ( StrUtil.isNotEmpty(pageDTO.getDateKey())) {
             wrapper.lambda().like(UmsDict::getDataKey, pageDTO.getDateKey());
         }
-        if (pageDTO.getDateValue() != null) {
+        if (StrUtil.isNotEmpty(pageDTO.getDateValue())) {
             wrapper.lambda().like(UmsDict::getDataValue, pageDTO.getDateValue());
         }
         return page(page, wrapper);

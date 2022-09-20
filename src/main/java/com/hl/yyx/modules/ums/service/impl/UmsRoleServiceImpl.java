@@ -1,10 +1,12 @@
 package com.hl.yyx.modules.ums.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.ums.dto.AuthMenuDTO;
+import com.hl.yyx.modules.ums.dto.RolePageDTO;
 import com.hl.yyx.modules.ums.mapper.UmsRoleMapper;
 import com.hl.yyx.modules.ums.model.UmsAdminRole;
 import com.hl.yyx.modules.ums.model.UmsRole;
@@ -43,9 +45,12 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole> impl
      * @return
      */
     @Override
-    public Page<UmsRole> pageList(PageParamsDTO paramsDTO) {
+    public Page<UmsRole> pageList(RolePageDTO paramsDTO) {
         Page<UmsRole> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
         QueryWrapper<UmsRole> wrapper = new QueryWrapper<>();
+        if (StrUtil.isNotEmpty(paramsDTO.getName())) {
+            wrapper.lambda().like(UmsRole::getName, paramsDTO.getName());
+        }
         return page(page, wrapper);
     }
 

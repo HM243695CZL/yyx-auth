@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hl.yyx.common.aop.TableDataUnique;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -36,6 +37,7 @@ public class UmsAdmin implements Serializable {
 
     @ApiModelProperty(value = "管理员名称")
     @NotBlank(message = "用户名不能为空")
+    @TableDataUnique(table = "ums_admin", column = "username", message = "用户名已存在")
     private String username;
 
     @ApiModelProperty(value = "管理员密码")

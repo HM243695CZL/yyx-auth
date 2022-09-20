@@ -6,6 +6,7 @@ import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.ums.dto.AuthMenuDTO;
+import com.hl.yyx.modules.ums.dto.RolePageDTO;
 import com.hl.yyx.modules.ums.model.UmsRole;
 import com.hl.yyx.modules.ums.service.UmsRoleService;
 import io.swagger.annotations.Api;
@@ -35,7 +36,7 @@ public class UmsRoleController {
     // 分页
     @ApiOperation("分页查询")
     @RequestMapping(value = "/page", method = RequestMethod.POST)
-    public CommonResult page(@RequestBody PageParamsDTO paramsDTO) {
+    public CommonResult page(@RequestBody RolePageDTO paramsDTO) {
         Page<UmsRole> roleList = umsRoleService.pageList(paramsDTO);
         return CommonResult.success(CommonPage.restPage(roleList));
     }
@@ -67,7 +68,7 @@ public class UmsRoleController {
     // 更新
     @ApiOperation("更新角色")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public CommonResult update(@RequestBody UmsRole umsRole) {
+    public CommonResult update(@Valid @RequestBody UmsRole umsRole) {
         return CommonResult.success(umsRoleService.updateById(umsRole));
     }
 

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.ums.dto.AuthMenuDTO;
+import com.hl.yyx.modules.ums.dto.RolePageDTO;
 import com.hl.yyx.modules.ums.model.UmsRole;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 public interface UmsRoleService extends IService<UmsRole> {
 
-    Page<UmsRole> pageList(PageParamsDTO paramsDTO);
+    Page<UmsRole> pageList(RolePageDTO paramsDTO);
 
     boolean delete(String id);
 

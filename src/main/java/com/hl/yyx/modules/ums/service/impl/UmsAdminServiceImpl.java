@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.ums.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -13,6 +14,7 @@ import com.hl.yyx.common.util.IpUtil;
 import com.hl.yyx.common.util.JwtTokenUtil;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.domain.AdminUserDetails;
+import com.hl.yyx.modules.ums.dto.AdminPageDTO;
 import com.hl.yyx.modules.ums.dto.UpdatePassDTO;
 import com.hl.yyx.modules.ums.mapper.UmsAdminMapper;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
@@ -64,10 +66,14 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
      * @return
      */
     @Override
-    public Page<UmsAdmin> pageList(PageParamsDTO paramsDTO) {
+    public Page<UmsAdmin> pageList(AdminPageDTO paramsDTO) {
         Page<UmsAdmin> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
+        QueryWrapper<UmsAdmin> queryWrapper = new QueryWrapper<>();
+        if (StrUtil.isNotEmpty(paramsDTO.getUsername())) {
+            queryWrapper.lambda().like(UmsAdmin::getUsername, paramsDTO.getUsername());
+        }
         // 根据分页查询用户
-        Page<UmsAdmin> pageList = page(page);
+        Page<UmsAdmin> pageList = page(page, queryWrapper);
         // 根据用户id获取角色id
         page.getRecords().stream().forEach(this::setUserRoles);
         return pageList;
