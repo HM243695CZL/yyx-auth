@@ -302,11 +302,22 @@ public class PmsGoodsServiceImpl extends ServiceImpl<PmsGoodsMapper, PmsGoods> i
         Integer userId = JWTUtils.getUserId(token);
         // 添加到搜索历史
         if (userId != null && !StrUtil.isEmpty(searchDTO.getKeyword())) {
-            CmsSearchHistory searchHistory = new CmsSearchHistory();
-            searchHistory.setUserId(userId);
-            searchHistory.setKeyword(searchDTO.getKeyword());
-            searchHistory.setFrom("wx");
-            searchHistoryService.save(searchHistory);
+            // 如果搜索的关键词已搜索过  则增加搜索次数
+            QueryWrapper<CmsSearchHistory> wrapper = new QueryWrapper<>();
+            wrapper.lambda().eq(CmsSearchHistory::getKeyword, searchDTO.getKeyword());
+            CmsSearchHistory searchHistoryServiceOne = searchHistoryService.getOne(wrapper);
+            if (searchHistoryServiceOne != null) {
+                searchHistoryServiceOne.setSearchCount(searchHistoryServiceOne.getSearchCount() + 1);
+                searchHistoryService.updateById(searchHistoryServiceOne);
+            } else {
+                // 新增一条搜索历史
+                CmsSearchHistory searchHistory = new CmsSearchHistory();
+                searchHistory.setUserId(userId);
+                searchHistory.setSearchCount(1);
+                searchHistory.setKeyword(searchDTO.getKeyword());
+                searchHistory.setFrom("wx");
+                searchHistoryService.save(searchHistory);
+            }
         }
         return pageList(searchDTO);
     }

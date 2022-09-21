@@ -37,6 +37,9 @@ public class CmsSearchHistory implements Serializable {
     @ApiModelProperty(value = "搜索关键字")
     private String keyword;
 
+    @ApiModelProperty(value = "搜索次数")
+    private Integer searchCount;
+
     @ApiModelProperty(value = "搜索来源，如pc、wx、app")
     @TableField("`from`")
     private String from;

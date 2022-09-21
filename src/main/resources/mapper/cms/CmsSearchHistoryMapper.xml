@@ -7,6 +7,7 @@
         <id column="id" property="id" />
         <result column="user_id" property="userId" />
         <result column="keyword" property="keyword" />
+        <result column="search_count" property="searchCount" />
         <result column="from" property="from" />
         <result column="add_time" property="addTime" />
         <result column="update_time" property="updateTime" />
@@ -19,16 +20,16 @@
         FROM
             `cms_search_history` csh
             LEFT JOIN cms_user cu ON cu.id = csh.user_id 
-        ORDER BY
-            csh.update_time DESC
         <where>
             <if test="paramsDTO.username != '' and paramsDTO.username != null">
                 cu.username like concat('%', #{paramsDTO.username}, '%')
             </if>
             <if test="paramsDTO.keyword != '' and paramsDTO.keyword != null">
-                csh.keyword like concat('#', #{paramsDTO.keyword}, '%')
+                csh.keyword like concat('%', #{paramsDTO.keyword}, '%')
             </if>
         </where>
+        ORDER BY
+        csh.update_time DESC
     </select>
 
 </mapper>
