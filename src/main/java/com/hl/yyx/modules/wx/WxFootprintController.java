@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.wx;
 
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.modules.cms.service.CmsFootprintService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,6 +28,7 @@ public class WxFootprintController {
      * 获取微信用户浏览足迹
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("获取微信用户浏览足迹")
     @RequestMapping(value = "/getFootprintList", method = RequestMethod.GET)
     public CommonResult getFootprintList () {
@@ -39,6 +41,7 @@ public class WxFootprintController {
      * @param ids
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("删除浏览足迹")
     @RequestMapping(value = "/emptyFootprint", method = RequestMethod.POST)
     public CommonResult deleteFootprint(@RequestBody List<Integer> ids) {

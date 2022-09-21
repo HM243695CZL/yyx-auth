@@ -3,6 +3,7 @@ package com.hl.yyx.modules.wx;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.common.wx.NoWeiXinAuth;
 import com.hl.yyx.modules.pms.model.PmsGoods;
 import com.hl.yyx.modules.pms.service.PmsGoodsService;
@@ -32,6 +33,7 @@ public class WxHomeController {
      * @param pageSize
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("分页获取首页数据")
     @NoWeiXinAuth
     @RequestMapping(value = "/getHomeGoods", method = RequestMethod.GET)

@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.wx;
 
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.modules.cms.model.CmsFeedback;
 import com.hl.yyx.modules.cms.service.CmsFeedbackService;
 import com.hl.yyx.modules.cms.service.CmsUserService;
@@ -24,6 +25,7 @@ public class WxFeedbackController {
     CmsFeedbackService feedbackService;
 
     // 新增反馈
+    @LogAnnotation()
     @ApiOperation("新增反馈")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public CommonResult save(@RequestBody CmsFeedback feedback) {

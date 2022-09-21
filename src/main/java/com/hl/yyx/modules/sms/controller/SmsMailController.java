@@ -2,6 +2,7 @@ package com.hl.yyx.modules.sms.controller;
 
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.sms.dto.MailPageDTO;
 import io.swagger.annotations.Api;
@@ -33,6 +34,7 @@ public class SmsMailController {
     private SmsMailService smsMailService;
 
     // 分页
+    @LogAnnotation()
     @ApiOperation("分页查询")
     @RequestMapping(value = "/page", method = RequestMethod.POST)
     public CommonResult page(@RequestBody MailPageDTO paramsDTO) {
@@ -41,6 +43,7 @@ public class SmsMailController {
 
 
     // 查看
+    @LogAnnotation()
     @ApiOperation("查看邮件")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable String id) {

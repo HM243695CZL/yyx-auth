@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.pms.controller;
 
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.modules.pms.dto.FirstLvCateDTO;
 import com.hl.yyx.modules.pms.model.PmsCategory;
 import com.hl.yyx.modules.pms.service.PmsCategoryService;
@@ -30,6 +31,7 @@ public class PmsCategoryController {
 
 
     // 新增
+    @LogAnnotation()
     @ApiOperation("新增商品类目")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public CommonResult save(@Valid @RequestBody PmsCategory pmsCategory) {
@@ -37,6 +39,7 @@ public class PmsCategoryController {
     }
 
     // 更新
+    @LogAnnotation()
     @ApiOperation("更新商品类目")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public CommonResult update(@Valid @RequestBody PmsCategory pmsCategory) {
@@ -44,6 +47,7 @@ public class PmsCategoryController {
     }
 
     // 删除
+    @LogAnnotation()
     @ApiOperation("删除商品类目")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id) {
@@ -51,6 +55,7 @@ public class PmsCategoryController {
     }
 
     // 获取全部
+    @LogAnnotation()
     @ApiOperation("获取全部商品类目")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public CommonResult list() {
@@ -58,6 +63,7 @@ public class PmsCategoryController {
     }
 
     // 查看
+    @LogAnnotation()
     @ApiOperation("查看商品类目")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable String id) {
@@ -65,6 +71,7 @@ public class PmsCategoryController {
     }
 
     // 获取所有的一级类目
+    @LogAnnotation()
     @ApiOperation("获取所有的一级类目")
     @RequestMapping(value = "/getL1", method = RequestMethod.GET)
     public CommonResult getFirstLvList() {

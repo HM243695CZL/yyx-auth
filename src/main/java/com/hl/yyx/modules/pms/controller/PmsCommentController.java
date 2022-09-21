@@ -2,6 +2,7 @@ package com.hl.yyx.modules.pms.controller;
 
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.modules.pms.dto.CommentPageDto;
 import com.hl.yyx.modules.pms.dto.ReplyCommentDTO;
 import io.swagger.annotations.Api;
@@ -33,6 +34,7 @@ public class PmsCommentController {
     private PmsCommentService pmsCommentService;
 
     // 分页
+    @LogAnnotation()
     @ApiOperation("分页查询")
     @RequestMapping(value = "/page", method = RequestMethod.POST)
     public CommonResult page(@RequestBody CommentPageDto pageDto) {
@@ -40,6 +42,7 @@ public class PmsCommentController {
     }
 
     // 删除
+    @LogAnnotation()
     @ApiOperation("删除评论")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id) {
@@ -47,6 +50,7 @@ public class PmsCommentController {
     }
 
     // 查看
+    @LogAnnotation()
     @ApiOperation("查看评论")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable String id) {
@@ -58,6 +62,7 @@ public class PmsCommentController {
      * @param commentDTO
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("回复评论")
     @RequestMapping(value = "/reply", method = RequestMethod.POST)
     public CommonResult replyComment(@RequestBody ReplyCommentDTO commentDTO) {

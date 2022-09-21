@@ -3,6 +3,7 @@ package com.hl.yyx.modules.wx;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.common.vo.GoodsPageDTO;
 import com.hl.yyx.common.wx.NoWeiXinAuth;
 import com.hl.yyx.modules.pms.model.PmsCategory;
@@ -36,6 +37,7 @@ public class WxCategoryController {
     /**
      * 获取所有的二级分类
      */
+    @LogAnnotation()
     @NoWeiXinAuth
     @ApiOperation("获取所有的二级分类")
     @RequestMapping(value = "/getSecondCategory", method = RequestMethod.GET)
@@ -48,6 +50,7 @@ public class WxCategoryController {
      * 根据分类获取商品
      * @return
      */
+    @LogAnnotation()
     @NoWeiXinAuth
     @ApiOperation("根据分类获取商品")
     @RequestMapping(value = "/getGoodsByCategoryId", method = RequestMethod.POST)

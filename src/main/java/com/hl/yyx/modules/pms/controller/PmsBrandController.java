@@ -3,6 +3,7 @@ package com.hl.yyx.modules.pms.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.pms.dto.BrandPageDTO;
 import io.swagger.annotations.Api;
@@ -36,6 +37,7 @@ public class PmsBrandController {
     private PmsBrandService pmsBrandService;
 
     // 分页
+    @LogAnnotation()
     @ApiOperation("分页查询")
     @RequestMapping(value = "/page", method = RequestMethod.POST)
     public CommonResult page(@RequestBody BrandPageDTO paramsDTO) {
@@ -44,6 +46,7 @@ public class PmsBrandController {
     }
 
     // 新增
+    @LogAnnotation()
     @ApiOperation("新增品牌商")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public CommonResult save(@Valid @RequestBody PmsBrand pmsBrand) {
@@ -51,6 +54,7 @@ public class PmsBrandController {
     }
 
     // 更新
+    @LogAnnotation()
     @ApiOperation("更新品牌商")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public CommonResult update(@Valid @RequestBody PmsBrand pmsBrand) {
@@ -58,6 +62,7 @@ public class PmsBrandController {
     }
 
     // 删除
+    @LogAnnotation()
     @ApiOperation("删除品牌商")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id) {
@@ -65,6 +70,7 @@ public class PmsBrandController {
     }
 
     // 获取全部
+    @LogAnnotation()
     @ApiOperation("获取全部品牌商")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public CommonResult list() {
@@ -72,6 +78,7 @@ public class PmsBrandController {
     }
 
     // 查看
+    @LogAnnotation()
     @ApiOperation("查看品牌商")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable String id) {

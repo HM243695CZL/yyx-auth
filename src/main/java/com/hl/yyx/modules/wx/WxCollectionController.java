@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.wx;
 
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.modules.cms.service.CmsCollectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,6 +26,7 @@ public class WxCollectionController {
      * @param goodsId
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("收藏或更新收藏")
     @RequestMapping(value = "/status/{goodsId}", method = RequestMethod.GET)
     public CommonResult createOrDeleteCollection(@PathVariable Integer goodsId) {
@@ -35,6 +37,7 @@ public class WxCollectionController {
      * 获取微信用户的收藏列表
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("获取微信用户收藏列表")
     @RequestMapping(value = "/getCollectionList", method = RequestMethod.GET)
     public CommonResult getCollectionList () {
@@ -46,6 +49,7 @@ public class WxCollectionController {
      * @param ids
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("删除收藏")
     @RequestMapping(value = "/emptyCollection", method = RequestMethod.POST)
     public CommonResult deleteCollection(@RequestBody List<Integer> ids) {

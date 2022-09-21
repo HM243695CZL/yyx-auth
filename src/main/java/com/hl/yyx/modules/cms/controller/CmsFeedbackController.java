@@ -3,6 +3,7 @@ package com.hl.yyx.modules.cms.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.cms.dto.FeedbackPageDTO;
 import io.swagger.annotations.Api;
@@ -34,6 +35,7 @@ public class CmsFeedbackController {
     private CmsFeedbackService cmsFeedbackService;
 
     // 分页
+    @LogAnnotation()
     @ApiOperation("分页查询")
     @RequestMapping(value = "/page", method = RequestMethod.POST)
     public CommonResult page(@RequestBody FeedbackPageDTO paramsDTO) {
@@ -42,18 +44,21 @@ public class CmsFeedbackController {
     }
 
     // 删除
+    @LogAnnotation()
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id) {
         return CommonResult.success( cmsFeedbackService.removeById(id));
     }
 
     // 获取全部
+    @LogAnnotation()
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public CommonResult list() {
         return CommonResult.success(cmsFeedbackService.list());
     }
 
     // 查看
+    @LogAnnotation()
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable String id) {
         return CommonResult.success(cmsFeedbackService.getById(id));

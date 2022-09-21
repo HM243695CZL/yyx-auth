@@ -37,14 +37,15 @@ public class PmsOrderController {
     private PmsOrderService pmsOrderService;
 
     // 分页
+    @LogAnnotation()
     @ApiOperation("分页查询")
     @RequestMapping(value = "/page", method = RequestMethod.POST)
-    @LogAnnotation()
     public CommonResult page(@RequestBody OrderParamsDTO paramsDTO) {
         return CommonResult.success(CommonPage.restPage(pmsOrderService.pageList(paramsDTO)));
     }
 
     // 删除
+    @LogAnnotation()
     @ApiOperation("删除订单")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id) {
@@ -53,6 +54,7 @@ public class PmsOrderController {
 
 
     // 查看
+    @LogAnnotation()
     @ApiOperation("查看订单")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable String id) {
@@ -61,6 +63,7 @@ public class PmsOrderController {
 
 
     // 退款
+    @LogAnnotation()
     @ApiOperation("订单退款")
     @RequestMapping(value = "/refund/{id}", method = RequestMethod.GET)
     public CommonResult refund(@PathVariable String id) {
@@ -69,6 +72,7 @@ public class PmsOrderController {
 
 
     // 发货
+    @LogAnnotation()
     @ApiOperation("订单发货")
     @RequestMapping(value = "/ship", method = RequestMethod.POST)
     public CommonResult shipOrder(@RequestBody ShipOrderDTO shipOrderDTO) {

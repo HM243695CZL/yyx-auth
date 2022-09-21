@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.ums.controller;
 
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.modules.ums.model.UmsMenu;
 import com.hl.yyx.modules.ums.service.UmsMenuService;
 import io.swagger.annotations.Api;
@@ -27,6 +28,7 @@ public class UmsMenuController {
     private UmsMenuService umsMenuService;
 
     // 新增
+    @LogAnnotation()
     @ApiOperation("新增菜单")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public CommonResult save(@Valid @RequestBody UmsMenu umsMenu) {
@@ -34,6 +36,7 @@ public class UmsMenuController {
     }
 
     // 更新
+    @LogAnnotation()
     @ApiOperation("更新菜单")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public CommonResult update(@Valid @RequestBody UmsMenu umsMenu) {
@@ -41,6 +44,7 @@ public class UmsMenuController {
     }
 
     // 删除
+    @LogAnnotation()
     @ApiOperation("删除菜单")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id) {
@@ -48,6 +52,7 @@ public class UmsMenuController {
     }
 
     // 获取全部
+    @LogAnnotation()
     @ApiOperation("获取全部菜单")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public CommonResult list() {
@@ -55,6 +60,7 @@ public class UmsMenuController {
     }
 
     // 查看
+    @LogAnnotation()
     @ApiOperation("查看菜单")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable String id) {

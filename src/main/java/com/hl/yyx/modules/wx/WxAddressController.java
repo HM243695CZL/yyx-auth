@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.wx;
 
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.modules.cms.dto.SetDefaultAddDTO;
 import com.hl.yyx.modules.cms.model.CmsAddress;
 import com.hl.yyx.modules.cms.service.CmsAddressService;
@@ -25,6 +26,7 @@ public class WxAddressController {
     /**
      * 新增收货地址
      */
+    @LogAnnotation()
     @ApiOperation("新增收货地址")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public CommonResult create(@RequestBody CmsAddress address) {
@@ -34,6 +36,7 @@ public class WxAddressController {
     /**
      * 获取收货地址列表
      */
+    @LogAnnotation()
     @ApiOperation("获取收货地址列表")
     @RequestMapping(value = "/getAddressList", method = RequestMethod.GET)
     public CommonResult getAddressList() {
@@ -43,6 +46,7 @@ public class WxAddressController {
     /**
      * 删除地址
      */
+    @LogAnnotation()
     @ApiOperation("删除地址")
     @RequestMapping(value = "/emptyAddress", method = RequestMethod.POST)
     public CommonResult deleteAddress(@RequestBody List<Integer> ids) {
@@ -54,6 +58,7 @@ public class WxAddressController {
      * @param id 地址id
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("获取地址详情")
     @RequestMapping(value = "/getAddressInfo/{id}", method = RequestMethod.GET)
     public CommonResult getAddressInfo(@PathVariable Integer id) {
@@ -64,6 +69,7 @@ public class WxAddressController {
      * 设置默认地址
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("设置默认地址")
     @RequestMapping(value = "/setDefaultAddress", method = RequestMethod.POST)
     public CommonResult setDefaultAddress(@RequestBody SetDefaultAddDTO defaultAddDTO) {

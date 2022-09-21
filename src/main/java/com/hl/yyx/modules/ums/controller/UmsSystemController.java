@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.ums.controller;
 
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class UmsSystemController {
      * 获取运费相关配置
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("获取运费信息")
     @RequestMapping(value = "/getFreightInfo", method = RequestMethod.GET)
     public CommonResult getFreightInfo() {
@@ -45,6 +47,7 @@ public class UmsSystemController {
      * 获取订单配置信息
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("获取订单配置信息")
     @RequestMapping(value = "/getOrderInfo", method = RequestMethod.GET)
     public CommonResult getOrderInfo() {
@@ -56,6 +59,7 @@ public class UmsSystemController {
      * @param config
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("更新配置信息")
     @RequestMapping(value = "/updateConfig", method = RequestMethod.POST)
     public CommonResult updateConfig(@RequestBody Map<String, String> config) {

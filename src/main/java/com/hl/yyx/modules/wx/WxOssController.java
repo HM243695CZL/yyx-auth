@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.wx;
 
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.dto.OssPolicyResult;
 import com.hl.yyx.service.impl.OssServiceImpl;
 import io.swagger.annotations.Api;
@@ -23,6 +24,7 @@ public class WxOssController {
     OssServiceImpl ossService;
 
 
+    @LogAnnotation()
     @ApiOperation("oss上传签名生成")
     @RequestMapping(value = "/policy", method = RequestMethod.GET)
     @ResponseBody

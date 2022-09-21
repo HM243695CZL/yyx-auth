@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.wx;
 
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.common.wx.NoWeiXinAuth;
 import com.hl.yyx.modules.pms.service.PmsRegionService;
 import io.swagger.annotations.Api;
@@ -24,6 +25,7 @@ public class WxRegionController {
     /**
      * 获取行政区域列表
      */
+    @LogAnnotation()
     @ApiOperation("获取行政区域列表")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public CommonResult getRegionList() {

@@ -3,6 +3,7 @@ package com.hl.yyx.modules.cms.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.cms.dto.CollectionParamsDTO;
 import io.swagger.annotations.Api;
@@ -34,6 +35,7 @@ public class CmsCollectController {
     private CmsCollectService cmsCollectService;
 
     // 分页
+    @LogAnnotation()
     @ApiOperation("分页查询")
     @RequestMapping(value = "/page", method = RequestMethod.POST)
     public CommonResult page(@RequestBody CollectionParamsDTO paramsDTO) {
@@ -42,6 +44,7 @@ public class CmsCollectController {
     }
 
     // 获取全部
+    @LogAnnotation()
     @ApiOperation("获取全部收藏")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public CommonResult list() {

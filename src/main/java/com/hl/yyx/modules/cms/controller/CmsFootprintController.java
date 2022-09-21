@@ -3,6 +3,7 @@ package com.hl.yyx.modules.cms.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.cms.dto.FootprintParamsDTO;
 import io.swagger.annotations.Api;
@@ -34,6 +35,7 @@ public class CmsFootprintController {
     private CmsFootprintService cmsFootprintService;
 
     // 分页查询
+    @LogAnnotation()
     @ApiOperation("分页查询")
     @RequestMapping(value = "/page", method = RequestMethod.POST)
     public CommonResult page(@RequestBody FootprintParamsDTO paramsDTO) {
@@ -43,6 +45,7 @@ public class CmsFootprintController {
 
 
     // 获取全部
+    @LogAnnotation()
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public CommonResult list() {
         return CommonResult.success(cmsFootprintService.list());

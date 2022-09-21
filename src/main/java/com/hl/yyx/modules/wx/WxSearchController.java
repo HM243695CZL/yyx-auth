@@ -2,6 +2,7 @@ package com.hl.yyx.modules.wx;
 
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.common.vo.GoodsPageDTO;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.common.wx.NoWeiXinAuth;
@@ -42,6 +43,7 @@ public class WxSearchController {
      * 获取搜索关键词提示
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("关键词提示")
     @RequestMapping(value = "/helper", method = RequestMethod.POST)
     @NoWeiXinAuth
@@ -52,6 +54,7 @@ public class WxSearchController {
     /**
      * 根据关键字搜索商品
      */
+    @LogAnnotation()
     @ApiOperation("根据关键词搜索商品")
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     @NoWeiXinAuth
@@ -62,6 +65,7 @@ public class WxSearchController {
     /**
      * 获取搜索历史记录
      */
+    @LogAnnotation()
     @ApiOperation("获取搜索历史记录")
     @RequestMapping(value = "/getHistory", method = RequestMethod.POST)
     public CommonResult getHistory(@RequestBody PageParamsDTO paramsDTO) {
@@ -71,6 +75,7 @@ public class WxSearchController {
     /**
      * 清空搜索历史
      */
+    @LogAnnotation()
     @ApiOperation("清空搜索历史")
     @RequestMapping(value = "/emptySearchHistory", method = RequestMethod.GET)
     public CommonResult emptySearchHistory() {
@@ -80,6 +85,7 @@ public class WxSearchController {
     /**
      * 获取推荐关键词和热门关键词
      */
+    @LogAnnotation()
     @ApiOperation("获取推荐关键词和热门关键词")
     @RequestMapping(value = "/getRecommendAndHotKeyword", method = RequestMethod.GET)
     @NoWeiXinAuth

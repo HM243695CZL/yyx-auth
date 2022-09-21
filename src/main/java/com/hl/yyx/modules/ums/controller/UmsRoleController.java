@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.modules.ums.dto.AuthMenuDTO;
 import com.hl.yyx.modules.ums.dto.RolePageDTO;
@@ -34,6 +35,7 @@ public class UmsRoleController {
     private UmsRoleService umsRoleService;
 
     // 分页
+    @LogAnnotation()
     @ApiOperation("分页查询")
     @RequestMapping(value = "/page", method = RequestMethod.POST)
     public CommonResult page(@RequestBody RolePageDTO paramsDTO) {
@@ -42,6 +44,7 @@ public class UmsRoleController {
     }
 
     // 新增
+    @LogAnnotation()
     @ApiOperation("新增角色")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public CommonResult save(@Valid @RequestBody UmsRole umsRole) {
@@ -50,6 +53,7 @@ public class UmsRoleController {
     }
 
     // 获取角色已分配的权限
+    @LogAnnotation()
     @ApiOperation("获取已分配的权限")
     @RequestMapping(value = "/viewAuth/{id}", method = RequestMethod.GET)
     public CommonResult viewAuth(@PathVariable Integer id) {
@@ -58,6 +62,7 @@ public class UmsRoleController {
     }
 
     // 分配权限
+    @LogAnnotation()
     @ApiOperation("分配权限")
     @RequestMapping(value = "/auth", method = RequestMethod.POST)
     public CommonResult authMenu(@RequestBody AuthMenuDTO authMenuDTO) {
@@ -66,6 +71,7 @@ public class UmsRoleController {
     }
 
     // 更新
+    @LogAnnotation()
     @ApiOperation("更新角色")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public CommonResult update(@Valid @RequestBody UmsRole umsRole) {
@@ -73,6 +79,7 @@ public class UmsRoleController {
     }
 
     // 删除
+    @LogAnnotation()
     @ApiOperation("删除角色")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id) {
@@ -80,6 +87,7 @@ public class UmsRoleController {
     }
 
     // 获取全部
+    @LogAnnotation()
     @ApiOperation("获取全部角色")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public CommonResult list() {
@@ -90,6 +98,7 @@ public class UmsRoleController {
     }
 
     // 查看
+    @LogAnnotation()
     @ApiOperation("查看角色")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable String id) {

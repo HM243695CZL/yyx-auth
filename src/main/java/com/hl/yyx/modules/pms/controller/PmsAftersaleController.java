@@ -2,6 +2,7 @@ package com.hl.yyx.modules.pms.controller;
 
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.modules.pms.dto.OrderAfterSalePageDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +33,7 @@ public class PmsAftersaleController {
     private PmsAftersaleService pmsAftersaleService;
 
     // 分页
+    @LogAnnotation()
     @ApiOperation("分页查询")
     @RequestMapping(value = "/page", method = RequestMethod.POST)
     public CommonResult page(@RequestBody OrderAfterSalePageDTO paramsDTO) {
@@ -39,6 +41,7 @@ public class PmsAftersaleController {
     }
 
     // 删除
+    @LogAnnotation()
     @ApiOperation("删除售后")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id) {
@@ -50,6 +53,7 @@ public class PmsAftersaleController {
      * @param id 订单id
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("查看售后")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult view(@PathVariable String id) {

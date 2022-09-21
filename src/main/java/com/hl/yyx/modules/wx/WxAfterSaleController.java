@@ -2,6 +2,7 @@ package com.hl.yyx.modules.wx;
 
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.modules.pms.dto.OrderAfterSalePageDTO;
 import com.hl.yyx.modules.pms.service.PmsAftersaleService;
 import io.swagger.annotations.Api;
@@ -26,6 +27,7 @@ public class WxAfterSaleController {
      * @param paramsDTO
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("获取售后列表")
     @RequestMapping(value = "/getAfterSaleList", method = RequestMethod.POST)
     public CommonResult getAfterSaleList(@RequestBody OrderAfterSalePageDTO paramsDTO) {
@@ -38,6 +40,7 @@ public class WxAfterSaleController {
      * @param orderId
      * @return
      */
+    @LogAnnotation()
     @ApiModelProperty("根据订单id获取售后详情")
     @RequestMapping(value = "/getAfterSaleInfo/{orderId}", method = RequestMethod.GET)
     public CommonResult getAfterSaleInfo(@PathVariable String orderId) {

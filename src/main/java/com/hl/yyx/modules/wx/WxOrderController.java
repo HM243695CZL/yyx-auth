@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.wx;
 
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.modules.pms.dto.OrderRefundDTO;
 import com.hl.yyx.modules.pms.dto.SubOrderDTO;
 import com.hl.yyx.modules.pms.dto.WxOrderDTO;
@@ -43,6 +44,7 @@ public class WxOrderController {
      * @param orderDTO
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("提交订单")
     @RequestMapping(value = "/submitOrder", method = RequestMethod.POST)
     public CommonResult submitOrder(@Valid @RequestBody SubOrderDTO orderDTO) {
@@ -54,6 +56,7 @@ public class WxOrderController {
      * @param orderId
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("获取订单详情")
     @RequestMapping(value = "/getOrderInfo", method = RequestMethod.GET)
     public CommonResult getOrderInfo(@RequestParam Integer orderId) throws ParseException {
@@ -65,6 +68,7 @@ public class WxOrderController {
      * @param orderId
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("支付")
     @RequestMapping(value = "/pay", method = RequestMethod.GET)
     public CommonResult prePay(@RequestParam Integer orderId) {
@@ -76,6 +80,7 @@ public class WxOrderController {
      * @param paramsDTO
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("获取订单列表")
     @RequestMapping(value = "/getOrderList", method = RequestMethod.POST)
     public CommonResult getOrderList(@RequestBody WxOrderDTO paramsDTO) {
@@ -87,6 +92,7 @@ public class WxOrderController {
      * @param orderId
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("取消订单")
     @RequestMapping(value = "/cancel", method = RequestMethod.GET)
     public CommonResult cancelOrder(@RequestParam Integer orderId) {
@@ -98,6 +104,7 @@ public class WxOrderController {
      * @param refundDTO
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("申请退款")
     @RequestMapping(value = "/applyRefund", method = RequestMethod.POST)
     public CommonResult applyRefund(@RequestBody OrderRefundDTO refundDTO) {
@@ -109,6 +116,7 @@ public class WxOrderController {
      * @param orderId
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("确认收货")
     @RequestMapping(value = "/confirm", method = RequestMethod.GET)
     public CommonResult confirmOrder(@RequestParam Integer orderId) {
@@ -121,6 +129,7 @@ public class WxOrderController {
      * @param orderId
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("删除订单")
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public CommonResult deleteOrder(@RequestParam Integer orderId) {
@@ -132,6 +141,7 @@ public class WxOrderController {
      * @param orderGoodsId
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("获取待评价商品信息")
     @RequestMapping(value = "/orderGoods", method = RequestMethod.GET)
     public CommonResult getOrderGoodsInfo(@RequestParam Integer orderGoodsId) {
@@ -143,6 +153,7 @@ public class WxOrderController {
      * @param comment
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("评价订单商品")
     @RequestMapping(value = "/comment", method = RequestMethod.POST)
     public CommonResult commentGoods(@RequestBody PmsComment comment) {
@@ -154,6 +165,7 @@ public class WxOrderController {
      * @param aftersale
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("订单售后")
     @RequestMapping(value = "/afterSale", method = RequestMethod.POST)
     public CommonResult orderAfterSale(@RequestBody PmsAftersale aftersale) {

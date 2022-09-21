@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.pms.controller;
 
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class PmsRegionController {
     private PmsRegionService pmsRegionService;
 
     // 获取全部
+    @LogAnnotation()
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public CommonResult list() {
         return CommonResult.success(pmsRegionService.getList());

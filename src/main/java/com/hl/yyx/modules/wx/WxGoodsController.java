@@ -2,6 +2,7 @@ package com.hl.yyx.modules.wx;
 
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.common.wx.NoWeiXinAuth;
 import com.hl.yyx.modules.pms.dto.CommentPageDto;
 import com.hl.yyx.modules.pms.model.PmsGoods;
@@ -34,6 +35,7 @@ public class WxGoodsController {
      * @param goodsId
      * @return
      */
+    @LogAnnotation()
     @NoWeiXinAuth
     @ApiOperation("获取商品详情")
     @RequestMapping(value = "/getGoodsInfo", method = RequestMethod.GET)
@@ -47,6 +49,7 @@ public class WxGoodsController {
      * @param pageDto
      * @return
      */
+    @LogAnnotation()
     @NoWeiXinAuth
     @ApiOperation("获取商品评论")
     @RequestMapping(value = "/getGoodsComments", method = RequestMethod.POST)
@@ -59,6 +62,7 @@ public class WxGoodsController {
      * @param goodsId
      * @return
      */
+    @LogAnnotation()
     @NoWeiXinAuth
     @ApiOperation("获取商品评论数量")
     @RequestMapping(value = "/getCommentsCount", method = RequestMethod.GET)

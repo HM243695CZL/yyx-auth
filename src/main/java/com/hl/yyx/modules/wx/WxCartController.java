@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.wx;
 
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.modules.pms.dto.CartCheckedDTO;
 import com.hl.yyx.modules.pms.dto.CartDTO;
 import com.hl.yyx.modules.pms.dto.ShoppingOrderDTO;
@@ -31,6 +32,7 @@ public class WxCartController {
      * @param cartDTO
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("添加购物车")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public CommonResult addCart(@RequestBody CartDTO cartDTO) {
@@ -42,6 +44,7 @@ public class WxCartController {
      * @param cartDTO
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("立即购买")
     @RequestMapping(value = "/fastAdd", method = RequestMethod.POST)
     public CommonResult fastAdd(@RequestBody CartDTO cartDTO) {
@@ -52,6 +55,7 @@ public class WxCartController {
      * 获取购物车信息
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("获取购物车信息")
     @RequestMapping(value = "/getCartInfo", method = RequestMethod.POST)
     public CommonResult getCartInfo() {
@@ -61,6 +65,7 @@ public class WxCartController {
     /**
      * 改变购物车商品货品状态
      */
+    @LogAnnotation()
     @ApiOperation("改变购物车商品货品状态")
     @RequestMapping(value = "/checked", method = RequestMethod.POST)
     public CommonResult changeChecked(@RequestBody CartCheckedDTO checkedDTO) {
@@ -72,6 +77,7 @@ public class WxCartController {
      * @param ids
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("删除购物车商品")
     @RequestMapping(value = "/emptyCart", method = RequestMethod.POST)
     public CommonResult emptyCart(@RequestBody List<Integer> ids) {
@@ -82,6 +88,7 @@ public class WxCartController {
      * 购物车下单
      * @return
      */
+    @LogAnnotation()
     @ApiOperation("购物车下单")
     @RequestMapping(value = "/shoppingOrder", method = RequestMethod.POST)
     public CommonResult shoppingOrder(@RequestBody List<Integer> cardIds) {

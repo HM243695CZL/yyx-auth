@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 19/09/2022 22:31:37
+ Date: 21/09/2022 16:55:18
 */
 
 SET NAMES utf8mb4;
@@ -116,9 +116,9 @@ CREATE TABLE `cms_footprint`  (
 -- ----------------------------
 -- Records of cms_footprint
 -- ----------------------------
-INSERT INTO `cms_footprint` VALUES (25, 6, 9, '2022-07-28 17:48:33', '2022-09-14 21:54:38', 1);
+INSERT INTO `cms_footprint` VALUES (25, 6, 9, '2022-07-28 17:48:33', '2022-09-21 16:33:40', 1);
 INSERT INTO `cms_footprint` VALUES (26, 6, 16, '2022-08-01 16:58:49', '2022-08-23 17:05:36', 1);
-INSERT INTO `cms_footprint` VALUES (27, 6, 11, '2022-08-02 11:36:28', '2022-09-12 23:07:42', 1);
+INSERT INTO `cms_footprint` VALUES (27, 6, 11, '2022-08-02 11:36:28', '2022-09-21 15:35:15', 1);
 INSERT INTO `cms_footprint` VALUES (30, 6, 14, '2022-08-02 16:56:55', '2022-09-09 15:26:01', 1);
 INSERT INTO `cms_footprint` VALUES (31, 6, 13, '2022-08-02 17:19:39', '2022-08-02 17:19:39', 1);
 INSERT INTO `cms_footprint` VALUES (32, 6, 15, '2022-08-02 23:47:16', '2022-09-08 11:52:05', 1);
@@ -135,29 +135,23 @@ CREATE TABLE `cms_search_history`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL COMMENT '用户表的用户ID',
   `keyword` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '搜索关键字',
+  `search_count` int(5) NULL DEFAULT 1 COMMENT '搜索次数',
   `from` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '搜索来源，如pc、wx、app',
   `add_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '搜索历史表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '搜索历史表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cms_search_history
 -- ----------------------------
-INSERT INTO `cms_search_history` VALUES (1, 6, '油', 'wx', '2022-07-25 17:08:28', '2022-07-25 17:08:28', 0);
-INSERT INTO `cms_search_history` VALUES (2, 6, '牛奶', 'wx', '2022-07-26 09:16:18', '2022-07-26 09:16:18', 0);
-INSERT INTO `cms_search_history` VALUES (3, 6, '牛奶', 'wx', '2022-07-26 09:43:20', '2022-07-26 09:43:20', 0);
-INSERT INTO `cms_search_history` VALUES (4, 6, '牛奶', 'wx', '2022-07-26 09:51:58', '2022-07-26 09:51:58', 0);
-INSERT INTO `cms_search_history` VALUES (5, 6, '牛奶', 'wx', '2022-07-26 09:52:05', '2022-07-26 09:52:05', 0);
-INSERT INTO `cms_search_history` VALUES (6, 6, '牛奶', 'wx', '2022-07-26 09:52:36', '2022-07-26 09:52:36', 0);
-INSERT INTO `cms_search_history` VALUES (7, 6, '牛奶', 'wx', '2022-07-26 09:56:31', '2022-07-26 09:56:31', 0);
-INSERT INTO `cms_search_history` VALUES (8, 6, '牛奶', 'wx', '2022-07-26 09:57:43', '2022-07-26 09:57:43', 0);
-INSERT INTO `cms_search_history` VALUES (9, 6, '食用油', 'wx', '2022-07-26 09:57:57', '2022-07-26 09:57:57', 0);
-INSERT INTO `cms_search_history` VALUES (10, 6, '特产', 'wx', '2022-07-26 10:32:24', '2022-07-26 10:32:24', 1);
-INSERT INTO `cms_search_history` VALUES (11, 6, '饮料', 'wx', '2022-07-26 10:32:25', '2022-07-26 10:32:25', 1);
-INSERT INTO `cms_search_history` VALUES (12, 6, '牛奶', 'wx', '2022-08-02 17:00:07', '2022-08-02 17:00:07', 1);
-INSERT INTO `cms_search_history` VALUES (13, 6, '牛奶', 'wx', '2022-08-18 14:17:24', '2022-08-18 14:17:24', 1);
+INSERT INTO `cms_search_history` VALUES (17, 6, '大米', 2, 'wx', '2022-09-21 16:33:51', '2022-09-21 16:35:41', 1);
+INSERT INTO `cms_search_history` VALUES (18, 6, '奶', 1, 'wx', '2022-09-21 16:35:11', '2022-09-21 16:35:11', 1);
+INSERT INTO `cms_search_history` VALUES (19, 6, '牛奶', 1, 'wx', '2022-09-21 16:35:19', '2022-09-21 16:35:19', 1);
+INSERT INTO `cms_search_history` VALUES (20, 6, '特产', 1, 'wx', '2022-09-21 16:35:25', '2022-09-21 16:35:25', 1);
+INSERT INTO `cms_search_history` VALUES (21, 6, '饮料', 1, 'wx', '2022-09-21 16:35:31', '2022-09-21 16:35:31', 1);
+INSERT INTO `cms_search_history` VALUES (22, 6, '食用油', 1, 'wx', '2022-09-21 16:35:32', '2022-09-21 16:35:32', 1);
 
 -- ----------------------------
 -- Table structure for cms_user
@@ -188,7 +182,7 @@ CREATE TABLE `cms_user`  (
 -- ----------------------------
 -- Records of cms_user
 -- ----------------------------
-INSERT INTO `cms_user` VALUES (6, 'hl243695czyn', '$2a$10$509u4bdHYH0FR/kH0KU1y.4uGMVqpwecAKXYYL/ra4.2WsnV878/q', 0x30, NULL, '2022-09-08 11:48:59', '192.168.0.101', 0, 'hl243695czyn', '', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', 'odsj15LuTKjuxX5aTqFrv3eI_lko', '', 0, '2022-07-09 22:00:27', '2022-09-08 11:48:59', 1);
+INSERT INTO `cms_user` VALUES (6, 'hl243695czyn', '$2a$10$509u4bdHYH0FR/kH0KU1y.4uGMVqpwecAKXYYL/ra4.2WsnV878/q', 0x30, NULL, '2022-09-08 11:48:59', '192.168.0.101', 0, 'hl243695czyn', '', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', 'odsj15LuTKjuxX5aTqFrv3eI_lko', '', 0, '2022-07-09 22:00:27', '2022-09-21 14:17:55', 1);
 INSERT INTO `cms_user` VALUES (7, 'odsj15BJXCHyLc1KKBGsAS5rTAng', 'odsj15BJXCHyLc1KKBGsAS5rTAng', 0x30, NULL, '2022-08-06 21:35:35', '192.168.2.107', 0, '微信用户', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132', 'odsj15BJXCHyLc1KKBGsAS5rTAng', 'e9b9d6ad-4e3e-4437-8f68-b654b0b62f06', 0, '2022-08-06 21:35:35', '2022-08-06 21:35:35', 1);
 
 -- ----------------------------
@@ -261,7 +255,13 @@ CREATE TABLE `pms_cart`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '购物车商品表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '购物车商品表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of pms_cart
+-- ----------------------------
+INSERT INTO `pms_cart` VALUES (2, 6, 9, '100105', '德运 (Devondale) 澳大利亚原装进口 全脂纯牛奶早餐奶1L*10盒整箱装 高钙优质乳蛋白', 12, 96.00, 1, '[\"健康脱脂\"]', 1, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/d6dd8d2e58d22dd4.jpg.avif', '2022-09-21 16:07:34', '2022-09-21 16:07:34', 1);
+INSERT INTO `pms_cart` VALUES (3, 6, 9, '100105', '德运 (Devondale) 澳大利亚原装进口 全脂纯牛奶早餐奶1L*10盒整箱装 高钙优质乳蛋白', 11, 95.00, 1, '[\"全脂纯牛奶\"]', 1, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220714/fe1a9729e118cf12.jpg.avif', '2022-09-21 16:08:56', '2022-09-21 16:08:56', 1);
 
 -- ----------------------------
 -- Table structure for pms_category
@@ -3915,7 +3915,7 @@ CREATE TABLE `ums_admin`  (
 -- ----------------------------
 -- Records of ums_admin
 -- ----------------------------
-INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2022-09-19 19:32:49', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-23 10:01:03', 1);
+INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2022-09-21 08:14:43', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-23 10:01:03', 1);
 INSERT INTO `ums_admin` VALUES (4, 'test', '123456', '', NULL, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220623/hw-logo.png', '2022-06-23 10:15:19', '2022-06-23 10:15:19', 1);
 
 -- ----------------------------
