@@ -1,9 +1,11 @@
 package com.hl.yyx.modules.sms.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.util.OrderUtil;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.sms.dto.MailPageDTO;
 import com.hl.yyx.modules.sms.model.SmsMail;
 import com.hl.yyx.modules.sms.mapper.SmsMailMapper;
 import com.hl.yyx.modules.sms.service.SmsMailService;
@@ -70,9 +72,12 @@ public class SmsMailServiceImpl extends ServiceImpl<SmsMailMapper, SmsMail> impl
      * @return
      */
     @Override
-    public Page<SmsMail> pageList(PageParamsDTO paramsDTO) {
+    public Page<SmsMail> pageList(MailPageDTO paramsDTO) {
         Page<SmsMail> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
         QueryWrapper<SmsMail> wrapper = new QueryWrapper<>();
+        if (StrUtil.isNotEmpty(paramsDTO.getTo())) {
+            wrapper.lambda().like(SmsMail::getTo, paramsDTO.getTo());
+        }
         return page(page, wrapper);
     }
 }

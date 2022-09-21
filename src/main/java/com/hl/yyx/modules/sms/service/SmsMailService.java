@@ -2,6 +2,7 @@ package com.hl.yyx.modules.sms.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.sms.dto.MailPageDTO;
 import com.hl.yyx.modules.sms.model.SmsMail;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -27,5 +28,5 @@ public interface SmsMailService extends IService<SmsMail> {
      * @param paramsDTO
      * @return
      */
-    Page<SmsMail> pageList(PageParamsDTO paramsDTO);
+    Page<SmsMail> pageList(MailPageDTO paramsDTO);
 }
