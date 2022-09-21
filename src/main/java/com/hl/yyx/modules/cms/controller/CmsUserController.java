@@ -5,6 +5,7 @@ import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.common.wx.NoWeiXinAuth;
+import com.hl.yyx.modules.cms.dto.UserPageDTO;
 import com.hl.yyx.modules.cms.dto.WXAuthDTO;
 import com.hl.yyx.modules.cms.dto.WxLoginDTO;
 import com.hl.yyx.modules.cms.dto.WxRegisterDTO;
@@ -46,7 +47,7 @@ public class CmsUserController {
     @ApiOperation("分页查询")
     @NoWeiXinAuth
     @RequestMapping(value = "/page", method = RequestMethod.POST)
-    public CommonResult page(@RequestBody PageParamsDTO paramsDTO) {
+    public CommonResult page(@RequestBody UserPageDTO paramsDTO) {
         Page<CmsUser> memberList = cmsUserService.pageList(paramsDTO);
         return CommonResult.success(CommonPage.restPage(memberList));
     }

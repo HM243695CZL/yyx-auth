@@ -2,6 +2,7 @@ package com.hl.yyx.modules.cms.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.cms.dto.UserPageDTO;
 import com.hl.yyx.modules.cms.dto.WXAuthDTO;
 import com.hl.yyx.modules.cms.dto.WxLoginDTO;
 import com.hl.yyx.modules.cms.dto.WxRegisterDTO;
@@ -29,7 +30,7 @@ public interface CmsUserService extends IService<CmsUser> {
 
     HashMap<Object, Object> accountRegister(WxRegisterDTO registerDTO, HttpServletRequest request);
 
-    Page<CmsUser> pageList(PageParamsDTO paramsDTO);
+    Page<CmsUser> pageList(UserPageDTO paramsDTO);
 
     HashMap<Object, Object> accountLogin(WxLoginDTO loginDTO, HttpServletRequest request);
 }

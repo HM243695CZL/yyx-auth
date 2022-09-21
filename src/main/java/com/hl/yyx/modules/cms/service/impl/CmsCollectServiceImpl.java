@@ -48,14 +48,8 @@ public class CmsCollectServiceImpl extends ServiceImpl<CmsCollectMapper, CmsColl
     @Override
     public Page<CmsCollect> pageList(CollectionParamsDTO paramsDTO) {
         Page<CmsCollect> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
-        QueryWrapper<CmsCollect> wrapper = new QueryWrapper<>();
-        if (paramsDTO.getUserId() != null) {
-            wrapper.lambda().like(CmsCollect::getUserId, paramsDTO.getUserId());
-        }
-        if (paramsDTO.getValueId() != null) {
-            wrapper.lambda().like(CmsCollect::getValueId, paramsDTO.getValueId());
-        }
-        return page(page, wrapper);
+        Page<CmsCollect > collectPage = collectMapper.pageList(page, paramsDTO);
+        return collectPage;
     }
 
     /**

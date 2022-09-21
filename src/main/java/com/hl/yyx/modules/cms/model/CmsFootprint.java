@@ -55,5 +55,18 @@ public class CmsFootprint implements Serializable {
     @JsonIgnore
     private Boolean deleted;
 
+    @ApiModelProperty(value = "用户名称")
+    @TableField(exist = false)
+    private String username;
+
+    @ApiModelProperty(value = "商品名称")
+    @TableField(exist = false)
+    private String goodsName;
+
+    @ApiModelProperty(value = "商品图片")
+    @TableField(exist = false)
+    private String picUrl;
+
+
 
 }

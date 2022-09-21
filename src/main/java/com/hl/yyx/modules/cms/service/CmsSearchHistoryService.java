@@ -2,6 +2,7 @@ package com.hl.yyx.modules.cms.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.cms.dto.SearchHistoryPageDTO;
 import com.hl.yyx.modules.cms.model.CmsSearchHistory;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -16,7 +17,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface CmsSearchHistoryService extends IService<CmsSearchHistory> {
 
 
-    Page<CmsSearchHistory> pageList(PageParamsDTO paramsDTO);
+    Page<CmsSearchHistory> pageList(SearchHistoryPageDTO paramsDTO);
 
     /**
      * 微信端-获取用户搜索记录

@@ -76,5 +76,8 @@ public class CmsAddress implements Serializable {
     @JsonIgnore
     private Boolean deleted;
 
+    @ApiModelProperty(value = "用户名称")
+    @TableField(exist = false)
+    private String username;
 
 }

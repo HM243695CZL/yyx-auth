@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.cms.dto.SearchHistoryPageDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class CmsSearchHistoryController {
     // 分页
     @ApiOperation("分页查询")
     @RequestMapping(value = "/page", method = RequestMethod.POST)
-    public CommonResult page(@RequestBody PageParamsDTO paramsDTO) {
+    public CommonResult page(@RequestBody SearchHistoryPageDTO paramsDTO) {
         Page<CmsSearchHistory> pageList = cmsSearchHistoryService.pageList(paramsDTO);
         return CommonResult.success(CommonPage.restPage(pageList));
     }

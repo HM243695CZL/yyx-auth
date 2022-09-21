@@ -28,14 +28,14 @@ public class UmsDictServiceImpl extends ServiceImpl<UmsDictMapper, UmsDict> impl
     public Page<UmsDict> pageList(DictPageDTO pageDTO) {
         Page<UmsDict> page = new Page<>(pageDTO.getPageIndex(), pageDTO.getPageSize());
         QueryWrapper<UmsDict> wrapper = new QueryWrapper<>();
-        if (StrUtil.isNotEmpty(pageDTO.getDateType())) {
-            wrapper.lambda().like(UmsDict::getDataType, pageDTO.getDateType());
+        if (StrUtil.isNotEmpty(pageDTO.getDataType())) {
+            wrapper.lambda().like(UmsDict::getDataType, pageDTO.getDataType());
         }
-        if ( StrUtil.isNotEmpty(pageDTO.getDateKey())) {
-            wrapper.lambda().like(UmsDict::getDataKey, pageDTO.getDateKey());
+        if ( StrUtil.isNotEmpty(pageDTO.getDataKey())) {
+            wrapper.lambda().like(UmsDict::getDataKey, pageDTO.getDataKey());
         }
-        if (StrUtil.isNotEmpty(pageDTO.getDateValue())) {
-            wrapper.lambda().like(UmsDict::getDataValue, pageDTO.getDateValue());
+        if (StrUtil.isNotEmpty(pageDTO.getDataValue())) {
+            wrapper.lambda().like(UmsDict::getDataValue, pageDTO.getDataValue());
         }
         return page(page, wrapper);
     }

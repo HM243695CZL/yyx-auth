@@ -1,7 +1,11 @@
 package com.hl.yyx.modules.cms.mapper;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.cms.dto.FeedbackPageDTO;
 import com.hl.yyx.modules.cms.model.CmsFeedback;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface CmsFeedbackMapper extends BaseMapper<CmsFeedback> {
 
+    Page<CmsFeedback> pageList(Page<CmsFeedback> page, @Param("paramsDTO") FeedbackPageDTO paramsDTO);
 }

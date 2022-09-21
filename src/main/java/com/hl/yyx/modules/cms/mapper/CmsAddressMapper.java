@@ -1,7 +1,10 @@
 package com.hl.yyx.modules.cms.mapper;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.modules.cms.dto.AddressParamsDTO;
 import com.hl.yyx.modules.cms.model.CmsAddress;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface CmsAddressMapper extends BaseMapper<CmsAddress> {
 
+    Page<CmsAddress> pageList(Page<CmsAddress> page, @Param("paramsDTO") AddressParamsDTO paramsDTO);
 }

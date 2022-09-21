@@ -11,11 +11,11 @@ import lombok.Data;
 public class DictPageDTO extends PageParamsDTO {
 
     @ApiModelProperty(value = "字典类型")
-    private String dateType;
+    private String dataType;
 
     @ApiModelProperty(value = "字典键")
-    private String dateKey;
+    private String dataKey;
 
     @ApiModelProperty(value = "字典值")
-    private String dateValue;
+    private String dataValue;
 }

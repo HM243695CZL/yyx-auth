@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.cms.dto;
 
 import com.hl.yyx.common.vo.PageParamsDTO;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -9,6 +10,9 @@ import lombok.Data;
 @Data
 public class CollectionParamsDTO extends PageParamsDTO {
 
-    private Integer userId;
-    private Integer valueId;
+    @ApiModelProperty(value = "用户名称")
+    private String username;
+
+    @ApiModelProperty(value = "商品名称")
+    private String goodsName;
 }

@@ -19,5 +19,21 @@
         <result column="update_time" property="updateTime" />
         <result column="deleted" property="deleted" />
     </resultMap>
+    <select id="pageList" resultType="com.hl.yyx.modules.cms.model.CmsAddress">
+        SELECT
+            ca.*,
+            cu.username username
+        FROM
+            cms_address ca
+            LEFT JOIN cms_user cu ON ca.user_id = cu.id
+        <where>
+            <if test="paramsDTO.username != '' and paramsDTO != null">
+                cu.username like concat('%', #{paramsDTO.username}, '%')
+            </if>
+            <if test="paramsDTO.name != '' and paramsDTO != null">
+                ca.name like concat('%', #{paramsDTO.name}, '%')
+            </if>
+        </where>
+    </select>
 
 </mapper>

@@ -11,5 +11,24 @@
         <result column="update_time" property="updateTime" />
         <result column="deleted" property="deleted" />
     </resultMap>
+    <select id="pageList" resultType="com.hl.yyx.modules.cms.model.CmsFootprint">
+        SELECT
+            cf.*,
+            cu.username username,
+            pg.NAME goodsName,
+            pg.pic_url picUrl
+        FROM
+            cms_footprint cf
+            LEFT JOIN cms_user cu ON cu.id = cf.user_id
+            LEFT JOIN pms_goods pg ON pg.id = cf.goods_id
+        <where>
+            <if test="paramsDTO.username != '' and paramsDTO.username != null">
+                cu.username like concat('%', #{paramsDTO.username}, '%')
+            </if>
+            <if test="paramsDTO.goodsName != '' and paramsDTO.goodsName != ''">
+                pg.name like concat('%', #{paramsDTO.goodsName}, '%')
+            </if>
+        </where>
+    </select>
 
 </mapper>

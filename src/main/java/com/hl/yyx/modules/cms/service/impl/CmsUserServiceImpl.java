@@ -2,6 +2,7 @@ package com.hl.yyx.modules.cms.service.impl;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -13,10 +14,7 @@ import com.hl.yyx.common.util.IpUtil;
 import com.hl.yyx.common.util.JWTUtils;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.common.wx.UserThreadLocal;
-import com.hl.yyx.modules.cms.dto.WXAuthDTO;
-import com.hl.yyx.modules.cms.dto.WxLoginDTO;
-import com.hl.yyx.modules.cms.dto.WxRegisterDTO;
-import com.hl.yyx.modules.cms.dto.WxUserInfo;
+import com.hl.yyx.modules.cms.dto.*;
 import com.hl.yyx.modules.cms.model.CmsUser;
 import com.hl.yyx.modules.cms.mapper.CmsUserMapper;
 import com.hl.yyx.modules.cms.service.CmsUserService;
@@ -225,9 +223,12 @@ public class CmsUserServiceImpl extends ServiceImpl<CmsUserMapper, CmsUser> impl
      * @return
      */
     @Override
-    public Page<CmsUser> pageList(PageParamsDTO paramsDTO) {
+    public Page<CmsUser> pageList(UserPageDTO paramsDTO) {
         Page<CmsUser> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
         QueryWrapper<CmsUser> wrapper = new QueryWrapper<>();
+        if (StrUtil.isNotEmpty(paramsDTO.getNickname())) {
+            wrapper.lambda().like(CmsUser::getNickname, paramsDTO.getNickname());
+        }
         Page<CmsUser> result = page(page, wrapper);
         for (CmsUser record : result.getRecords()) {
             /**

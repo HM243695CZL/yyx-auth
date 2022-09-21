@@ -2,6 +2,7 @@ package com.hl.yyx.modules.cms.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.cms.dto.FeedbackPageDTO;
 import com.hl.yyx.modules.cms.model.CmsFeedback;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -15,7 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface CmsFeedbackService extends IService<CmsFeedback> {
 
-    Page<CmsFeedback> pageList(PageParamsDTO paramsDTO);
+    Page<CmsFeedback> pageList(FeedbackPageDTO paramsDTO);
 
     Boolean create(CmsFeedback feedback);
 }

@@ -1,8 +1,10 @@
 package com.hl.yyx.modules.cms.mapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.modules.cms.dto.SearchHistoryPageDTO;
 import com.hl.yyx.modules.cms.model.CmsSearchHistory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 /**
@@ -20,6 +22,8 @@ public interface CmsSearchHistoryMapper extends BaseMapper<CmsSearchHistory> {
      * @param page
      * @return
      */
-    @Select("select * from cms_search_history order by add_time desc")
-    Page<CmsSearchHistory> getAllData(Page<CmsSearchHistory> page);
+    Page<CmsSearchHistory> getAllData(Page<CmsSearchHistory> page, @Param("paramsDTO") SearchHistoryPageDTO paramsDTO);
+
+
+
 }

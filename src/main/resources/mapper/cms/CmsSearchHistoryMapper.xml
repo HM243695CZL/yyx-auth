@@ -12,5 +12,23 @@
         <result column="update_time" property="updateTime" />
         <result column="deleted" property="deleted" />
     </resultMap>
+    <select id="getAllData" resultType="com.hl.yyx.modules.cms.model.CmsSearchHistory">
+         SELECT
+            csh.*,
+            cu.username username 
+        FROM
+            `cms_search_history` csh
+            LEFT JOIN cms_user cu ON cu.id = csh.user_id 
+        ORDER BY
+            csh.update_time DESC
+        <where>
+            <if test="paramsDTO.username != '' and paramsDTO.username != null">
+                cu.username like concat('%', #{paramsDTO.username}, '%')
+            </if>
+            <if test="paramsDTO.keyword != '' and paramsDTO.keyword != null">
+                csh.keyword like concat('#', #{paramsDTO.keyword}, '%')
+            </if>
+        </where>
+    </select>
 
 </mapper>

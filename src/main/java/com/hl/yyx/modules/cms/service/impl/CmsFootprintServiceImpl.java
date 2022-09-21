@@ -48,14 +48,8 @@ public class CmsFootprintServiceImpl extends ServiceImpl<CmsFootprintMapper, Cms
     @Override
     public Page<CmsFootprint> pageList(FootprintParamsDTO paramsDTO) {
         Page<CmsFootprint> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
-        QueryWrapper<CmsFootprint> wrapper = new QueryWrapper<>();
-        if (paramsDTO.getUserId() != null) {
-            wrapper.lambda().like(CmsFootprint::getUserId, paramsDTO.getUserId());
-        }
-        if (paramsDTO.getGoodsId() != null) {
-            wrapper.lambda().like(CmsFootprint::getGoodsId, paramsDTO.getGoodsId());
-        }
-        return page(page, wrapper);
+        Page<CmsFootprint> footprintPage = footprintMapper.pageList(page, paramsDTO);
+        return footprintPage;
     }
 
     /**

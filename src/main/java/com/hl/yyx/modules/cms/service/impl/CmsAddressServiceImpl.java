@@ -1,5 +1,6 @@
 package com.hl.yyx.modules.cms.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.exception.Asserts;
@@ -43,14 +44,8 @@ public class CmsAddressServiceImpl extends ServiceImpl<CmsAddressMapper, CmsAddr
     @Override
     public Page<CmsAddress> pageList(AddressParamsDTO paramsDTO) {
         Page<CmsAddress> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
-        QueryWrapper<CmsAddress> queryWrapper = new QueryWrapper<>();
-        if (paramsDTO.getUserId() != null) {
-            queryWrapper.lambda().like(CmsAddress::getUserId, paramsDTO.getUserId());
-        }
-        if (paramsDTO.getName() != null) {
-            queryWrapper.lambda().like(CmsAddress::getName, paramsDTO.getName());
-        }
-        return page(page, queryWrapper);
+        Page<CmsAddress> addressPage = addressMapper.pageList(page, paramsDTO);
+        return addressPage;
     }
 
     /**

@@ -16,5 +16,21 @@
         <result column="update_time" property="updateTime" />
         <result column="deleted" property="deleted" />
     </resultMap>
+    <select id="pageList" resultType="com.hl.yyx.modules.cms.model.CmsFeedback">
+        SELECT
+            cf.*,
+            cu.username username
+        FROM
+            cms_feedback cf
+            LEFT JOIN cms_user cu ON cu.id = cf.user_id
+            <where>
+                <if test="paramsDTO.username != '' and paramsDTO.username != null">
+                    cu.username like concat('%', #{paramsDTO.username}, '%')
+                </if>
+                <if test="paramsDTO.feedType != '' and paramsDTO.feedType != null">
+                    cf.feed_type = #{paramsDTO.feedType}
+                </if>
+            </where>
+    </select>
 
 </mapper>

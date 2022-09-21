@@ -1,9 +1,11 @@
 package com.hl.yyx.modules.cms.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.util.JWTUtils;
 import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.modules.cms.dto.SearchHistoryPageDTO;
 import com.hl.yyx.modules.cms.model.CmsSearchHistory;
 import com.hl.yyx.modules.cms.mapper.CmsSearchHistoryMapper;
 import com.hl.yyx.modules.cms.model.CmsUser;
@@ -41,10 +43,10 @@ public class CmsSearchHistoryServiceImpl extends ServiceImpl<CmsSearchHistoryMap
      * @return
      */
     @Override
-    public Page<CmsSearchHistory> pageList(PageParamsDTO paramsDTO) {
+    public Page<CmsSearchHistory> pageList(SearchHistoryPageDTO paramsDTO) {
         Page<CmsSearchHistory> page = new Page<>(paramsDTO.getPageIndex(), paramsDTO.getPageSize());
-        Page<CmsSearchHistory> allData = searchHistoryMapper.getAllData(page);
-        return allData;
+        Page<CmsSearchHistory> searchHistoryPage = searchHistoryMapper.getAllData(page, paramsDTO);
+        return searchHistoryPage;
     }
 
     /**
