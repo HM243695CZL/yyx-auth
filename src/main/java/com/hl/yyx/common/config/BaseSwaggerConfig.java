@@ -35,6 +35,22 @@ public abstract class BaseSwaggerConfig {
         return docket;
     }
 
+    @Bean
+    public Docket createWxApi() {
+        SwaggerProperties swaggerProperties = swaggerProperties();
+        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo(swaggerProperties))
+                .groupName("微信端接口")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage(swaggerProperties.getApiBasePackage()))
+                .paths(PathSelectors.regex("/wx/.*"))
+                .build();
+        if (swaggerProperties.isEnableSecurity()) {
+            docket.securitySchemes(securitySchemes()).securityContexts(securityContexts());
+        }
+        return docket;
+    }
+
     private ApiInfo apiInfo(SwaggerProperties swaggerProperties) {
         return new ApiInfoBuilder()
                 .title(swaggerProperties.getTitle())

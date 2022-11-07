@@ -45,6 +45,7 @@ public class UmsAdminController {
     private String tokenHead;
 
     // 登录
+    @LogAnnotation()
     @ApiOperation("登录")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public CommonResult login(@RequestBody UmsAdminLoginParam loginParam, HttpServletRequest request) {
@@ -62,15 +63,16 @@ public class UmsAdminController {
     }
 
     // 分页
+    @LogAnnotation()
     @ApiOperation("分页查询")
     @RequestMapping(value = "/page", method = RequestMethod.POST)
-    @LogAnnotation()
     public CommonResult page(@RequestBody PageParamsDTO paramsDTO) {
         Page<UmsAdmin> adminList = umsAdminService.pageList(paramsDTO);
         return CommonResult.success(CommonPage.restPage(adminList));
     }
 
     // 新增
+    @LogAnnotation()
     @ApiOperation("新增管理员")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public CommonResult save(@Valid @RequestBody UmsAdmin umsAdmin) {
@@ -78,6 +80,7 @@ public class UmsAdminController {
     }
 
     // 更新
+    @LogAnnotation()
     @ApiOperation("更新管理员")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public CommonResult update(@Valid @RequestBody UmsAdmin umsAdmin) {
@@ -85,6 +88,7 @@ public class UmsAdminController {
     }
 
     // 删除
+    @LogAnnotation()
     @ApiOperation("删除管理员")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id) {
@@ -92,6 +96,7 @@ public class UmsAdminController {
     }
 
     // 获取全部
+    @LogAnnotation()
     @ApiOperation("获取全部管理员")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public CommonResult list() {
@@ -99,6 +104,7 @@ public class UmsAdminController {
     }
 
     // 查看
+    @LogAnnotation()
     @ApiOperation("查看管理员")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable String id) {
@@ -106,6 +112,7 @@ public class UmsAdminController {
     }
 
     // 修改密码
+    @LogAnnotation()
     @ApiOperation("修改密码")
     @RequestMapping(value = "/updatePass", method = RequestMethod.POST)
     private CommonResult updatePass(@RequestBody UpdatePassDTO updatePassDTO) {
