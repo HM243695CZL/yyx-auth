@@ -46,7 +46,7 @@ public class AliPayController {
     @ApiOperation("跳转支付页")
     @NoWeiXinAuth
     @RequestMapping(value = "/pay", method = RequestMethod.GET) // &subject=xxx&traceNo=xxx&totalAmount=xxx
-    public void pay(AliPay aliPay, HttpServletResponse httpResponse) throws Exception {
+    public String pay(AliPay aliPay, HttpServletResponse httpResponse) throws Exception {
         // 1. 创建Client，通用SDK提供的Client，负责调用支付宝的API
         AlipayClient alipayClient = new DefaultAlipayClient(GATEWAY_URL, aliPayConfig.getAppId(),
                 aliPayConfig.getAppPrivateKey(), FORMAT, CHARSET, aliPayConfig.getAlipayPublicKey(), SIGN_TYPE);
@@ -68,10 +68,7 @@ public class AliPayController {
         } catch (AlipayApiException e) {
             e.printStackTrace();
         }
-        httpResponse.setContentType("text/html;charset=" + CHARSET);
-        httpResponse.getWriter().write(form);// 直接将完整的表单html输出到页面
-        httpResponse.getWriter().flush();
-        httpResponse.getWriter().close();
+        return form;
     }
 
     @PostMapping("/notify")  // 注意这里必须是POST接口
