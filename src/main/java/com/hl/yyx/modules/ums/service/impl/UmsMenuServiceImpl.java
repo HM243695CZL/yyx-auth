@@ -50,6 +50,8 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
      */
     @Override
     public List<UmsMenu> getMenuList() {
+        QueryWrapper<UmsMenu> wrapper = new QueryWrapper<>();
+        wrapper.lambda().orderBy(true, true,  UmsMenu::getSort);
         // 获取所有菜单
         List<UmsMenu> menuLst = list();
         // 给菜单设置关联的角色
@@ -125,7 +127,8 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
         // 将菜单父id添加到menuIds中，以便查出父级菜单信息
        menuIds.addAll(pIds);
         // 根据菜单id查询出菜单
-        list(new QueryWrapper<UmsMenu>().in("id", menuIds))
+        list(new QueryWrapper<UmsMenu>().in("id", menuIds)
+                .lambda().orderBy(true, true, UmsMenu::getSort))
                 .stream().forEach(menuItem -> {
                     // 根据角色表查询对应的角色key
             List<String> roleKey = roleService.listByIds(roleIds).stream().map(UmsRole::getKey).collect(Collectors.toList());
