@@ -53,7 +53,7 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
         QueryWrapper<UmsMenu> wrapper = new QueryWrapper<>();
         wrapper.lambda().orderBy(true, true,  UmsMenu::getSort);
         // 获取所有菜单
-        List<UmsMenu> menuLst = list();
+        List<UmsMenu> menuLst = list(wrapper);
         // 给菜单设置关联的角色
         menuLst.stream().forEach(menu -> {
             // 根据菜单id获取角色id
