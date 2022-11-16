@@ -27,7 +27,7 @@ import java.util.Map;
 @Constraint(validatedBy = TableDataUnique.TableDataUniqueConstraintValidator.class)
 public @interface TableDataUnique {
 
-    // 表明
+    // 表名
     String table();
 
     // 字段

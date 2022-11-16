@@ -2,6 +2,7 @@ package com.hl.yyx.modules.ums.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hl.yyx.modules.ums.dto.FormKeyDTO;
 import com.hl.yyx.modules.ums.dto.FormPageDTO;
 import com.hl.yyx.modules.ums.model.UmsForm;
 
@@ -16,4 +17,11 @@ import com.hl.yyx.modules.ums.model.UmsForm;
 public interface UmsFormService extends IService<UmsForm> {
 
     Page<UmsForm> pageList(FormPageDTO paramsDTO);
+
+    /**
+     * 根据key获取表单配置
+     * @param formKeyDTO
+     * @return
+     */
+    UmsForm getConfigByKey(FormKeyDTO formKeyDTO);
 }

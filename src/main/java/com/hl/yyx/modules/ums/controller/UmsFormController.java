@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.log.LogAnnotation;
+import com.hl.yyx.modules.ums.dto.FormKeyDTO;
 import com.hl.yyx.modules.ums.dto.FormPageDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -82,6 +83,14 @@ public class UmsFormController {
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable String id) {
         return CommonResult.success(umsFormService.getById(id));
+    }
+
+    // 根据key获取表单配置
+    @LogAnnotation()
+    @ApiOperation("根据key获取表单配置")
+    @RequestMapping(value = "/getConfigByKey", method = RequestMethod.POST)
+    public CommonResult getConfigByKey(@RequestBody FormKeyDTO formKeyDTO) {
+        return CommonResult.success(umsFormService.getConfigByKey(formKeyDTO));
     }
 
 }

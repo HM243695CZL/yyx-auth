@@ -3,6 +3,7 @@ package com.hl.yyx.modules.ums.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.modules.ums.dto.FormKeyDTO;
 import com.hl.yyx.modules.ums.dto.FormPageDTO;
 import com.hl.yyx.modules.ums.model.UmsForm;
 import com.hl.yyx.modules.ums.mapper.UmsFormMapper;
@@ -40,5 +41,17 @@ public class UmsFormServiceImpl extends ServiceImpl<UmsFormMapper, UmsForm> impl
             queryWrapper.lambda().like(UmsForm::getRemark, paramsDTO.getRemark());
         }
         return page(page, queryWrapper);
+    }
+
+    /**
+     * 根据key获取表单配置
+     * @param formKeyDTO
+     * @return
+     */
+    @Override
+    public UmsForm getConfigByKey(FormKeyDTO formKeyDTO) {
+        QueryWrapper<UmsForm> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(UmsForm::getFormKey, formKeyDTO.getKey());
+        return getOne(wrapper);
     }
 }
