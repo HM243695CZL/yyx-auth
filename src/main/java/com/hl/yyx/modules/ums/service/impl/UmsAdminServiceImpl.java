@@ -103,6 +103,8 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
     @Transactional
     @Override
     public boolean updateAdmin(UmsAdmin umsAdmin) {
+        UmsAdmin admin = getById(umsAdmin.getId());
+        umsAdmin.setPassword(admin.getPassword());
         boolean result = updateById(umsAdmin);
         // 清空当前用户的所有角色
         QueryWrapper<UmsAdminRole> queryWrapper = new QueryWrapper<>();
