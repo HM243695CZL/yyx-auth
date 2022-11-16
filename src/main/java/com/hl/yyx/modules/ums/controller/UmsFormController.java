@@ -1,7 +1,10 @@
 package com.hl.yyx.modules.ums.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.log.LogAnnotation;
+import com.hl.yyx.modules.ums.dto.FormPageDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +28,21 @@ import javax.validation.Valid;
  * @since 2022-11-16
  */
 @RestController
-@RequestMapping("/admin/form")
+@RequestMapping("/admin/form-design")
 @Api(tags = "表单配置", description = "表单配置")
 public class UmsFormController {
 
     @Autowired
     private UmsFormService umsFormService;
+
+    // 分页
+    @LogAnnotation()
+    @ApiOperation("分页查询")
+    @RequestMapping(value = "/page", method = RequestMethod.POST)
+    public CommonResult page(@RequestBody FormPageDTO paramsDTO) {
+        Page<UmsForm> formList = umsFormService.pageList(paramsDTO);
+        return CommonResult.success(CommonPage.restPage(formList));
+    }
 
     // 新增
     @LogAnnotation()
