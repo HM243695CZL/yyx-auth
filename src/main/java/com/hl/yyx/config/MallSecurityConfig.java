@@ -18,6 +18,7 @@ public class MallSecurityConfig extends SecurityConfig {
 
     /**
      * 将认证交给 springSecurity
+     *
      * @return
      */
     @Bean

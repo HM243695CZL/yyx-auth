@@ -24,12 +24,14 @@ public interface UmsRoleService extends IService<UmsRole> {
 
     /**
      * 授权
+     *
      * @return
      */
     boolean authMenu(AuthMenuDTO authMenuDTO);
 
     /**
      * 根据角色id查询已分配的权限
+     *
      * @param id
      * @return
      */

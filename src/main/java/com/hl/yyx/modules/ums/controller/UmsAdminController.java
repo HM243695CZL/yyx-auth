@@ -93,7 +93,7 @@ public class UmsAdminController {
     @ApiOperation("删除管理员")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id) {
-        return CommonResult.success( umsAdminService.delete(id));
+        return CommonResult.success(umsAdminService.delete(id));
     }
 
     // 获取全部

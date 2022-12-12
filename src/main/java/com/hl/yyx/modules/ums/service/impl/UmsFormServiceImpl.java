@@ -3,6 +3,7 @@ package com.hl.yyx.modules.ums.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.common.exception.ApiException;
 import com.hl.yyx.modules.ums.dto.FormKeyDTO;
 import com.hl.yyx.modules.ums.dto.FormPageDTO;
 import com.hl.yyx.modules.ums.model.UmsForm;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author hl243695czyn
@@ -24,6 +25,7 @@ public class UmsFormServiceImpl extends ServiceImpl<UmsFormMapper, UmsForm> impl
 
     /**
      * 分页查询
+     *
      * @param paramsDTO
      * @return
      */
@@ -45,6 +47,7 @@ public class UmsFormServiceImpl extends ServiceImpl<UmsFormMapper, UmsForm> impl
 
     /**
      * 根据key获取表单配置
+     *
      * @param formKeyDTO
      * @return
      */
@@ -52,6 +55,10 @@ public class UmsFormServiceImpl extends ServiceImpl<UmsFormMapper, UmsForm> impl
     public UmsForm getConfigByKey(FormKeyDTO formKeyDTO) {
         QueryWrapper<UmsForm> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(UmsForm::getFormKey, formKeyDTO.getKey());
+        UmsForm config = getOne(wrapper);
+        if (config == null) {
+            throw new ApiException("表单配置不存在");
+        }
         return getOne(wrapper);
     }
 }

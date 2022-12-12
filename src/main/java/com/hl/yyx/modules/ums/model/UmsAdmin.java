@@ -26,10 +26,10 @@ import javax.validation.constraints.NotBlank;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("ums_admin")
-@ApiModel(value="UmsAdmin对象", description="管理员表")
+@ApiModel(value = "UmsAdmin对象", description = "管理员表")
 public class UmsAdmin implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;

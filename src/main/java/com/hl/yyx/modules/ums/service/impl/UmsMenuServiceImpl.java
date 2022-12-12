@@ -46,12 +46,13 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
 
     /**
      * 获取树形菜单
+     *
      * @return
      */
     @Override
     public List<UmsMenu> getMenuList() {
         QueryWrapper<UmsMenu> wrapper = new QueryWrapper<>();
-        wrapper.lambda().orderBy(true, true,  UmsMenu::getSort);
+        wrapper.lambda().orderBy(true, true, UmsMenu::getSort);
         // 获取所有菜单
         List<UmsMenu> menuLst = list(wrapper);
         // 给菜单设置关联的角色
@@ -66,11 +67,12 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
                 menu.setRoleIds(roleIds);
             }
         });
-       return buildMenuTree(menuLst);
+        return buildMenuTree(menuLst);
     }
 
     /**
      * 查看菜单
+     *
      * @param id
      * @return
      */
@@ -86,6 +88,7 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
 
     /**
      * 删除菜单
+     *
      * @param id id
      * @return
      */
@@ -108,6 +111,7 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
 
     /**
      * 根据用户id获取用户菜单
+     *
      * @param userId 用户id
      * @return
      */
@@ -125,12 +129,12 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
         List<Integer> pIds = list(new QueryWrapper<UmsMenu>().in("id", menuIds).select("pid"))
                 .stream().filter(Objects::nonNull).map(UmsMenu::getPid).collect(Collectors.toList());
         // 将菜单父id添加到menuIds中，以便查出父级菜单信息
-       menuIds.addAll(pIds);
+        menuIds.addAll(pIds);
         // 根据菜单id查询出菜单
         list(new QueryWrapper<UmsMenu>().in("id", menuIds)
                 .lambda().orderBy(true, true, UmsMenu::getSort))
                 .stream().forEach(menuItem -> {
-                    // 根据角色表查询对应的角色key
+            // 根据角色表查询对应的角色key
             List<String> roleKey = roleService.listByIds(roleIds).stream().map(UmsRole::getKey).collect(Collectors.toList());
             InitMenuDTO initMenuDTO = new InitMenuDTO();
             MenuMataDTO menuMataDTO = new MenuMataDTO();
@@ -178,13 +182,14 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
 
     /**
      * 构建菜单树结构
+     *
      * @return
      */
     public List<UmsMenu> buildMenuTree(List<UmsMenu> menus) {
         ArrayList<UmsMenu> dataList = new ArrayList<>();
         // 找到父节点
         for (UmsMenu menu : menus) {
-            if(ObjectUtil.isEmpty(menu.getPid())) {
+            if (ObjectUtil.isEmpty(menu.getPid())) {
                 menu.setChildren(new ArrayList<UmsMenu>());
                 dataList.add(menu);
             }
@@ -198,7 +203,8 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
 
     /**
      * 递归菜单
-     * @param menu 父级菜单
+     *
+     * @param menu    父级菜单
      * @param menuLst 菜单列表
      * @return
      */

@@ -39,6 +39,7 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole> impl
 
     /**
      * 分页
+     *
      * @param paramsDTO
      * @return
      */
@@ -51,6 +52,7 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole> impl
 
     /**
      * 删除角色
+     *
      * @param id
      * @return
      */
@@ -70,6 +72,7 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole> impl
 
     /**
      * 授权
+     *
      * @return
      */
     @Transactional
@@ -86,6 +89,7 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole> impl
 
     /**
      * 根据角色id查询已分配的权限
+     *
      * @param id
      * @return
      */
@@ -100,6 +104,7 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole> impl
 
     /**
      * 设置角色和菜单的关联关系
+     *
      * @param menuIds
      * @param roleId
      * @return

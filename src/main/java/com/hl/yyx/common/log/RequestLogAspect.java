@@ -40,12 +40,12 @@ public class RequestLogAspect {
             Object[] parameters = joinPoint.getArgs();
             log.info("\n==================接口请求==================\n" +
                     "请求时间：" + DateUtil.format(new Date(System.currentTimeMillis()), "yyyy-MM-dd HH:mm:ss.sss") + "\n" +
-                    "请求地址："+ request.getRequestURL().toString() +"\n" +
-                    "请求IP："+ request.getRemoteAddr() +"\n" +
-                    "请求方法："+ request.getMethod() +"\n" +
-                    "类名：" + className +"\n" +
-                    "方法名：" + methodName +"\n" +
-                    "请求参数：" + JSON.toJSONString(parameters) +"\n");
+                    "请求地址：" + request.getRequestURL().toString() + "\n" +
+                    "请求IP：" + request.getRemoteAddr() + "\n" +
+                    "请求方法：" + request.getMethod() + "\n" +
+                    "类名：" + className + "\n" +
+                    "方法名：" + methodName + "\n" +
+                    "请求参数：" + JSON.toJSONString(parameters) + "\n");
         } catch (Throwable e) {
             log.info("around " + joinPoint + " with exception : " + e.getMessage());
         }
@@ -62,10 +62,10 @@ public class RequestLogAspect {
         Object result = joinPoint.proceed();
         long time = System.currentTimeMillis() - startTime;
         log.info("\n==================接口响应==================\n" +
-                        "类名：" + className +"\n"
-                        + "方法名：" + methodName +"\n"
-                        + "返回结果：" + JSON.toJSONString(result) +"\n"
-                        + "方法执行耗时："+ time + "ms\n"
+                "类名：" + className + "\n"
+                + "方法名：" + methodName + "\n"
+                + "返回结果：" + JSON.toJSONString(result) + "\n"
+                + "方法执行耗时：" + time + "ms\n"
         );
 
         return result;

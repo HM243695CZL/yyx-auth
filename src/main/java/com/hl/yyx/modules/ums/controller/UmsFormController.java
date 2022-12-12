@@ -22,7 +22,7 @@ import javax.validation.Valid;
 
 /**
  * <p>
- *  表单配置表 前端控制器
+ * 表单配置表 前端控制器
  * </p>
  *
  * @author hl243695czyn
@@ -66,7 +66,7 @@ public class UmsFormController {
     @ApiOperation("删除表单")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id) {
-        return CommonResult.success( umsFormService.removeById(id));
+        return CommonResult.success(umsFormService.removeById(id));
     }
 
     // 获取全部

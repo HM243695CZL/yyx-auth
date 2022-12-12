@@ -17,6 +17,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 权限配置
+     *
      * @param http
      * @throws Exception
      */

@@ -38,24 +38,24 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         // 拿到jwt令牌
         String jwt = request.getHeader(tokenHeader);
         //判断是否存在 判断开头是否加了tokenHead Bearer
-        if(!StrUtil.isBlank(jwt) && jwt.startsWith(tokenHead)) {
+        if (!StrUtil.isBlank(jwt) && jwt.startsWith(tokenHead)) {
             // 解密
-            jwt=jwt.substring(tokenHead.length());
+            jwt = jwt.substring(tokenHead.length());
             String userName = jwtTokenUtil.getUserNameFromToken(jwt);
 
-            if(!StrUtil.isBlank(userName)){
+            if (!StrUtil.isBlank(userName)) {
 
                 // 从服务器中查询
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
-                if(userDetails!=null){
+                if (userDetails != null) {
                     // 生成springSecurity的通过认证标识
-                    UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
             }
         }
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 }

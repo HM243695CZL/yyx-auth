@@ -62,6 +62,7 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
 
     /**
      * 分页查询
+     *
      * @param paramsDTO
      * @return
      */
@@ -81,6 +82,7 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
 
     /**
      * 添加用户
+     *
      * @param umsAdmin
      * @return
      */
@@ -97,6 +99,7 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
 
     /**
      * 更新用户
+     *
      * @param umsAdmin
      * @return
      */
@@ -119,6 +122,7 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
 
     /**
      * 查看用户
+     *
      * @param id
      * @return
      */
@@ -134,6 +138,7 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
 
     /**
      * 删除用户
+     *
      * @param id
      * @return
      */
@@ -149,6 +154,7 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
 
     /**
      * 根据用户名获取用户
+     *
      * @param username 用户名
      * @return
      */
@@ -163,6 +169,7 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
 
     /**
      * 登录
+     *
      * @param username 用户名
      * @param password 密码
      * @return
@@ -197,6 +204,7 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
 
     /**
      * 修改密码
+     *
      * @return
      */
     @Override
@@ -209,8 +217,9 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
 
     /**
      * 设置用户和角色的关联关系
+     *
      * @param roleList 角色列表
-     * @param userId 用户id
+     * @param userId   用户id
      * @return
      */
     public List<UmsAdminRole> setAdminAndRole(List<Integer> roleList, Integer userId) {
@@ -226,6 +235,7 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
 
     /**
      * 根据用户名获取用户信息
+     *
      * @param username 用户名
      * @return
      */
@@ -237,6 +247,7 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
 
     /**
      * 获取当前用户
+     *
      * @return
      */
     public UmsAdmin getCurrentAdmin() {
@@ -249,12 +260,13 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
 
     /**
      * 设置用户的roles字段
+     *
      * @param userInfo
      */
     private void setUserRoles(UmsAdmin userInfo) {
         List<Integer> roleIds = adminRoleService.list(new QueryWrapper<UmsAdminRole>().eq("admin_id", userInfo.getId())
                 .select("role_id")).stream().map(UmsAdminRole::getRoleId).collect(Collectors.toList());
-        if(!ObjectUtil.isEmpty(roleIds)) {
+        if (!ObjectUtil.isEmpty(roleIds)) {
             // 根据角色表查询对应的角色名称
             List<String> roleName = roleService.listByIds(roleIds).stream().map(UmsRole::getKey).collect(Collectors.toList());
             userInfo.setRoles(roleName);

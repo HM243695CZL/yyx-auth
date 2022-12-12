@@ -17,7 +17,7 @@ import javax.validation.constraints.NotBlank;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author hl243695czyn
@@ -26,10 +26,10 @@ import javax.validation.constraints.NotBlank;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("ums_form")
-@ApiModel(value="UmsForm对象", description="")
+@ApiModel(value = "UmsForm对象", description = "")
 public class UmsForm implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;

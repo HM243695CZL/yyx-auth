@@ -4,14 +4,14 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.hl.yyx.modules.ums.model.UmsForm">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="form_key" property="formKey" />
-        <result column="remark" property="remark" />
-        <result column="config" property="config" />
-        <result column="add_time" property="addTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="deleted" property="deleted" />
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="form_key" property="formKey"/>
+        <result column="remark" property="remark"/>
+        <result column="config" property="config"/>
+        <result column="add_time" property="addTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="deleted" property="deleted"/>
     </resultMap>
 
 </mapper>

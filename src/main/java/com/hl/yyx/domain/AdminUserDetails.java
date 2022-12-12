@@ -17,6 +17,7 @@ public class AdminUserDetails implements UserDetails {
 
     /**
      * 前台除了白名单   没有其他权限资源
+     *
      * @return
      */
     @Override

@@ -7,7 +7,7 @@
     <!-- 定义日志文件 输入位置 -->
     <!--    <property name="logDir" value="./我的工作笔记/src/main/java/Es/Es京东爬虫搜索实战/logs" />-->
     <!--    <property name="logDir" value="D:/logs" />-->
-    <property name="logDir" value="./logs" />
+    <property name="logDir" value="./logs"/>
     <!-- 日志最大的历史 30天 -->
     <property name="maxHistory" value="30"/>
 
@@ -105,9 +105,9 @@
         <!-- 控制台输出 -->
         <!--        <appender-ref ref="STDOUT" />-->
         <!-- 文件输出 -->
-        <appender-ref ref="ERROR" />
-        <appender-ref ref="INFO" />
-        <appender-ref ref="WARN" />
-        <appender-ref ref="DEBUG" />
+        <appender-ref ref="ERROR"/>
+        <appender-ref ref="INFO"/>
+        <appender-ref ref="WARN"/>
+        <appender-ref ref="DEBUG"/>
     </root>
 </configuration>

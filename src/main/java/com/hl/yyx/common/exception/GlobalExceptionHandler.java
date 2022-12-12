@@ -29,6 +29,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 处理未知异常
+     *
      * @param e
      * @return
      */
@@ -64,7 +65,7 @@ public class GlobalExceptionHandler {
         if (bindingResult.hasErrors()) {
             FieldError fieldError = bindingResult.getFieldError();
             if (fieldError != null) {
-                message = fieldError.getField()+fieldError.getDefaultMessage();
+                message = fieldError.getField() + fieldError.getDefaultMessage();
             }
         }
         return CommonResult.validateFailed(message);

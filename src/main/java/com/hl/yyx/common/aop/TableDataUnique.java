@@ -20,7 +20,6 @@ import java.util.Map;
  * <p>
  * 数据库字段唯一值
  * </p>
- *
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

@@ -23,10 +23,10 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("ums_role")
-@ApiModel(value="UmsRole对象", description="角色表")
+@ApiModel(value = "UmsRole对象", description = "角色表")
 public class UmsRole implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
