@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hl.yyx.common.vo.BaseModelDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -27,7 +28,7 @@ import javax.validation.constraints.NotBlank;
 @EqualsAndHashCode(callSuper = false)
 @TableName("ums_admin")
 @ApiModel(value = "UmsAdmin对象", description = "管理员表")
-public class UmsAdmin implements Serializable {
+public class UmsAdmin extends BaseModelDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -50,21 +51,6 @@ public class UmsAdmin implements Serializable {
 
     @ApiModelProperty(value = "头像图片")
     private String avatar;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @ApiModelProperty(value = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
-    private Date addTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @ApiModelProperty(value = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date updateTime;
-
-    @ApiModelProperty(value = "逻辑删除")
-//    @TableLogic(value = "1", delval = "0")
-    @JsonIgnore
-    private Boolean deleted;
 
     @ApiModelProperty(value = "角色id列表")
     @TableField(exist = false)

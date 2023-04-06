@@ -8,6 +8,7 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hl.yyx.common.aop.TableDataUnique;
+import com.hl.yyx.common.vo.BaseModelDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -27,7 +28,7 @@ import javax.validation.constraints.NotBlank;
 @EqualsAndHashCode(callSuper = false)
 @TableName("ums_form")
 @ApiModel(value = "UmsForm对象", description = "")
-public class UmsForm implements Serializable {
+public class UmsForm extends BaseModelDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -49,21 +50,5 @@ public class UmsForm implements Serializable {
 
     @ApiModelProperty(value = "表单配置")
     private String config;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @ApiModelProperty(value = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
-    private Date addTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @ApiModelProperty(value = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date updateTime;
-
-    @ApiModelProperty(value = "逻辑删除")
-//    @TableLogic(value = "1", delval = "0")
-    @JsonIgnore
-    private Boolean deleted;
-
 
 }
