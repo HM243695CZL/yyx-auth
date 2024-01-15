@@ -116,7 +116,7 @@ public class UmsAdminController {
     @LogAnnotation()
     @ApiOperation("修改密码")
     @RequestMapping(value = "/updatePass", method = RequestMethod.POST)
-    private CommonResult updatePass(@RequestBody UpdatePassDTO updatePassDTO) {
+    public CommonResult updatePass(@RequestBody UpdatePassDTO updatePassDTO) {
         return CommonResult.success(umsAdminService.updatePass(updatePassDTO));
     }
 }
